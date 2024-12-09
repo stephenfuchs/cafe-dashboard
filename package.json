@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@primevue/themes": "^4.2.4",
+    "axios": "^1.7.9",
     "chart.js": "^4.4.7",
     "nuxt": "^3.14.1592",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.4",
+    "square": "^39.0.0",
     "tailwindcss-primeui": "^0.3.4",
     "vue": "latest",
     "vue-router": "latest"

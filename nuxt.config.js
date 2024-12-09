@@ -4,6 +4,11 @@ import Aura from "@primevue/themes/aura";
 export default defineNuxtConfig({
     compatibilityDate: "2024-12-03",
     modules: ["@nuxtjs/tailwindcss", "@primevue/nuxt-module"],
+    runtimeConfig: {
+        // The private keys which are only available server-side
+        squareApiSecret: process.env.NUXT_SQUARE_API_SECRET,
+    },
+
     app: {
         head: {
             link: [
