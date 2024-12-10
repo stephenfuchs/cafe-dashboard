@@ -41,119 +41,257 @@ export default defineEventHandler(async (event) => {
             returnEntries: false,
         });
 
-        const filteredResults = response.result.orders?.map((order) => ({
-            id: order.id,
-            lineItems: order.lineItems?.map((item) => ({
-                uid: item.uid,
-                name: item.name,
-                quantity: item.quantity,
-                catalogObjectId: item.catalogObjectId,
-                modifiers: item.modifiers?.map((modifier) => ({
-                    uid: modifier.uid,
-                    catalogObjectId: modifier.catalogObjectId,
-                    name: modifier.name,
-                })),
-                appliedDiscounts: item.appliedDiscounts?.map((discount) => ({
-                    uid: discount.uid,
-                    discountUid: discount.discountUid,
-                    appliedMoney: {
-                        amount: discount.appliedMoney?.amount,
-                    },
-                })),
-                grossSalesMoney: {
-                    amount: item.grossSalesMoney?.amount,
-                },
-                totalDiscountMoney: {
-                    amount: item.totalDiscountMoney?.amount,
-                },
-                totalMoney: {
-                    amount: item.totalMoney?.amount,
-                },
-            })),
-            discounts: order.discounts?.map((discount) => ({
-                uid: discount.uid,
-                catalogObjectId: discount.catalogObjectId,
-                name: discount.name,
-            })),
-            returns: order.returns?.map((returnItem) => ({
-                sourceOrderId: returnItem.sourceOrderId,
-                returnLineItems: returnItem.returnLineItems?.map((item) => ({
-                    uid: item.uid,
-                    sourceLineItemUid: item.sourceLineItemUid,
-                    name: item.name,
-                    quantity: item.quantity,
-                    catalogObjectId: item.catalogObjectId,
-                    returnModifiers: item.returnModifiers?.map((modifier) => ({
-                        uid: modifier.uid,
-                        catalogObjectId: modifier.catalogObjectId,
-                        name: modifier.name,
+        const filteredResults = response.result.orders
+            ?.map((order) => {
+                // Filter tenders to include only those with type "CASH" or "CARD"
+                const validTender = order.tenders?.filter((tender) =>
+                    ["CASH", "CARD"].includes(tender.type)
+                );
+
+                // Skip invalid orders
+                if (!validTender || validTender.length === 0) {
+                    return null;
+                }
+
+                return {
+                    id: order.id,
+                    lineItems: order.lineItems?.map((item) => ({
+                        uid: item.uid,
+                        name: item.name,
+                        quantity: item.quantity,
+                        catalogObjectId: item.catalogObjectId,
+                        modifiers: item.modifiers?.map((modifier) => ({
+                            uid: modifier.uid,
+                            catalogObjectId: modifier.catalogObjectId,
+                            name: modifier.name,
+                        })),
+                        appliedDiscounts: item.appliedDiscounts?.map(
+                            (discount) => ({
+                                uid: discount.uid,
+                                discountUid: discount.discountUid,
+                                appliedMoney: {
+                                    amount: discount.appliedMoney?.amount,
+                                },
+                            })
+                        ),
+                        grossSalesMoney: {
+                            amount: item.grossSalesMoney?.amount,
+                        },
+                        totalDiscountMoney: {
+                            amount: item.totalDiscountMoney?.amount,
+                        },
+                        totalMoney: {
+                            amount: item.totalMoney?.amount,
+                        },
                     })),
-                    appliedDiscounts: item.appliedDiscounts?.map(
-                        (discount) => ({
-                            uid: discount.uid,
-                            discountUid: discount.discountUid,
-                            appliedMoney: {
-                                amount: discount.appliedMoney?.amount,
-                            },
-                        })
-                    ),
-                    grossReturnMoney: {
-                        amount: item.grossReturnMoney?.amount,
-                    },
-                    totalDiscountMoney: {
-                        amount: item.totalDiscountMoney?.amount,
-                    },
-                    totalMoney: {
-                        amount: item.totalMoney?.amount,
-                    },
-                })),
-                returnDiscounts: returnItem.returnDiscounts?.map(
-                    (discount) => ({
+                    discounts: order.discounts?.map((discount) => ({
                         uid: discount.uid,
                         catalogObjectId: discount.catalogObjectId,
                         name: discount.name,
-                    })
-                ),
-            })),
-            returnAmounts: order.returnAmounts
-                ? {
-                      totalMoney: {
-                          amount: order.returnAmounts.totalMoney?.amount,
-                      },
-                  }
-                : undefined,
-            netAmounts: {
-                totalMoney: {
-                    amount: order.netAmounts?.totalMoney?.amount,
-                },
-            },
-            tenders: order.tenders?.map((tender) => ({
-                id: tender.id,
-                transactionId: tender.transactionId,
-                amountMoney: {
-                    amount: tender.amountMoney?.amount,
-                },
-                type: tender.type,
-            })),
-            refunds: order.refunds?.map((refund) => ({
-                id: refund.id,
-                transactionId: refund.transactionId,
-                tenderId: refund.tenderId,
-                reason: refund.reason,
-                amountMoney: { amount: refund.amountMoney?.amount },
-            })),
-            closedAt: order.closedAt,
-            totalMoney: {
-                amount: order.totalMoney?.amount,
-            },
-            totalDiscountMoney: {
-                amount: order.totalDiscountMoney?.amount,
-            },
-            netAmountDueMoney: {
-                amount: order.netAmountDueMoney?.amount,
-            },
-        }));
+                    })),
+                    returns: order.returns?.map((returnItem) => ({
+                        sourceOrderId: returnItem.sourceOrderId,
+                        returnLineItems: returnItem.returnLineItems?.map(
+                            (item) => ({
+                                uid: item.uid,
+                                sourceLineItemUid: item.sourceLineItemUid,
+                                name: item.name,
+                                quantity: item.quantity,
+                                catalogObjectId: item.catalogObjectId,
+                                returnModifiers: item.returnModifiers?.map(
+                                    (modifier) => ({
+                                        uid: modifier.uid,
+                                        catalogObjectId:
+                                            modifier.catalogObjectId,
+                                        name: modifier.name,
+                                    })
+                                ),
+                                appliedDiscounts: item.appliedDiscounts?.map(
+                                    (discount) => ({
+                                        uid: discount.uid,
+                                        discountUid: discount.discountUid,
+                                        appliedMoney: {
+                                            amount: discount.appliedMoney
+                                                ?.amount,
+                                        },
+                                    })
+                                ),
+                                grossReturnMoney: {
+                                    amount: item.grossReturnMoney?.amount,
+                                },
+                                totalDiscountMoney: {
+                                    amount: item.totalDiscountMoney?.amount,
+                                },
+                                totalMoney: {
+                                    amount: item.totalMoney?.amount,
+                                },
+                            })
+                        ),
+                        returnDiscounts: returnItem.returnDiscounts?.map(
+                            (discount) => ({
+                                uid: discount.uid,
+                                catalogObjectId: discount.catalogObjectId,
+                                name: discount.name,
+                            })
+                        ),
+                    })),
+                    returnAmounts: order.returnAmounts
+                        ? {
+                              totalMoney: {
+                                  amount: order.returnAmounts.totalMoney
+                                      ?.amount,
+                              },
+                          }
+                        : undefined,
+                    netAmounts: {
+                        totalMoney: {
+                            amount: order.netAmounts?.totalMoney?.amount,
+                        },
+                    },
+                    tenders: order.tenders?.map((tender) => ({
+                        id: tender.id,
+                        transactionId: tender.transactionId,
+                        amountMoney: {
+                            amount: tender.amountMoney?.amount,
+                        },
+                        type: tender.type,
+                    })),
+                    refunds: order.refunds?.map((refund) => ({
+                        id: refund.id,
+                        transactionId: refund.transactionId,
+                        tenderId: refund.tenderId,
+                        reason: refund.reason,
+                        amountMoney: { amount: refund.amountMoney?.amount },
+                    })),
+                    closedAt: order.closedAt,
+                    totalMoney: {
+                        amount: order.totalMoney?.amount,
+                    },
+                    totalDiscountMoney: {
+                        amount: order.totalDiscountMoney?.amount,
+                    },
+                    netAmountDueMoney: {
+                        amount: order.netAmountDueMoney?.amount,
+                    },
+                };
+            })
+            .filter((order) => order !== null); // Remove any null values
+
         return filteredResults;
+
+        // const filteredResults = response.result.orders?.map((order) => ({
+        //     id: order.id,
+        //     lineItems: order.lineItems?.map((item) => ({
+        //         uid: item.uid,
+        //         name: item.name,
+        //         quantity: item.quantity,
+        //         catalogObjectId: item.catalogObjectId,
+        //         modifiers: item.modifiers?.map((modifier) => ({
+        //             uid: modifier.uid,
+        //             catalogObjectId: modifier.catalogObjectId,
+        //             name: modifier.name,
+        //         })),
+        //         appliedDiscounts: item.appliedDiscounts?.map((discount) => ({
+        //             uid: discount.uid,
+        //             discountUid: discount.discountUid,
+        //             appliedMoney: {
+        //                 amount: discount.appliedMoney?.amount,
+        //             },
+        //         })),
+        //         grossSalesMoney: {
+        //             amount: item.grossSalesMoney?.amount,
+        //         },
+        //         totalDiscountMoney: {
+        //             amount: item.totalDiscountMoney?.amount,
+        //         },
+        //         totalMoney: {
+        //             amount: item.totalMoney?.amount,
+        //         },
+        //     })),
+        //     discounts: order.discounts?.map((discount) => ({
+        //         uid: discount.uid,
+        //         catalogObjectId: discount.catalogObjectId,
+        //         name: discount.name,
+        //     })),
+        //     returns: order.returns?.map((returnItem) => ({
+        //         sourceOrderId: returnItem.sourceOrderId,
+        //         returnLineItems: returnItem.returnLineItems?.map((item) => ({
+        //             uid: item.uid,
+        //             sourceLineItemUid: item.sourceLineItemUid,
+        //             name: item.name,
+        //             quantity: item.quantity,
+        //             catalogObjectId: item.catalogObjectId,
+        //             returnModifiers: item.returnModifiers?.map((modifier) => ({
+        //                 uid: modifier.uid,
+        //                 catalogObjectId: modifier.catalogObjectId,
+        //                 name: modifier.name,
+        //             })),
+        //             appliedDiscounts: item.appliedDiscounts?.map(
+        //                 (discount) => ({
+        //                     uid: discount.uid,
+        //                     discountUid: discount.discountUid,
+        //                     appliedMoney: {
+        //                         amount: discount.appliedMoney?.amount,
+        //                     },
+        //                 })
+        //             ),
+        //             grossReturnMoney: {
+        //                 amount: item.grossReturnMoney?.amount,
+        //             },
+        //             totalDiscountMoney: {
+        //                 amount: item.totalDiscountMoney?.amount,
+        //             },
+        //             totalMoney: {
+        //                 amount: item.totalMoney?.amount,
+        //             },
+        //         })),
+        //         returnDiscounts: returnItem.returnDiscounts?.map(
+        //             (discount) => ({
+        //                 uid: discount.uid,
+        //                 catalogObjectId: discount.catalogObjectId,
+        //                 name: discount.name,
+        //             })
+        //         ),
+        //     })),
+        //     returnAmounts: order.returnAmounts
+        //         ? {
+        //               totalMoney: {
+        //                   amount: order.returnAmounts.totalMoney?.amount,
+        //               },
+        //           }
+        //         : undefined,
+        //     netAmounts: {
+        //         totalMoney: {
+        //             amount: order.netAmounts?.totalMoney?.amount,
+        //         },
+        //     },
+        //     tenders: order.tenders?.map((tender) => ({
+        //         id: tender.id,
+        //         transactionId: tender.transactionId,
+        //         amountMoney: {
+        //             amount: tender.amountMoney?.amount,
+        //         },
+        //         type: tender.type,
+        //     })),
+        //     refunds: order.refunds?.map((refund) => ({
+        //         id: refund.id,
+        //         transactionId: refund.transactionId,
+        //         tenderId: refund.tenderId,
+        //         reason: refund.reason,
+        //         amountMoney: { amount: refund.amountMoney?.amount },
+        //     })),
+        //     closedAt: order.closedAt,
+        //     totalMoney: {
+        //         amount: order.totalMoney?.amount,
+        //     },
+        //     totalDiscountMoney: {
+        //         amount: order.totalDiscountMoney?.amount,
+        //     },
+        //     netAmountDueMoney: {
+        //         amount: order.netAmountDueMoney?.amount,
+        //     },
+        // }));
+        // return filteredResults;
     } catch (error) {
         if (error instanceof ApiError) {
             console.error("Square API Error during order fetch:", error.result);
