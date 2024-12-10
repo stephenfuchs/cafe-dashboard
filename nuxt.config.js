@@ -2,21 +2,22 @@
 import Aura from "@primevue/themes/aura";
 
 export default defineNuxtConfig({
+    css: ["@material-symbols/font-400"],
+
     compatibilityDate: "2024-12-03",
-    modules: ["@nuxtjs/tailwindcss", "@primevue/nuxt-module"],
+    modules: [
+        "@nuxtjs/tailwindcss",
+        "@primevue/nuxt-module",
+        "@nuxtjs/google-fonts",
+    ],
     runtimeConfig: {
         // The private keys which are only available server-side
         squareApiSecret: process.env.NUXT_SQUARE_API_SECRET,
     },
 
-    app: {
-        head: {
-            link: [
-                {
-                    rel: "stylesheet",
-                    href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0",
-                },
-            ],
+    googleFonts: {
+        families: {
+            "Source+Sans+3": true,
         },
     },
 
