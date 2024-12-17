@@ -40,6 +40,8 @@
                 v-tooltip="'Sales Overview'"
                 label="Overview"
                 iconPos="top"
+                as="router-link"
+                to="/"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">dashboard</span>
@@ -50,6 +52,8 @@
                 v-tooltip="'Item Sales'"
                 label="Items"
                 iconPos="top"
+                as="router-link"
+                to="/items"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">sell</span>
@@ -60,6 +64,8 @@
                 v-tooltip="'Modifier Sales'"
                 label="Modifiers"
                 iconPos="top"
+                as="router-link"
+                to="/modifiers"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">style</span>
@@ -70,6 +76,8 @@
                 v-tooltip="'Discounts'"
                 label="Discounts"
                 iconPos="top"
+                as="router-link"
+                to="/discounts"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">percent</span>
@@ -80,6 +88,8 @@
                 v-tooltip="'Expenses'"
                 label="Expenses"
                 iconPos="top"
+                as="router-link"
+                to="/expenses"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">receipt_long</span>
