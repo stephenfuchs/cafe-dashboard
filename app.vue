@@ -21,7 +21,7 @@
         </div>
     </div> -->
     <div class="flex min-h-dvh flex-col-reverse gap-5 md:flex-row">
-        <LayoutsSidebar />
+        <LayoutsNavigation />
         <main class="flex-1 p-5">
             <LayoutsHeader page="Sales Overview" />
             <NuxtPage />

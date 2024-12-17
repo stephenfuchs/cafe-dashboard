@@ -13,6 +13,8 @@
                     stroke-miterlimit: 2;
                 "
                 viewBox="0 0 319 319"
+                width="48"
+                height="48"
             >
                 <circle
                     cx="227.882"
