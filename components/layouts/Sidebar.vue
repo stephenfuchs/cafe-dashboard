@@ -1,5 +1,5 @@
 <template>
-    <div
+    <aside
         class="sticky bottom-0 z-50 box-content flex items-center gap-10 bg-surface-100/90 p-4 backdrop-blur max-md:h-12 max-md:pt-3 md:relative md:bottom-auto md:w-12 md:flex-col md:bg-surface-100 md:p-5 dark:bg-surface-950/90 md:dark:bg-surface-950"
     >
         <div class="flex size-12 items-center justify-center max-md:hidden">
@@ -86,5 +86,5 @@
                 </template>
             </Button>
         </nav>
-    </div>
+    </aside>
 </template>

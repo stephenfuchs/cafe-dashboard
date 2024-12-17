@@ -1,12 +1,14 @@
 <template>
-    <div class="mb-6 flex justify-between">
+    <div class="mb-6 flex flex-col justify-between gap-4 lg:flex-row">
         <div>
-            <div class="text-sm font-semibold uppercase text-muted-color">
+            <span class="text-sm font-semibold uppercase text-muted-color">
                 West Ridge Café
-            </div>
+            </span>
             <h1 class="text-3xl font-bold text-color">{{ page }}</h1>
         </div>
-        <div class="flex items-center gap-4">
+        <div
+            class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"
+        >
             <UiDateRange />
             <UiDateRangeCompare />
         </div>

@@ -137,11 +137,14 @@ export default defineNuxtConfig({
                     },
                     pcToggleButton: {
                         root: {
-                            class: "border-0 dark:bg-surface-900 text-sm text-muted-color font-semibold data-[p-checked=true]:text-color",
+                            class: "flex-auto border-0 dark:bg-surface-900 text-sm text-muted-color font-semibold data-[p-checked=true]:text-color",
                         },
                     },
                 },
                 datePicker: {
+                    root: {
+                        class: "flex-1",
+                    },
                     pcInputText: {
                         root: {
                             class: "border-surface-200 dark:border-surface-700 dark:bg-surface-900 text-sm text-color font-semibold",
