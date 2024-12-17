@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "build": "nuxt build",
-        "dev": "nuxt dev",
+        "dev": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' nuxt dev",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare"
@@ -12,13 +12,14 @@
     "dependencies": {
         "@material-symbols/font-400": "^0.27.2",
         "@nuxtjs/google-fonts": "3.2.0",
-        "@primevue/themes": "^4.2.4",
+        "@primevue/themes": "^4.2.5",
         "axios": "^1.7.9",
         "chart.js": "^4.4.7",
         "nuxt": "^3.14.1592",
         "primeicons": "^7.0.0",
-        "primevue": "^4.2.4",
+        "primevue": "^4.2.5",
         "square": "^39.0.0",
+        "tailwind-merge": "^2.5.5",
         "tailwindcss-primeui": "^0.3.4",
         "vue": "latest",
         "vue-router": "latest"
@@ -26,6 +27,8 @@
     "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
     "devDependencies": {
         "@nuxtjs/tailwindcss": "^6.12.2",
-        "@primevue/nuxt-module": "^4.2.4"
+        "@primevue/nuxt-module": "^4.2.5",
+        "prettier": "^3.4.2",
+        "prettier-plugin-tailwindcss": "^0.6.9"
     }
 }
