@@ -91,7 +91,7 @@ const MyPreset = definePreset(Aura, {
 
 export default defineNuxtConfig({
     pages: true,
-    css: ["@material-symbols/font-400"],
+    // css: ["@material-symbols/font-400"],
 
     compatibilityDate: "2024-12-03",
     modules: [
@@ -107,6 +107,7 @@ export default defineNuxtConfig({
     googleFonts: {
         families: {
             "Open+Sans": [300, 400, 500, 600, 700, 800], // Explicitly list all weights and italics
+            "Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,-25": true,
         },
         display: "swap", // Matches the `@import` example
         preconnect: true, // For improved performance
@@ -122,11 +123,11 @@ export default defineNuxtConfig({
                         },
                     },
                 },
-                button: {
-                    label: {
-                        class: "md:hidden text-xs text-color font-semibold",
-                    },
-                },
+                // button: {
+                //     label: {
+                //         class: "md:hidden text-xs text-color font-semibold",
+                //     },
+                // },
                 slider: {
                     handle: {
                         class: "bg-red-500",

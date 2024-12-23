@@ -44,9 +44,10 @@
                 iconPos="top"
                 as="router-link"
                 to="/"
+                :pt="buttonPassthrough"
             >
                 <template #icon>
-                    <span class="material-symbols-outlined">dashboard</span>
+                    <i class="material-symbols-outlined">dashboard</i>
                 </template>
             </Button>
             <Button
@@ -56,6 +57,7 @@
                 iconPos="top"
                 as="router-link"
                 to="/items"
+                :pt="buttonPassthrough"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">sell</span>
@@ -68,6 +70,7 @@
                 iconPos="top"
                 as="router-link"
                 to="/modifiers"
+                :pt="buttonPassthrough"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">style</span>
@@ -80,6 +83,7 @@
                 iconPos="top"
                 as="router-link"
                 to="/discounts"
+                :pt="buttonPassthrough"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">percent</span>
@@ -92,11 +96,43 @@
                 iconPos="top"
                 as="router-link"
                 to="/expenses"
+                :pt="buttonPassthrough"
             >
                 <template #icon>
                     <span class="material-symbols-outlined">receipt_long</span>
                 </template>
             </Button>
+            <Tag
+                severity="secondary"
+                value="2XL"
+                class="hidden w-full text-center 2xl:block"
+            />
+            <Tag
+                severity="secondary"
+                value="XL"
+                class="hidden w-full text-center xl:max-2xl:block"
+            />
+            <Tag
+                severity="secondary"
+                value="LG"
+                class="hidden w-full text-center lg:max-xl:block"
+            />
+            <Tag
+                severity="secondary"
+                value="MD"
+                class="hidden w-full text-center md:max-lg:block"
+            />
         </nav>
     </aside>
 </template>
+
+<script setup>
+const checked1 = ref(true);
+const checked2 = ref(false);
+
+const buttonPassthrough = {
+    label: {
+        class: "md:hidden text-xs text-color font-semibold",
+    },
+};
+</script>

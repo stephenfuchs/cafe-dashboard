@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-6">
-        <div class="grid grid-cols-2 gap-6 xl:grid-cols-4">
+        <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
             <UiCardStat
                 title="Gross Sales"
                 :value="511.17"
@@ -33,19 +33,19 @@
                 money
             />
         </div>
-        <div class="grid grid-cols-3 gap-6">
-            <div class="col-span-1">
+        <div class="grid grid-cols-6 gap-6">
+            <div class="col-span-6 lg:col-span-3 xl:col-span-2">
                 <UiCardTopItems />
             </div>
-            <div class="col-span-1">
+            <div class="col-span-6 lg:col-span-3 xl:col-span-2">
                 <UiCardCoffees />
             </div>
-            <div class="col-span-1">
+            <div class="col-span-6 lg:col-span-2">
                 <UiCardSalesSummary />
             </div>
-        </div>
-        <div class="grid grid-cols-1">
-            <UiCardChart />
+            <div class="col-span-6 lg:col-span-4 xl:col-span-6">
+                <UiCardChart />
+            </div>
         </div>
     </div>
 </template>

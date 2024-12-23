@@ -1,5 +1,5 @@
 <template>
-    <UiCardBase>
+    <UiAppCard>
         <template #title>
             <div class="flex items-center gap-4">
                 {{ value }} Summary
@@ -16,7 +16,7 @@
             class="h-52"
             :plugins="[htmlLegendPlugin]"
         />
-    </UiCardBase>
+    </UiAppCard>
 </template>
 
 <script setup>

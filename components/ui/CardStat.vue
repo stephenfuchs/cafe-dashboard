@@ -1,13 +1,12 @@
 <template>
-    <UiCardBase stat>
+    <UiAppCard stat>
         <template #title>
             {{ title }}
         </template>
-        <!-- <div class="mb-2 text-sm font-bold uppercase text-color">
-            {{ title }}
-        </div> -->
-        <div class="flex items-center justify-between">
-            <div class="text-5xl font-bold text-color">
+        <div
+            class="flex flex-col flex-wrap justify-between max-xl:gap-5 xl:flex-row xl:items-center"
+        >
+            <div class="text-4xl font-bold text-color">
                 {{ money ? "$" : "" }}{{ value }}
             </div>
             <div
@@ -16,7 +15,7 @@
                         ? `bg-orange-100 text-orange-700`
                         : `bg-green-100 text-green-700`
                 "
-                class="flex items-center justify-between gap-1 rounded px-2 py-1 text-sm font-bold"
+                class="flex items-center gap-1 self-start rounded px-2 py-1 text-sm font-bold"
             >
                 <div class="material-symbols-outlined">
                     {{ percent < 0 ? "trending_down" : "trending_up" }}
@@ -34,7 +33,7 @@
                 >{{ money ? "$" : "" }}{{ vsValue }}</span
             >
         </div>
-    </UiCardBase>
+    </UiAppCard>
 </template>
 
 <script setup>
