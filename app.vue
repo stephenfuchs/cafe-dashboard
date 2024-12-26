@@ -7,3 +7,11 @@
         </main>
     </div>
 </template>
+
+<script setup>
+useHead({
+    bodyAttrs: {
+        class: "bg-surface-0 dark:bg-surface-900",
+    },
+});
+</script>

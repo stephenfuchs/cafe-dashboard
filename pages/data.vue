@@ -25,14 +25,8 @@
 <script setup>
 import axios from "axios";
 
-useHead({
-    bodyAttrs: {
-        class: "bg-surface-0 dark:bg-surface-900",
-    },
-});
-
 const orders = ref([]);
-const specificDate = "2024-12-08";
+const specificDate = "2024-12-22";
 
 // Format the date to match the order date format (adjust according to the format you receive)
 const formatDate = (date) => new Date(date).toISOString().split("T")[0]; // Extracts only the date (YYYY-MM-DD)
