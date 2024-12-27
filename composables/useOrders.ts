@@ -1,6 +1,5 @@
 import axios from "axios";
 import { formatISO } from "date-fns";
-// import { createSharedComposable } from "@vueuse/core";
 
 export const useOrders = () => {
     const filters = useFilters();
@@ -11,10 +10,6 @@ export const useOrders = () => {
         if (!filters.startDate.value || !filters.endDate.value) {
             return;
         }
-        console.log(
-            formatISO(filters.startDate.value),
-            formatISO(filters.endDate.value),
-        );
 
         try {
             const response = await axios.get(

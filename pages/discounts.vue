@@ -24,5 +24,4 @@
 
 <script setup>
 const { orders } = useOrders();
-console.log("orders: ", orders);
 </script>

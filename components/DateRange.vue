@@ -78,7 +78,6 @@ watch(
         } else {
             filters.endDate.value = newValue?.[1];
         }
-        console.log("newValue:", newValue);
     },
     { immediate: true },
 );

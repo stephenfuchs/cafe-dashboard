@@ -4,7 +4,7 @@
         <template #options>
             <Tag severity="success" value="$19.00" />
         </template>
-        <UiTopList :products="coffees" />
+        <SalesList :products="coffees" />
     </UiAppCard>
 </template>
 

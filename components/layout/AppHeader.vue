@@ -9,8 +9,8 @@
         <div
             class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"
         >
-            <UiDateRange />
-            <UiDateRangeCompare />
+            <DateRange />
+            <DateRangeCompare />
         </div>
     </div>
 </template>

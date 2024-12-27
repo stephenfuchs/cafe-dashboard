@@ -4,7 +4,7 @@
         <template #options>
             <SelectButton v-model="value" :options="options" size="small" />
         </template>
-        <UiTopList :products="topItems" />
+        <SalesList :products="topItems" />
     </UiAppCard>
 </template>
 
