@@ -2,12 +2,13 @@
     <UiAppCard>
         <template #title>
             <div class="flex items-center gap-4">
-                {{ value }} Summary
+                {{ selected }} Summary
                 <div id="legend-container"></div>
             </div>
         </template>
         <template #options>
-            <SelectButton v-model="value" :options="options" size="small" />
+            <UiAppCardSelector :options="options" v-model:selected="selected" />
+            <!-- <SelectButton v-model="value" :options="options" size="small" /> -->
         </template>
         <Chart
             type="bar"
@@ -20,7 +21,7 @@
 </template>
 
 <script setup>
-const value = ref("Yearly");
+const selected = ref("Yearly");
 const options = ref(["Yearly", "Monthly", "Daily"]);
 
 onMounted(() => {

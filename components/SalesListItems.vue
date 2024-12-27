@@ -1,15 +1,15 @@
 <template>
     <UiAppCard>
-        <template #title> Top {{ value }} </template>
+        <template #title> Top {{ selected }} </template>
         <template #options>
-            <SelectButton v-model="value" :options="options" size="small" />
+            <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
         <SalesList :products="topItems" />
     </UiAppCard>
 </template>
 
 <script setup>
-const value = ref("Items");
+const selected = ref("Items");
 const options = ref(["Items", "Categories"]);
 
 const topItems = ref([
