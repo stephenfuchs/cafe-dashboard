@@ -1,9 +1,8 @@
 import type { TZDate } from "@date-fns/tz";
-import { createSharedComposable } from "@vueuse/core";
 
-export const useFilters = createSharedComposable(() => {
-    const startDate = ref<TZDate>();
-    const endDate = ref<TZDate>();
+export const useFilters = () => {
+    const startDate = useState<TZDate | null>("startDate", () => null);
+    const endDate = useState<TZDate | null>("endDate", () => null);
 
     return { startDate, endDate };
-});
+};
