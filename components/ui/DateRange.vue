@@ -8,7 +8,7 @@
         <template #footer>
             <!-- SelectButton Component for preset date ranges -->
             <div
-                class="flex flex-col gap-2 pt-2 border-t mt-2 border-surface-200"
+                class="mt-2 flex flex-col gap-2 border-t border-surface-200 pt-2"
             >
                 <SelectButton
                     v-model="selectedRangeOption"
@@ -36,119 +36,132 @@
     </DatePicker>
 </template>
 
-<script setup>
-    // Passthrough configuration object
-    const selectButtonPassthrough = {
-        "pt:pcToggleButton:root:class": "flex-1",
-        "pt:root:class": "flex",
-    };
-    // Ref for holding selected date range
-    const selectedDateRange = ref(null);
+<script setup lang="ts">
+import { TZDate } from "@date-fns/tz";
+import {
+    isEqual,
+    endOfDay,
+    endOfWeek,
+    startOfWeek,
+    subWeeks,
+    startOfMonth,
+    endOfMonth,
+    subMonths,
+    startOfYear,
+    endOfYear,
+    subYears,
+} from "date-fns";
 
-    // Ref for holding the selected range option from SelectButton
-    const selectedRangeOption = ref("this-week");
+// Passthrough configuration object
+const selectButtonPassthrough = {
+    "pt:pcToggleButton:root:class": "flex-1",
+    "pt:root:class": "flex",
+};
 
-    // Options for the SelectButton
-    const optionsWeek = [
-        { label: "This Week", value: "this-week" },
-        { label: "Last Week", value: "last-week" },
-    ];
-    const optionsMonth = [
-        { label: "This Month", value: "this-month" },
-        { label: "Last Month", value: "last-month" },
-    ];
-    const optionsYear = [
-        { label: "This Year", value: "this-year" },
-        { label: "Last Year", value: "last-year" },
-    ];
+const timezone = "America/Chicago";
+// Ref for holding selected date range
+const selectedDateRange = ref<[TZDate, TZDate]>();
 
-    // Watcher for changes in the selected range option
-    watch(selectedRangeOption, (newValue) => {
-        switch (newValue) {
-            case "this-week":
-                setThisWeek();
-                break;
-            case "last-week":
-                setLastWeek();
-                break;
-            case "this-month":
-                setThisMonth();
-                break;
-            case "last-month":
-                setLastMonth();
-                break;
-            case "this-year":
-                setThisYear();
-                break;
-            case "last-year":
-                setLastYear();
-                break;
+const filters = useFilters();
+watch(
+    selectedDateRange,
+    (newValue) => {
+        if (!newValue?.[0]) {
+            return;
         }
-    });
+        filters.startDate.value = newValue?.[0];
 
-    // Automatically set the default range on mount
-    onMounted(() => {
-        setThisWeek(); // Set default range
-    });
+        if (!newValue?.[1]) {
+            filters.endDate.value = endOfDay<TZDate>(newValue?.[0]);
+        } else if (isEqual(newValue?.[1], newValue?.[0])) {
+            filters.endDate.value = endOfDay<TZDate>(newValue?.[1]);
+        } else {
+            filters.endDate.value = newValue?.[1];
+        }
+        console.log("newValue:", newValue);
+    },
+    { immediate: true },
+);
 
-    // Method to set the current week range
-    const setThisWeek = () => {
-        const now = new Date();
-        const firstDayOfWeek = now.getDate() - now.getDay(); // Sunday as the first day of the week
-        const lastDayOfWeek = firstDayOfWeek + 6; // Saturday as the last day of the week
+// Ref for holding the selected range option from SelectButton
+let selectedRangeOption = ref("this-week");
 
-        const startOfWeek = new Date(now.setDate(firstDayOfWeek));
-        const endOfWeek = new Date(now.setDate(lastDayOfWeek));
+// Options for the SelectButton
+const optionsWeek = [
+    { label: "This Week", value: "this-week" },
+    { label: "Last Week", value: "last-week" },
+];
+const optionsMonth = [
+    { label: "This Month", value: "this-month" },
+    { label: "Last Month", value: "last-month" },
+];
+const optionsYear = [
+    { label: "This Year", value: "this-year" },
+    { label: "Last Year", value: "last-year" },
+];
 
-        selectedDateRange.value = [startOfWeek, endOfWeek];
-    };
+// Watcher for changes in the selected range option
+watch(selectedRangeOption, (newValue) => {
+    switch (newValue) {
+        case "this-week":
+            setThisWeek();
+            break;
+        case "last-week":
+            setLastWeek();
+            break;
+        case "this-month":
+            setThisMonth();
+            break;
+        case "last-month":
+            setLastMonth();
+            break;
+        case "this-year":
+            setThisYear();
+            break;
+        case "last-year":
+            setLastYear();
+            break;
+    }
+});
 
-    // Method to set the last week range
-    const setLastWeek = () => {
-        const now = new Date();
-        const firstDayOfWeek = now.getDate() - now.getDay() - 7; // Last week’s Sunday
-        const lastDayOfWeek = firstDayOfWeek + 6; // Last week’s Saturday
+// Automatically set the default range on mount
+onMounted(() => {
+    setThisWeek(); // Set default range
+});
 
-        const startOfLastWeek = new Date(now.setDate(firstDayOfWeek));
-        const endOfLastWeek = new Date(now.setDate(lastDayOfWeek));
+// Set the current week range
+const setThisWeek = () => {
+    const now = TZDate.tz(timezone);
+    selectedDateRange.value = [startOfWeek(now), endOfWeek(now)];
+};
 
-        selectedDateRange.value = [startOfLastWeek, endOfLastWeek];
-    };
+// Set the last week range
+const setLastWeek = () => {
+    const lastWeek = subWeeks(TZDate.tz(timezone), 1);
+    selectedDateRange.value = [startOfWeek(lastWeek), endOfWeek(lastWeek)];
+};
 
-    // Method to set the current month range
-    const setThisMonth = () => {
-        const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        selectedDateRange.value = [startOfMonth, endOfMonth];
-    };
+// Set the current month range
+const setThisMonth = () => {
+    const now = TZDate.tz(timezone);
+    selectedDateRange.value = [startOfMonth(now), endOfMonth(now)];
+};
 
-    // Method to set the last month range
-    const setLastMonth = () => {
-        const now = new Date();
-        const firstDayLastMonth = new Date(
-            now.getFullYear(),
-            now.getMonth() - 1,
-            1
-        );
-        const lastDayLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-        selectedDateRange.value = [firstDayLastMonth, lastDayLastMonth];
-    };
+// Set the last month range
+const setLastMonth = () => {
+    const lastMonth = subMonths(TZDate.tz(timezone), 1);
+    selectedDateRange.value = [startOfMonth(lastMonth), endOfMonth(lastMonth)];
+};
 
-    // Method to set the current year range
-    const setThisYear = () => {
-        const now = new Date();
-        const startOfYear = new Date(now.getFullYear(), 0, 1);
-        const endOfYear = new Date(now.getFullYear(), 11, 31);
-        selectedDateRange.value = [startOfYear, endOfYear];
-    };
+// Set the current year range
+const setThisYear = () => {
+    const now = TZDate.tz(timezone);
+    selectedDateRange.value = [startOfYear(now), endOfYear(now)];
+};
 
-    // Method to set the last year range
-    const setLastYear = () => {
-        const now = new Date();
-        const startOfLastYear = new Date(now.getFullYear() - 1, 0, 1);
-        const endOfLastYear = new Date(now.getFullYear() - 1, 11, 31);
-        selectedDateRange.value = [startOfLastYear, endOfLastYear];
-        console.log("set dates: ", selectedDateRange.value[0]);
-    };
+// Set the last year range
+const setLastYear = () => {
+    const lastYear = subYears(TZDate.tz(timezone), 1);
+    selectedDateRange.value = [startOfYear(lastYear), endOfYear(lastYear)];
+};
 </script>

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>Orders for {{ specificDate }}</h1>
         <div v-if="orders.length > 0" class="flex flex-col gap-4">
             <div v-for="(order, index) in orders" :key="order.id">
                 <h2 class="text-lg font-bold">
@@ -23,23 +22,30 @@
 </template>
 
 <script setup>
-import axios from "axios";
+const { orders } = useOrders();
+// import axios from "axios";
+// import { formatISO } from "date-fns";
 
-const orders = ref([]);
-const specificDate = "2024-12-22";
+// const filters = useFilters();
 
-// Format the date to match the order date format (adjust according to the format you receive)
-const formatDate = (date) => new Date(date).toISOString().split("T")[0]; // Extracts only the date (YYYY-MM-DD)
+// const orders = ref([]);
 
-// Fetch orders on mount
-onMounted(async () => {
-    try {
-        const response = await axios.get("/api/orders"); // Use your actual API endpoint
-        orders.value = response.data.filter(
-            (order) => formatDate(order.closedAt) === specificDate,
-        ); // Filter orders by date
-    } catch (error) {
-        console.error("Error fetching orders:", error);
-    }
-});
+// watch(
+//     [() => filters.startDate.value, () => filters.endDate.value],
+//     async () => {
+//         console.log(
+//             formatISO(filters.startDate.value),
+//             formatISO(filters.endDate.value),
+//         );
+
+//         try {
+//             const response = await axios.get(
+//                 `/api/orders?startDate=${formatISO(filters.startDate.value)}&endDate=${formatISO(filters.endDate.value)}`,
+//             ); // Use your actual API endpoint
+//             orders.value = response.data;
+//         } catch (error) {
+//             console.error("Error fetching orders:", error);
+//         }
+//     },
+// );
 </script>

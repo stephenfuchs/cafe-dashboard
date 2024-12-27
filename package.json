@@ -10,11 +10,14 @@
         "postinstall": "nuxt prepare"
     },
     "dependencies": {
+        "@date-fns/tz": "^1.2.0",
         "@material-symbols/font-400": "^0.27.2",
         "@nuxtjs/google-fonts": "3.2.0",
         "@primevue/themes": "^4.2.5",
+        "@vueuse/core": "^12.2.0",
         "axios": "^1.7.9",
         "chart.js": "^4.4.7",
+        "date-fns": "^4.1.0",
         "nuxt": "^3.14.1592",
         "primeicons": "^7.0.0",
         "primevue": "^4.2.5",

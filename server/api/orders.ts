@@ -1,3 +1,4 @@
+import { parseISO, isValid } from "date-fns";
 import createSquareClient from "../utils/square";
 import { ApiError, Order, SearchOrdersResponse } from "square";
 
@@ -7,7 +8,7 @@ BigInt.prototype.toJSON = function () {
     return int ?? this.toString();
 };
 
-const getOrders = async (start: Date, end: Date) => {
+const getOrders = async (start: string, end: string) => {
     const orders: Order[] = [];
     const runtimeConfig = useRuntimeConfig();
     const squareClient = createSquareClient({
@@ -34,6 +35,12 @@ const getOrders = async (start: Date, end: Date) => {
                     stateFilter: {
                         states: ["COMPLETED"],
                     },
+                    dateTimeFilter: {
+                        closedAt: {
+                            startAt: start,
+                            endAt: end,
+                        },
+                    },
                 },
                 sort: {
                     sortField: "CLOSED_AT",
@@ -53,9 +60,26 @@ const getOrders = async (start: Date, end: Date) => {
     return orders;
 };
 
+// 1. Make /orders accept startDate and endDate query string params:
+//    /orders?startDate=2024-01-01&endDate=2024-01-07
+//    Figure out how to get the provided query string params in orders.ts
+// 2. Use date-fns to parse those dates:
+//     1. make sure they're valid, if they're not valid, what should we do with them? Ignore them? Or return with an error code?
+//     2. Make two variables for holding start date and end date, and use date-fns functions for making the end date be at time = 23:59:59
+//     3. Pass those dates into the Square API
+
 export default defineEventHandler(async (event) => {
+    const startDate = getQuery(event).startDate;
+    const endDate = getQuery(event).endDate;
+
     try {
-        const orders = await getOrders(new Date(), new Date());
+        if (
+            !isValid(parseISO(String(startDate))) ||
+            !isValid(parseISO(String(endDate)))
+        ) {
+            throw new Error("Proper Date Not Found");
+        }
+        const orders = await getOrders(String(startDate), String(endDate));
 
         const filteredResults = orders
             ?.map((order) => {
@@ -202,15 +226,19 @@ export default defineEventHandler(async (event) => {
                 statusMessage: "Error fetching orders from Square API",
                 data: error.result,
             });
-        } else {
+        } else if (error instanceof Error) {
             console.error(
                 "Unexpected error occurred during order fetching:",
                 error,
             );
             return createError({
                 statusCode: 500,
-                statusMessage: "Unexpected Error",
+                statusMessage: error.message,
                 data: error,
+            });
+        } else {
+            return createError({
+                statusMessage: "Unknown Error",
             });
         }
     }
