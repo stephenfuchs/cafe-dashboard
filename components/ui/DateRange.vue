@@ -60,7 +60,7 @@ const selectButtonPassthrough = {
 
 const timezone = "America/Chicago";
 // Ref for holding selected date range
-const selectedDateRange = ref<[TZDate, TZDate]>();
+const selectedDateRange = ref<[TZDate, TZDate] | null>();
 
 const filters = useFilters();
 watch(
@@ -84,7 +84,7 @@ watch(
 );
 
 // Ref for holding the selected range option from SelectButton
-let selectedRangeOption = ref("this-week");
+let selectedRangeOption = ref<string | null>("this-week");
 
 // Options for the SelectButton
 const optionsWeek = [
@@ -99,6 +99,13 @@ const optionsYear = [
     { label: "This Year", value: "this-year" },
     { label: "Last Year", value: "last-year" },
 ];
+
+// Watcher for changes in selectedDateRange to reset selectedRangeOption if manual range is selected
+watch(selectedDateRange, (newValue) => {
+    if (newValue && !isPresetRange(newValue)) {
+        selectedRangeOption.value = null; // Reset to null if manual range is selected
+    }
+});
 
 // Watcher for changes in the selected range option
 watch(selectedRangeOption, (newValue) => {
@@ -123,6 +130,19 @@ watch(selectedRangeOption, (newValue) => {
             break;
     }
 });
+
+// Helper function to check if the date range matches a predefined range
+const isPresetRange = (dateRange: [TZDate, TZDate]): boolean => {
+    const start = dateRange[0];
+    const end = dateRange[1];
+    return (
+        (isEqual(start, startOfWeek(start)) &&
+            isEqual(end, endOfWeek(start))) ||
+        (isEqual(start, startOfMonth(start)) &&
+            isEqual(end, endOfMonth(start))) ||
+        (isEqual(start, startOfYear(start)) && isEqual(end, endOfYear(start)))
+    );
+};
 
 // Automatically set the default range on mount
 onMounted(() => {
