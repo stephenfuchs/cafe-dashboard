@@ -22,5 +22,8 @@
 </template>
 
 <script setup>
+definePageMeta({
+    title: "Data",
+});
 const { orders } = useOrders();
 </script>

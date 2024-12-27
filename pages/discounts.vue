@@ -23,5 +23,8 @@
 </template>
 
 <script setup>
+definePageMeta({
+    title: "Discounts",
+});
 const { orders } = useOrders();
 </script>

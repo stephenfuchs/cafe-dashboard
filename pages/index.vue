@@ -1,3 +1,9 @@
+<script setup>
+definePageMeta({
+    title: "Sales Overview",
+});
+</script>
+
 <template>
     <div class="flex flex-col gap-6">
         <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
@@ -49,5 +55,3 @@
         </div>
     </div>
 </template>
-
-<script setup></script>
