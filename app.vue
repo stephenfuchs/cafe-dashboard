@@ -1,7 +1,9 @@
 <template>
-    <div class="flex min-h-dvh flex-col-reverse gap-5 md:flex-row">
+    <div
+        class="flex min-h-screen flex-col-reverse gap-5 overflow-visible md:flex-row"
+    >
         <LayoutAppNavigation />
-        <main class="flex-1 p-5">
+        <main class="flex-1 p-5 md:ml-24">
             <LayoutAppHeader page="Sales Overview" />
             <NuxtPage />
         </main>

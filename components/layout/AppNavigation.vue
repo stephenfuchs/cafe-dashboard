@@ -1,6 +1,6 @@
 <template>
     <aside
-        class="sticky bottom-0 z-50 box-content flex items-center gap-10 bg-surface-100/90 p-4 backdrop-blur max-md:h-12 max-md:pt-3 md:relative md:bottom-auto md:w-12 md:flex-col md:bg-surface-100 md:p-5 dark:bg-surface-950/90 md:dark:bg-surface-950"
+        class="sticky bottom-0 z-50 box-content flex items-center gap-10 bg-surface-100 p-4 max-md:h-12 max-md:pt-3 md:fixed md:start-0 md:top-0 md:w-12 md:flex-col md:p-5 dark:bg-surface-950"
     >
         <div class="flex size-12 items-center justify-center max-md:hidden">
             <svg
@@ -47,7 +47,7 @@
                 :pt="buttonPassthrough"
             >
                 <template #icon>
-                    <i class="material-symbols-outlined">dashboard</i>
+                    <i class="material-symbols-outlined text-xl">dashboard</i>
                 </template>
             </Button>
             <Button
@@ -60,7 +60,7 @@
                 :pt="buttonPassthrough"
             >
                 <template #icon>
-                    <span class="material-symbols-outlined">sell</span>
+                    <span class="material-symbols-outlined text-xl">sell</span>
                 </template>
             </Button>
             <Button
@@ -73,7 +73,7 @@
                 :pt="buttonPassthrough"
             >
                 <template #icon>
-                    <span class="material-symbols-outlined">style</span>
+                    <span class="material-symbols-outlined text-xl">style</span>
                 </template>
             </Button>
             <Button
@@ -86,7 +86,9 @@
                 :pt="buttonPassthrough"
             >
                 <template #icon>
-                    <span class="material-symbols-outlined">percent</span>
+                    <span class="material-symbols-outlined text-xl"
+                        >percent</span
+                    >
                 </template>
             </Button>
             <Button
@@ -99,7 +101,9 @@
                 :pt="buttonPassthrough"
             >
                 <template #icon>
-                    <span class="material-symbols-outlined">receipt_long</span>
+                    <span class="material-symbols-outlined text-xl"
+                        >receipt_long</span
+                    >
                 </template>
             </Button>
             <Tag
@@ -127,9 +131,6 @@
 </template>
 
 <script setup>
-const checked1 = ref(true);
-const checked2 = ref(false);
-
 const buttonPassthrough = {
     label: {
         class: "md:hidden text-xs text-color font-semibold",

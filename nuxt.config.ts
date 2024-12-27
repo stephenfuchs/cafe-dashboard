@@ -119,15 +119,10 @@ export default defineNuxtConfig({
                 directives: {
                     tooltip: {
                         root: {
-                            class: "max-md:!hidden",
+                            class: "max-md:!hidden text-sm text-color font-normal",
                         },
                     },
                 },
-                // button: {
-                //     label: {
-                //         class: "md:hidden text-xs text-color font-semibold",
-                //     },
-                // },
                 slider: {
                     handle: {
                         class: "bg-red-500",
