@@ -7,12 +7,13 @@ definePageMeta({
 });
 
 const filters = useFilters();
-const { compareValue } = useComparison();
 
-const { orders, netSales, transactions, grossSales, avgTransaction } =
-    useOrders(filters.startDate, filters.endDate, "orders"); // Assume orders is a reactive ref
+const { netSales, transactions, grossSales, avgTransaction } = useOrders(
+    filters.startDate,
+    filters.endDate,
+    "orders",
+); // Assume orders is a reactive ref
 const {
-    orders: prevOrders,
     netSales: prevNetSales,
     transactions: prevTransactions,
     grossSales: prevGrossSales,
@@ -31,28 +32,24 @@ const {
                 title="Gross Sales"
                 :value="formatCurrency(grossSales)"
                 :percent="calcChange(prevGrossSales, grossSales)"
-                :vs="compareValue"
                 :vsValue="formatCurrency(prevGrossSales)"
             />
             <SalesStat
                 title="Net Total"
                 :value="formatCurrency(netSales)"
                 :percent="calcChange(prevNetSales, netSales)"
-                vs="last week"
                 :vsValue="formatCurrency(prevNetSales)"
             />
             <SalesStat
                 title="Transactions"
                 :value="transactions"
                 :percent="calcChange(prevTransactions, transactions)"
-                vs="last week"
                 :vsValue="prevTransactions"
             />
             <SalesStat
                 title="Average Sale"
                 :value="formatCurrency(avgTransaction)"
                 :percent="calcChange(prevAvgTransaction, avgTransaction)"
-                vs="last week"
                 :vsValue="formatCurrency(prevAvgTransaction)"
             />
         </div>

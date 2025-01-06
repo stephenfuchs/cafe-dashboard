@@ -1,3 +1,14 @@
+<script setup>
+const props = defineProps({
+    title: String,
+    value: Number | String,
+    percent: Number,
+    vsValue: Number | String,
+});
+
+const { compareValue } = useComparison();
+</script>
+
 <template>
     <UiAppCard stat>
         <template #title>
@@ -28,18 +39,8 @@
             </div>
         </div>
         <div class="mt-1 text-sm font-normal">
-            vs {{ vs }}:
+            vs last {{ compareValue }}:
             <span class="font-semibold">{{ vsValue }}</span>
         </div>
     </UiAppCard>
 </template>
-
-<script setup>
-const props = defineProps({
-    title: String,
-    value: Number | String,
-    percent: Number,
-    vs: String,
-    vsValue: Number | String,
-});
-</script>
