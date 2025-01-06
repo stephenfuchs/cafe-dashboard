@@ -1,7 +1,27 @@
 <script setup>
+import { formatCurrency } from "~/server/utils/formatCurrency";
+import { calcChange } from "~/server/utils/calcChange";
+
 definePageMeta({
     title: "Sales Overview",
 });
+
+const filters = useFilters();
+const { compareValue } = useComparison();
+
+const { orders, netSales, transactions, grossSales, avgTransaction } =
+    useOrders(filters.startDate, filters.endDate, "orders"); // Assume orders is a reactive ref
+const {
+    orders: prevOrders,
+    netSales: prevNetSales,
+    transactions: prevTransactions,
+    grossSales: prevGrossSales,
+    avgTransaction: prevAvgTransaction,
+} = useOrders(
+    filters.comparisonStartDate,
+    filters.comparisonEndDate,
+    "preOrders",
+);
 </script>
 
 <template>
@@ -9,34 +29,31 @@ definePageMeta({
         <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
             <SalesStat
                 title="Gross Sales"
-                :value="511.17"
-                :percent="70.39"
-                vs="last week"
-                :vsValue="300.0"
-                money
+                :value="formatCurrency(grossSales)"
+                :percent="calcChange(prevGrossSales, grossSales)"
+                :vs="compareValue"
+                :vsValue="formatCurrency(prevGrossSales)"
             />
             <SalesStat
                 title="Net Total"
-                :value="492.76"
-                :percent="-70.47"
+                :value="formatCurrency(netSales)"
+                :percent="calcChange(prevNetSales, netSales)"
                 vs="last week"
-                :vsValue="294.0"
-                money
+                :vsValue="formatCurrency(prevNetSales)"
             />
             <SalesStat
                 title="Transactions"
-                :value="65"
-                :percent="22.64"
+                :value="transactions"
+                :percent="calcChange(prevTransactions, transactions)"
                 vs="last week"
-                :vsValue="53"
+                :vsValue="prevTransactions"
             />
             <SalesStat
                 title="Average Sale"
-                :value="7.71"
-                :percent="39.0"
+                :value="formatCurrency(avgTransaction)"
+                :percent="calcChange(prevAvgTransaction, avgTransaction)"
                 vs="last week"
-                :vsValue="5.55"
-                money
+                :vsValue="formatCurrency(prevAvgTransaction)"
             />
         </div>
         <div class="grid grid-cols-6 gap-6">

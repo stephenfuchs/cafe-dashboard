@@ -7,7 +7,7 @@
             class="flex flex-col flex-wrap justify-between max-xl:gap-5 xl:flex-row xl:items-center"
         >
             <div class="text-4xl font-bold text-color">
-                {{ money ? "$" : "" }}{{ value }}
+                {{ value }}
             </div>
             <div
                 :class="
@@ -29,9 +29,7 @@
         </div>
         <div class="mt-1 text-sm font-normal">
             vs {{ vs }}:
-            <span class="font-semibold"
-                >{{ money ? "$" : "" }}{{ vsValue }}</span
-            >
+            <span class="font-semibold">{{ vsValue }}</span>
         </div>
     </UiAppCard>
 </template>
@@ -39,13 +37,9 @@
 <script setup>
 const props = defineProps({
     title: String,
-    value: Number,
+    value: Number | String,
     percent: Number,
     vs: String,
-    vsValue: Number,
-    money: {
-        type: Boolean,
-        deafult: false,
-    },
+    vsValue: Number | String,
 });
 </script>

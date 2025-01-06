@@ -66,13 +66,8 @@ import {
     addDays,
 } from "date-fns";
 
-type CompareOptions = "Week Prior" | "Month Prior" | "Year Prior";
-const compareOptions = ref<CompareOptions[]>([
-    "Week Prior",
-    "Month Prior",
-    "Year Prior",
-]);
-const compareValue = ref<CompareOptions[number]>("Week Prior");
+const { compareOptions, compareValue } = useComparison();
+// const compareValue = ref<CompareOptions[number]>("Week Prior");
 
 // Passthrough configuration object
 const selectButtonPassthrough = {

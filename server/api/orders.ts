@@ -44,7 +44,7 @@ const getOrders = async (start: string, end: string) => {
                 },
                 sort: {
                     sortField: "CLOSED_AT",
-                    sortOrder: "DESC",
+                    sortOrder: "ASC",
                 },
             },
             limit: 1000,
@@ -84,13 +84,15 @@ export default defineEventHandler(async (event) => {
         const filteredResults = orders
             ?.map((order) => {
                 // Filter tenders to include only those with type "CASH" or "CARD"
-                const validTender = order.tenders?.filter((tender) =>
-                    ["CASH", "CARD"].includes(tender.type),
-                );
+                if (order.tenders) {
+                    const validTender = order.tenders?.filter((tender) =>
+                        ["CASH", "CARD"].includes(tender.type),
+                    );
 
-                // Skip invalid orders
-                if (!validTender || validTender.length === 0) {
-                    return null;
+                    // Skip invalid orders
+                    if (!validTender || validTender.length === 0) {
+                        return null;
+                    }
                 }
 
                 return {
