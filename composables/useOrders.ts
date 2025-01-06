@@ -4,7 +4,11 @@ import { formatISO } from "date-fns";
 
 // Define type aliases for data structures
 type Money = { amount: number };
-type Refund = { amountMoney?: Money };
+type Tender = {
+    type: string;
+    amountMoney: Money;
+};
+type Refund = { amountMoney: Money };
 type LineItem = {
     uid: string;
     name: string;
@@ -12,11 +16,13 @@ type LineItem = {
     grossSalesMoney: Money;
 };
 type Order = {
+    tenders: Tender[];
     id: string;
-    closedAt?: string;
-    totalMoney?: Money;
-    refunds?: Refund[];
-    lineItems?: LineItem[];
+    closedAt: string;
+    totalMoney: Money;
+    totalDiscountMoney: Money;
+    refunds: Refund[];
+    lineItems: LineItem[];
 };
 
 export const useOrders = (
@@ -51,7 +57,7 @@ export const useOrders = (
                 sum +
                 (order?.refunds || []).reduce(
                     (refundTotal, refund) =>
-                        refundTotal + (refund.amountMoney?.amount || 0),
+                        refundTotal + (refund.amountMoney.amount || 0),
                     0,
                 )
             );
@@ -62,8 +68,7 @@ export const useOrders = (
     const grossSales = computed(() => {
         const totalCents = validArray(orders.value).reduce((sum, order) => {
             const lineItemTotal = validArray(order.lineItems).reduce(
-                (lineSum, item) =>
-                    lineSum + (item?.grossSalesMoney?.amount || 0),
+                (lineSum, item) => lineSum + (item.grossSalesMoney.amount || 0),
                 0,
             );
             return sum + lineItemTotal;
@@ -74,7 +79,7 @@ export const useOrders = (
     const netSales = computed(() => {
         // Sum up the total amount in cents
         const totalCents = validArray(orders.value).reduce(
-            (sum, order) => sum + (order?.totalMoney?.amount || 0),
+            (sum, order) => sum + (order.totalMoney.amount || 0),
             0,
         );
 
@@ -92,5 +97,42 @@ export const useOrders = (
         return grossSales.value / transactions.value || 0;
     });
 
-    return { orders, netSales, transactions, grossSales, avgTransaction };
+    const discounts = computed(() => {
+        const totalCents = validArray(orders.value).reduce(
+            (sum, order) => sum + (order.totalDiscountMoney.amount || 0),
+            0,
+        );
+
+        return totalCents / 100;
+    });
+
+    const tenderTotal = (tenderType: string) => {
+        return computed(() => {
+            const totalCents = validArray(orders.value).reduce((sum, order) => {
+                // Iterate over each tender in the order
+                order.tenders.forEach((tender) => {
+                    if (tender.type === tenderType) {
+                        sum += tender.amountMoney.amount || 0;
+                    }
+                });
+                return sum;
+            }, 0);
+
+            return totalCents / 100;
+        });
+    };
+
+    const cashPayments = tenderTotal("CASH");
+    const cardPayments = tenderTotal("CARD");
+
+    return {
+        orders,
+        netSales,
+        transactions,
+        grossSales,
+        avgTransaction,
+        discounts,
+        cashPayments,
+        cardPayments,
+    };
 };

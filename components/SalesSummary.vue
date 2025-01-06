@@ -1,6 +1,38 @@
 <script setup>
+import { formatCurrency } from "~/server/utils/formatCurrency";
+
 const selected = ref("All");
 const options = ref(["All", "9:00", "10:30"]);
+
+const filters = useFilters();
+
+// Create a computed property to adjust the time range based on the selected value
+const timeFilteredStartDate = computed(() => {
+    let date = new Date(filters.startDate.value);
+    if (selected.value === "9:00") {
+        date.setHours(8, 0, 0, 0);
+    } else if (selected.value === "10:30") {
+        date.setHours(9, 45, 0, 0);
+    } else {
+        date = filters.startDate.value;
+    }
+    return date;
+});
+
+const timeFilteredEndDate = computed(() => {
+    let date = new Date(filters.startDate.value);
+    if (selected.value === "9:00") {
+        date.setHours(9, 44, 59, 999);
+    } else if (selected.value === "10:30") {
+        date.setHours(10, 59, 59, 999);
+    } else {
+        date = filters.endDate.value;
+    }
+    return date;
+});
+
+const { netSales, grossSales, discounts, cashPayments, cardPayments } =
+    useOrders(timeFilteredStartDate, timeFilteredEndDate, "orders");
 </script>
 
 <template>
@@ -17,7 +49,9 @@ const options = ref(["All", "9:00", "10:30"]);
                 <div class="flex-1 text-base font-semibold text-color">
                     Gross Sales
                 </div>
-                <div class="text-base font-semibold text-color">$511.17</div>
+                <div class="text-base font-semibold text-color">
+                    {{ formatCurrency(grossSales) }}
+                </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
                 <div class="material-symbols-outlined">percent</div>
@@ -27,13 +61,15 @@ const options = ref(["All", "9:00", "10:30"]);
                 <div
                     class="text-sm font-medium text-orange-600 dark:text-orange-300"
                 >
-                    ($10.00)
+                    ({{ formatCurrency(discounts) }})
                 </div>
             </div>
             <div class="flex items-center gap-2">
                 <div class="material-symbols-outlined">payments</div>
                 <div class="flex-1 font-medium text-color">Net Sales</div>
-                <div class="text-base font-semibold text-color">$501.17</div>
+                <div class="text-base font-semibold text-color">
+                    {{ formatCurrency(netSales) }}
+                </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
                 <div class="material-symbols-outlined">universal_currency</div>
@@ -43,7 +79,7 @@ const options = ref(["All", "9:00", "10:30"]);
                 <div
                     class="text-sm font-medium text-green-600 dark:text-green-300"
                 >
-                    $278.17
+                    {{ formatCurrency(cashPayments) }}
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
@@ -54,7 +90,7 @@ const options = ref(["All", "9:00", "10:30"]);
                 <div
                     class="text-sm font-medium text-green-600 dark:text-green-300"
                 >
-                    $223.00
+                    {{ formatCurrency(cardPayments) }}
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
