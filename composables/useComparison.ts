@@ -1,12 +1,12 @@
-type CompareOptions = "Week Prior" | "Month Prior" | "Year Prior";
+type CompareOptions = "week" | "month" | "year";
 
-const compareOptions = ref<CompareOptions[]>([
-    "Week Prior",
-    "Month Prior",
-    "Year Prior",
+const compareOptions = ref([
+    { label: "Week Prior", value: "week" },
+    { label: "Month Prior", value: "month" },
+    { label: "Year Prior", value: "year" },
 ]);
 
-const compareValue = ref<CompareOptions>("Week Prior");
+const compareValue = ref<CompareOptions>("week");
 
 export const useComparison = () => {
     return { compareOptions, compareValue };

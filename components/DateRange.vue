@@ -34,7 +34,12 @@
             </div>
         </template>
     </DatePicker>
-    <SelectButton v-model="compareValue" :options="compareOptions" />
+    <SelectButton
+        v-model="compareValue"
+        :options="compareOptions"
+        option-label="label"
+        option-value="value"
+    />
 </template>
 
 <script setup lang="ts">
@@ -336,14 +341,14 @@ watch(
         };
 
         switch (_newCompareValue) {
-            case "Week Prior":
+            case "week":
                 getComparisonRange("week");
 
                 break;
-            case "Month Prior":
+            case "month":
                 getComparisonRange("month");
                 break;
-            case "Year Prior":
+            case "year":
                 getComparisonRange("year");
                 break;
         }
