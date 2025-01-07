@@ -111,20 +111,12 @@ export default defineEventHandler(async (event) => {
                             (discount) => ({
                                 uid: discount.uid,
                                 discountUid: discount.discountUid,
-                                appliedMoney: {
-                                    amount: discount.appliedMoney?.amount,
-                                },
+                                appliedMoney: discount.appliedMoney?.amount,
                             }),
                         ),
-                        grossSalesMoney: {
-                            amount: item.grossSalesMoney?.amount,
-                        },
-                        totalDiscountMoney: {
-                            amount: item.totalDiscountMoney?.amount,
-                        },
-                        totalMoney: {
-                            amount: item.totalMoney?.amount,
-                        },
+                        grossSalesMoney: item.grossSalesMoney?.amount,
+                        totalDiscountMoney: item.totalDiscountMoney?.amount,
+                        totalMoney: item.totalMoney?.amount,
                     })),
                     discounts: order.discounts?.map((discount) => ({
                         uid: discount.uid,
@@ -152,21 +144,14 @@ export default defineEventHandler(async (event) => {
                                     (discount) => ({
                                         uid: discount.uid,
                                         discountUid: discount.discountUid,
-                                        appliedMoney: {
-                                            amount: discount.appliedMoney
-                                                ?.amount,
-                                        },
+                                        appliedMoney:
+                                            discount.appliedMoney?.amount,
                                     }),
                                 ),
-                                grossReturnMoney: {
-                                    amount: item.grossReturnMoney?.amount,
-                                },
-                                totalDiscountMoney: {
-                                    amount: item.totalDiscountMoney?.amount,
-                                },
-                                totalMoney: {
-                                    amount: item.totalMoney?.amount,
-                                },
+                                grossReturnMoney: item.grossReturnMoney?.amount,
+                                totalDiscountMoney:
+                                    item.totalDiscountMoney?.amount,
+                                totalMoney: item.totalMoney?.amount,
                             }),
                         ),
                         returnDiscounts: returnItem.returnDiscounts?.map(
@@ -179,23 +164,17 @@ export default defineEventHandler(async (event) => {
                     })),
                     returnAmounts: order.returnAmounts
                         ? {
-                              totalMoney: {
-                                  amount: order.returnAmounts.totalMoney
-                                      ?.amount,
-                              },
+                              totalMoney:
+                                  order.returnAmounts.totalMoney?.amount,
                           }
                         : undefined,
                     netAmounts: {
-                        totalMoney: {
-                            amount: order.netAmounts?.totalMoney?.amount,
-                        },
+                        totalMoney: order.netAmounts?.totalMoney?.amount,
                     },
                     tenders: order.tenders?.map((tender) => ({
                         id: tender.id,
                         transactionId: tender.transactionId,
-                        amountMoney: {
-                            amount: tender.amountMoney?.amount,
-                        },
+                        amountMoney: tender.amountMoney?.amount,
                         type: tender.type,
                     })),
                     refunds: order.refunds?.map((refund) => ({
@@ -203,18 +182,12 @@ export default defineEventHandler(async (event) => {
                         transactionId: refund.transactionId,
                         tenderId: refund.tenderId,
                         reason: refund.reason,
-                        amountMoney: { amount: refund.amountMoney?.amount },
+                        amountMoney: refund.amountMoney?.amount,
                     })),
                     closedAt: order.closedAt,
-                    totalMoney: {
-                        amount: order.totalMoney?.amount,
-                    },
-                    totalDiscountMoney: {
-                        amount: order.totalDiscountMoney?.amount,
-                    },
-                    netAmountDueMoney: {
-                        amount: order.netAmountDueMoney?.amount,
-                    },
+                    totalMoney: order.totalMoney?.amount,
+                    totalDiscountMoney: order.totalDiscountMoney?.amount,
+                    netAmountDueMoney: order.netAmountDueMoney?.amount,
                 };
             })
             .filter((order) => order !== null); // Remove any null values

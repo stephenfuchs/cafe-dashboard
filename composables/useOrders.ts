@@ -3,7 +3,7 @@ import axios from "axios";
 import { formatISO } from "date-fns";
 
 // Define type aliases for data structures
-type Money = { amount: number };
+type Money = number;
 type Tender = {
     type: string;
     amountMoney: Money;
@@ -79,7 +79,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
                 sum +
                 (order?.refunds || []).reduce(
                     (refundTotal, refund) =>
-                        refundTotal + (refund.amountMoney.amount || 0),
+                        refundTotal + (refund.amountMoney || 0),
                     0,
                 )
             );
@@ -90,7 +90,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const grossSales = computed(() => {
         const totalCents = validArray(orders.value).reduce((sum, order) => {
             const lineItemTotal = validArray(order.lineItems).reduce(
-                (lineSum, item) => lineSum + (item.grossSalesMoney.amount || 0),
+                (lineSum, item) => lineSum + (item.grossSalesMoney || 0),
                 0,
             );
             return sum + lineItemTotal;
@@ -101,7 +101,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const netSales = computed(() => {
         // Sum up the total amount in cents
         const totalCents = validArray(orders.value).reduce(
-            (sum, order) => sum + (order.totalMoney.amount || 0),
+            (sum, order) => sum + (order.totalMoney || 0),
             0,
         );
 
@@ -123,7 +123,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
 
     const discounts = computed(() => {
         const totalCents = validArray(orders.value).reduce(
-            (sum, order) => sum + (order.totalDiscountMoney.amount || 0),
+            (sum, order) => sum + (order.totalDiscountMoney || 0),
             0,
         );
 
@@ -137,7 +137,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
                 if (order?.tenders?.length) {
                     order.tenders.forEach((tender) => {
                         if (tender.type === tenderType) {
-                            sum += tender.amountMoney.amount || 0;
+                            sum += tender.amountMoney || 0;
                         }
                     });
                 }
