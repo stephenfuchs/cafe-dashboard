@@ -6,11 +6,16 @@ import { formatCurrency } from "~/server/utils/formatCurrency";
 
 const filters = useFilters();
 
-const { orders, netSales, transactions } = useOrders(
-    filters.startDate,
-    filters.endDate,
-    "orders",
-); // Assume orders is a reactive ref
+const {
+    orders, // Default to an empty array if undefined
+    netSales,
+    transactions,
+    fees,
+    payments, // Default to an empty array if undefined
+} = useOrders(filters.startDate, filters.endDate, "orders");
+
+console.log(payments);
+
 const {
     orders: prevOrders,
     netSales: prevNetSales,
@@ -23,6 +28,23 @@ const {
 </script>
 
 <template>
+    <div class="grid grid-cols-1">
+        <div>
+            <h3 class="mt-4 text-lg font-bold">Payments</h3>
+            <div v-if="orders.length > 0" class="flex flex-col gap-4">
+                <div v-for="(payment, index) in payments" :key="payment.id">
+                    <h2 class="text-lg font-bold">
+                        Payment Number: {{ index + 1 }} // Payment ID:
+                        {{ payment.id }}
+                    </h2>
+                    <p>Fee: {{ payment.processingFee }}</p>
+                </div>
+            </div>
+            <div v-else>
+                <p>No payments found for this date.</p>
+            </div>
+        </div>
+    </div>
     <div class="grid grid-cols-2">
         <div>
             <h3 class="mt-4 text-lg font-bold">

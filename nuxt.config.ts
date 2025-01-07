@@ -91,6 +91,7 @@ const MyPreset = definePreset(Aura, {
 
 export default defineNuxtConfig({
     pages: true,
+    devtools: { enabled: true },
     // css: ["@material-symbols/font-400"],
 
     compatibilityDate: "2024-12-03",

@@ -8,20 +8,20 @@ definePageMeta({
 
 const filters = useFilters();
 
-const { netSales, transactions, grossSales, avgTransaction } = useOrders(
+const { netTotal, transactions, grossSales, avgTransaction } = useOrders(
     filters.startDate,
     filters.endDate,
     "orders",
 ); // Assume orders is a reactive ref
 const {
-    netSales: prevNetSales,
+    netTotal: prevNetTotal,
     transactions: prevTransactions,
     grossSales: prevGrossSales,
     avgTransaction: prevAvgTransaction,
 } = useOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
-    "preOrders",
+    "prevOrders",
 );
 </script>
 
@@ -36,9 +36,9 @@ const {
             />
             <SalesStat
                 title="Net Total"
-                :value="formatCurrency(netSales)"
-                :percent="calcChange(prevNetSales, netSales)"
-                :vsValue="formatCurrency(prevNetSales)"
+                :value="formatCurrency(netTotal)"
+                :percent="calcChange(prevNetTotal, netTotal)"
+                :vsValue="formatCurrency(prevNetTotal)"
             />
             <SalesStat
                 title="Transactions"

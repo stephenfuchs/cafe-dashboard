@@ -15,6 +15,10 @@ type LineItem = {
     quantity: number;
     grossSalesMoney: Money;
 };
+type Payment = {
+    id: string;
+    processingFee: number;
+};
 type Order = {
     tenders: Tender[];
     id: string;
@@ -25,12 +29,24 @@ type Order = {
     lineItems: LineItem[];
 };
 
-export const useOrders = (
-    start: Ref<TZDate>,
-    end: Ref<TZDate>,
-    stateKey = "orders",
-) => {
-    const orders = useState<Order[]>(stateKey, () => []);
+export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
+    const dateKey = computed(
+        () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
+    );
+    const allOrders = useState<Record<string, Order[]>>("orders", () => ({}));
+    const orders = computed<Order[]>({
+        get: () => allOrders.value[dateKey.value] || [],
+        set: (newOrders) => (allOrders.value[dateKey.value] = newOrders),
+    });
+
+    const allPayments = useState<Record<string, Payment[]>>(
+        `payments`,
+        () => ({}),
+    );
+    const payments = computed<Payment[]>({
+        get: () => allPayments.value[dateKey.value] || [],
+        set: (newPayments) => (allPayments.value[dateKey.value] = newPayments),
+    });
 
     watch([start, end], async () => {
         if (!start.value || !end.value) {
@@ -38,10 +54,16 @@ export const useOrders = (
         }
 
         try {
-            const response = await axios.get<Order[]>(
-                `/api/orders?startDate=${formatISO(start.value)}&endDate=${formatISO(end.value)}`,
-            ); // Use your actual API endpoint
-            orders.value = response.data;
+            const [ordersResponse, paymentsResponse] = await Promise.all([
+                axios.get<Order[]>(
+                    `/api/orders?startDate=${formatISO(start.value)}&endDate=${formatISO(end.value)}`,
+                ),
+                axios.get<Payment[]>(
+                    `/api/payments?startDate=${formatISO(start.value)}&endDate=${formatISO(end.value)}`,
+                ),
+            ]);
+            orders.value = ordersResponse.data;
+            payments.value = paymentsResponse.data;
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
@@ -84,7 +106,7 @@ export const useOrders = (
         );
 
         // Convert to dollars and format as currency
-        return (totalCents - refunds.value) / 100;
+        return (totalCents - (refunds.value || 0)) / 100;
     });
 
     const transactions = computed(() => {
@@ -94,7 +116,9 @@ export const useOrders = (
     });
 
     const avgTransaction = computed(() => {
-        return grossSales.value / transactions.value || 0;
+        return transactions.value === 0
+            ? 0
+            : grossSales.value / transactions.value;
     });
 
     const discounts = computed(() => {
@@ -109,12 +133,14 @@ export const useOrders = (
     const tenderTotal = (tenderType: string) => {
         return computed(() => {
             const totalCents = validArray(orders.value).reduce((sum, order) => {
-                // Iterate over each tender in the order
-                order.tenders.forEach((tender) => {
-                    if (tender.type === tenderType) {
-                        sum += tender.amountMoney.amount || 0;
-                    }
-                });
+                // Ensure order.tenders exists and is an array
+                if (order?.tenders?.length) {
+                    order.tenders.forEach((tender) => {
+                        if (tender.type === tenderType) {
+                            sum += tender.amountMoney.amount || 0;
+                        }
+                    });
+                }
                 return sum;
             }, 0);
 
@@ -125,8 +151,21 @@ export const useOrders = (
     const cashPayments = tenderTotal("CASH");
     const cardPayments = tenderTotal("CARD");
 
+    const fees = computed(() => {
+        const totalCents = validArray(payments.value).reduce((sum, payment) => {
+            return sum + (payment.processingFee || 0);
+        }, 0);
+        return totalCents / 100;
+    });
+
+    const netTotal = computed(() => {
+        // Convert to dollars and format as currency
+        return netSales.value - fees.value;
+    });
+
     return {
         orders,
+        payments,
         netSales,
         transactions,
         grossSales,
@@ -134,5 +173,7 @@ export const useOrders = (
         discounts,
         cashPayments,
         cardPayments,
+        fees,
+        netTotal,
     };
 };

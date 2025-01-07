@@ -6,33 +6,15 @@ const options = ref(["All", "9:00", "10:30"]);
 
 const filters = useFilters();
 
-// Create a computed property to adjust the time range based on the selected value
-const timeFilteredStartDate = computed(() => {
-    let date = new Date(filters.startDate.value);
-    if (selected.value === "9:00") {
-        date.setHours(8, 0, 0, 0);
-    } else if (selected.value === "10:30") {
-        date.setHours(9, 45, 0, 0);
-    } else {
-        date = filters.startDate.value;
-    }
-    return date;
-});
-
-const timeFilteredEndDate = computed(() => {
-    let date = new Date(filters.startDate.value);
-    if (selected.value === "9:00") {
-        date.setHours(9, 44, 59, 999);
-    } else if (selected.value === "10:30") {
-        date.setHours(10, 59, 59, 999);
-    } else {
-        date = filters.endDate.value;
-    }
-    return date;
-});
-
-const { netSales, grossSales, discounts, cashPayments, cardPayments } =
-    useOrders(timeFilteredStartDate, timeFilteredEndDate, "orders");
+const {
+    netSales,
+    grossSales,
+    discounts,
+    cashPayments,
+    cardPayments,
+    fees,
+    netTotal,
+} = useOrders(filters.startDate, filters.endDate);
 </script>
 
 <template>
@@ -99,13 +81,15 @@ const { netSales, grossSales, discounts, cashPayments, cardPayments } =
                 <div
                     class="text-sm font-medium text-orange-600 dark:text-orange-300"
                 >
-                    ($8.41)
+                    ({{ formatCurrency(fees) }})
                 </div>
             </div>
             <div class="flex items-center gap-2">
                 <div class="material-symbols-outlined">account_balance</div>
                 <div class="flex-1 font-semibold text-color">Net Total</div>
-                <div class="text-base font-semibold text-color">$492.76</div>
+                <div class="text-base font-semibold text-color">
+                    {{ formatCurrency(netTotal) }}
+                </div>
             </div>
         </div>
     </UiAppCard>
