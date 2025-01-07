@@ -69,99 +69,60 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
         }
     });
 
-    const validArray = <T>(arr: T[] | undefined): T[] =>
-        Array.isArray(arr) ? arr : [];
+    const calcTotal = <T>(
+        array: T[] | undefined,
+        callback: (item: T) => number,
+    ): number => (array ?? []).reduce((sum, item) => sum + callback(item), 0);
 
     //// computed
-    const refunds = computed(() => {
-        const totalCents = validArray(orders.value).reduce((sum, order) => {
-            return (
-                sum +
-                (order?.refunds || []).reduce(
-                    (refundTotal, refund) =>
-                        refundTotal + (refund.amountMoney || 0),
-                    0,
-                )
-            );
-        }, 0);
-        return totalCents;
-    });
 
-    const grossSales = computed(() => {
-        const totalCents = validArray(orders.value).reduce((sum, order) => {
-            const lineItemTotal = validArray(order.lineItems).reduce(
-                (lineSum, item) => lineSum + (item.grossSalesMoney || 0),
-                0,
-            );
-            return sum + lineItemTotal;
-        }, 0);
-        return totalCents / 100;
-    });
+    const refunds = computed(() =>
+        calcTotal(orders.value, (order) =>
+            calcTotal(order.refunds, (refund) => refund.amountMoney),
+        ),
+    );
 
-    const netSales = computed(() => {
-        // Sum up the total amount in cents
-        const totalCents = validArray(orders.value).reduce(
-            (sum, order) => sum + (order.totalMoney || 0),
-            0,
+    const discounts = computed(() =>
+        calcTotal(orders.value, (order) => order.totalDiscountMoney || 0),
+    );
+
+    const grossSales = computed(() =>
+        calcTotal(orders.value, (order) =>
+            calcTotal(order.lineItems, (item) => item.grossSalesMoney),
+        ),
+    );
+
+    const netSales = computed(
+        () =>
+            calcTotal(orders.value, (order) => order.totalMoney) -
+            refunds.value,
+    );
+
+    const fees = computed(() =>
+        calcTotal(payments.value, (payment) => payment.processingFee || 0),
+    );
+
+    const netTotal = computed(() => netSales.value - fees.value);
+
+    const transactions = computed(() =>
+        calcTotal(orders.value, (order) => (order.refunds?.length ? 0 : 1)),
+    );
+
+    const avgTransaction = computed(() =>
+        transactions.value === 0 ? 0 : grossSales.value / transactions.value,
+    );
+
+    const tenderTotal = (tenderType: string) =>
+        computed(() =>
+            calcTotal(orders.value, (order) =>
+                calcTotal(order.tenders, (tender) =>
+                    tender.type === tenderType ? tender.amountMoney || 0 : 0,
+                ),
+            ),
         );
-
-        // Convert to dollars and format as currency
-        return (totalCents - (refunds.value || 0)) / 100;
-    });
-
-    const transactions = computed(() => {
-        return validArray(orders.value).filter(
-            (order) => !order.refunds || order.refunds.length === 0,
-        ).length;
-    });
-
-    const avgTransaction = computed(() => {
-        return transactions.value === 0
-            ? 0
-            : grossSales.value / transactions.value;
-    });
-
-    const discounts = computed(() => {
-        const totalCents = validArray(orders.value).reduce(
-            (sum, order) => sum + (order.totalDiscountMoney || 0),
-            0,
-        );
-
-        return totalCents / 100;
-    });
-
-    const tenderTotal = (tenderType: string) => {
-        return computed(() => {
-            const totalCents = validArray(orders.value).reduce((sum, order) => {
-                // Ensure order.tenders exists and is an array
-                if (order?.tenders?.length) {
-                    order.tenders.forEach((tender) => {
-                        if (tender.type === tenderType) {
-                            sum += tender.amountMoney || 0;
-                        }
-                    });
-                }
-                return sum;
-            }, 0);
-
-            return totalCents / 100;
-        });
-    };
 
     const cashPayments = tenderTotal("CASH");
     const cardPayments = tenderTotal("CARD");
-
-    const fees = computed(() => {
-        const totalCents = validArray(payments.value).reduce((sum, payment) => {
-            return sum + (payment.processingFee || 0);
-        }, 0);
-        return totalCents / 100;
-    });
-
-    const netTotal = computed(() => {
-        // Convert to dollars and format as currency
-        return netSales.value - fees.value;
-    });
 
     return {
         orders,
