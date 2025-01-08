@@ -13,26 +13,51 @@ const topItems = computed(() => {
     }
 
     const itemQuantities = {};
+    const excludedItems = ["coffee pot", "coffee donation"];
 
     // Loop through each order and each lineItem to accumulate quantities
     try {
         orders.value.forEach((order) => {
-            if (!order || !Array.isArray(order.lineItems)) {
+            if (!order) {
                 console.warn("Malformed order:", order);
                 return;
             }
 
-            order.lineItems.forEach((item) => {
-                const itemName = item?.name?.toLowerCase();
-                if (!itemName || itemName === "coffee pot") return;
+            if (Array.isArray(order.lineItems)) {
+                order.lineItems.forEach((item) => {
+                    const itemName = item?.name?.toLowerCase();
+                    if (!itemName || excludedItems.includes(itemName)) return;
 
-                const quantity = Number(item?.quantity || 0); // Ensure quantity is a number
-                if (itemQuantities[itemName]) {
-                    itemQuantities[itemName] += quantity;
-                } else {
-                    itemQuantities[itemName] = quantity;
-                }
-            });
+                    const quantity = Number(item?.quantity || 0); // Ensure quantity is a number
+                    if (itemQuantities[itemName]) {
+                        itemQuantities[itemName] += quantity;
+                    } else {
+                        itemQuantities[itemName] = quantity;
+                    }
+                });
+            }
+
+            if (Array.isArray(order.returns)) {
+                order.returns.forEach((returnItem) => {
+                    if (Array.isArray(returnItem.returnLineItems)) {
+                        returnItem.returnLineItems.forEach((returnedItem) => {
+                            const itemName = returnedItem?.name?.toLowerCase();
+                            if (!itemName || excludedItems.includes(itemName))
+                                return;
+
+                            const quantity = Number(
+                                returnedItem?.quantity || 0,
+                            );
+                            console.log(`Returning ${quantity} of ${itemName}`); // Log returns
+                            if (itemQuantities[itemName]) {
+                                itemQuantities[itemName] -= quantity;
+                            } else {
+                                itemQuantities[itemName] = -quantity;
+                            }
+                        });
+                    }
+                });
+            }
         });
     } catch (error) {
         console.error("Error processing orders:", error);
