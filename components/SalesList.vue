@@ -15,7 +15,7 @@
                         class="h-full max-h-full object-contain"
                     />
                 </div>
-                <div class="flex-1">
+                <div class="flex-1 capitalize">
                     {{ product.item }}
                 </div>
             </div>
