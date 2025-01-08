@@ -13,6 +13,7 @@
                         :src="product.img"
                         :alt="`Image of ` + product.item"
                         class="h-full max-h-full object-contain"
+                        @error="handleImageError"
                     />
                 </div>
                 <div class="flex-1 capitalize">
@@ -65,4 +66,8 @@ defineProps({
         required: true,
     },
 });
+
+function handleImageError(event) {
+    event.target.src = "/img/item-default.png";
+}
 </script>

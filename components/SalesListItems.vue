@@ -7,26 +7,36 @@ const options = ref(["Items", "Categories"]);
 
 // Function to calculate the top 5 items based on total quantity
 const topItems = computed(() => {
-    if (!orders.value || !Array.isArray(orders.value)) return []; // Guard clause for invalid data
+    if (!orders.value || !Array.isArray(orders.value)) {
+        console.warn("Invalid orders data:", orders.value);
+        return [];
+    }
 
     const itemQuantities = {};
 
     // Loop through each order and each lineItem to accumulate quantities
-    orders.value.forEach((order) => {
-        if (!order || !Array.isArray(order.lineItems)) return; // Guard clause for malformed orders
-
-        order.lineItems.forEach((item) => {
-            const itemName = item?.name?.toLowerCase();
-            if (!itemName || itemName === "coffee pot") return;
-
-            const quantity = Number(item?.quantity || 0); // Ensure quantity is a number
-            if (itemQuantities[itemName]) {
-                itemQuantities[itemName] += quantity;
-            } else {
-                itemQuantities[itemName] = quantity;
+    try {
+        orders.value.forEach((order) => {
+            if (!order || !Array.isArray(order.lineItems)) {
+                console.warn("Malformed order:", order);
+                return;
             }
+
+            order.lineItems.forEach((item) => {
+                const itemName = item?.name?.toLowerCase();
+                if (!itemName || itemName === "coffee pot") return;
+
+                const quantity = Number(item?.quantity || 0); // Ensure quantity is a number
+                if (itemQuantities[itemName]) {
+                    itemQuantities[itemName] += quantity;
+                } else {
+                    itemQuantities[itemName] = quantity;
+                }
+            });
         });
-    });
+    } catch (error) {
+        console.error("Error processing orders:", error);
+    }
 
     // Convert the itemQuantities object into an array
     const itemList = Object.entries(itemQuantities).map(([item, quantity]) => ({
