@@ -28,28 +28,25 @@
                     <div
                         class="flex items-center justify-end gap-1 text-start text-base font-semibold"
                         :class="{
-                            'text-green-500':
-                                product.quantity - product.trend >= 0,
-                            'text-orange-500':
-                                product.quantity - product.trend < 0,
-                            'text-muted-color':
-                                product.quantity - product.trend === 0,
+                            'text-green-500': product.trend >= 0,
+                            'text-orange-500': product.trend < 0,
+                            'text-muted-color': product.trend === 0,
                         }"
                     >
                         <div class="material-symbols-outlined flex-1 text-end">
                             {{
-                                product.quantity - product.trend > 0
+                                product.trend > 0
                                     ? "trending_up"
-                                    : product.quantity - product.trend < 0
+                                    : product.trend < 0
                                       ? "trending_down"
                                       : "trending_flat"
                             }}
                         </div>
                         <div class="flex-1">
                             {{
-                                product.quantity - product.trend < 0
-                                    ? Math.abs(product.quantity - product.trend)
-                                    : product.quantity - product.trend
+                                product.trend < 0
+                                    ? Math.abs(product.trend)
+                                    : product.trend
                             }}
                         </div>
                     </div>
