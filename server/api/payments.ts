@@ -15,14 +15,6 @@ const getFees = async (start: string, end: string) => {
         apiKey: runtimeConfig.squareApiSecret,
     });
 
-    // Fetch locations
-    const locations = await $fetch("/api/locations");
-    const locationId = locations?.[0]?.id;
-
-    if (!locationId) {
-        throw new Error("Location ID Not Found");
-    }
-
     const { paymentsApi } = squareClient;
     let cursor: SearchOrdersResponse["cursor"];
 
@@ -32,7 +24,7 @@ const getFees = async (start: string, end: string) => {
             end,
             "DESC",
             cursor,
-            locationId,
+            runtimeConfig.squareLocationSecret,
         );
 
         cursor = response.result.cursor;

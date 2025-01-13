@@ -103,6 +103,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         // The private keys which are only available server-side
         squareApiSecret: process.env.NUXT_SQUARE_API_SECRET,
+        squareLocationSecret: process.env.NUXT_SQUARE_LOCATION_SECRET,
     },
 
     googleFonts: {

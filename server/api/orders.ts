@@ -15,21 +15,13 @@ const getOrders = async (start: string, end: string) => {
         apiKey: runtimeConfig.squareApiSecret,
     });
 
-    // Fetch locations
-    const locations = await $fetch("/api/locations");
-    const locationId = locations?.[0]?.id;
-
-    if (!locationId) {
-        throw new Error("Location ID Not Found");
-    }
-
     const { ordersApi } = squareClient;
 
     let cursor: SearchOrdersResponse["cursor"];
 
     do {
         const response = await ordersApi.searchOrders({
-            locationIds: [locationId],
+            locationIds: [runtimeConfig.squareLocationSecret],
             query: {
                 filter: {
                     stateFilter: {
