@@ -9,7 +9,7 @@ const { orders: previousOrders } = useOrders(
 const selected = ref("Items");
 const options = ref(["Items", "Categories"]);
 
-const exclude = ["coffee pot", "coffee donation"];
+const exclude = ["COFFEE POT", "COFFEE DONATION"];
 const itemCount = 5;
 
 const { topItems } = useItemSales(orders, previousOrders, exclude, itemCount);

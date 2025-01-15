@@ -1,51 +1,42 @@
 import type { TZDate } from "@date-fns/tz";
-import axios from "axios";
 import { formatISO } from "date-fns";
-
+import type { Order, OrdersQuery, OrderConnection } from "../src/gql/graphql";
 // Define type aliases for data structures
-type Money = number;
-type Tender = {
-    type: string;
-    amountMoney: Money;
-};
-type Refund = { amountMoney: Money };
-type LineItem = {
-    uid: string;
-    name: string;
-    quantity: number;
-    grossSalesMoney: Money;
-};
-type Payment = {
-    id: string;
-    processingFee: number;
-};
-type Order = {
-    tenders: Tender[];
-    id: string;
-    closedAt: string;
-    totalMoney: Money;
-    totalDiscountMoney: Money;
-    refunds: Refund[];
-    lineItems: LineItem[];
-};
+// type Money = number;
+// type Tender = {
+//     type: string;
+//     amountMoney: Money;
+// };
+// type Refund = { amountMoney: Money };
+// type LineItem = {
+//     uid: string;
+//     name: string;
+//     quantity: number;
+//     grossSalesMoney: Money;
+// };
+// type Payment = {
+//     id: string;
+//     processingFee: number;
+// };
+// type Order = {
+//     tenders: Tender[];
+//     id: string;
+//     closedAt: string;
+//     totalMoney: Money;
+//     totalDiscountMoney: Money;
+//     refunds: Refund[];
+//     lineItems: LineItem[];
+// };
 
 export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const dateKey = computed(
         () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
     );
+
     const allOrders = useState<Record<string, Order[]>>("orders", () => ({}));
     const orders = computed<Order[]>({
         get: () => allOrders.value[dateKey.value] || [],
         set: (newOrders) => (allOrders.value[dateKey.value] = newOrders),
-    });
-
-    const allPayments = useState<Record<string, Payment[]>>(
-        `payments`,
-        () => ({}),
-    );
-    const payments = computed<Payment[]>({
-        get: () => allPayments.value[dateKey.value] || [],
-        set: (newPayments) => (allPayments.value[dateKey.value] = newPayments),
     });
 
     watch([start, end], async () => {
@@ -54,16 +45,13 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
         }
 
         try {
-            const [ordersResponse, paymentsResponse] = await Promise.all([
-                axios.get<Order[]>(
-                    `/api/orders?startDate=${formatISO(start.value)}&endDate=${formatISO(end.value)}`,
-                ),
-                axios.get<Payment[]>(
-                    `/api/payments?startDate=${formatISO(start.value)}&endDate=${formatISO(end.value)}`,
-                ),
-            ]);
-            orders.value = ordersResponse.data;
-            payments.value = paymentsResponse.data;
+            const response = await $fetch("/api/orders", {
+                params: {
+                    startDate: formatISO(start.value),
+                    endDate: formatISO(end.value),
+                },
+            });
+            orders.value = response;
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
@@ -78,28 +66,41 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
 
     const refunds = computed(() =>
         calcTotal(orders.value, (order) =>
-            calcTotal(order.refunds, (refund) => refund.amountMoney),
+            calcTotal(order.refunds, (refund) => refund.amountMoney.amount),
         ),
     );
 
     const discounts = computed(() =>
-        calcTotal(orders.value, (order) => order.totalDiscountMoney || 0),
+        calcTotal(
+            orders.value,
+            (order) => order.totalDiscountMoney.amount || 0,
+        ),
     );
 
     const grossSales = computed(() =>
         calcTotal(orders.value, (order) =>
-            calcTotal(order.lineItems, (item) => item.grossSalesMoney),
+            calcTotal(order.lineItems, (item) => item.grossSalesMoney.amount),
         ),
     );
 
     const netSales = computed(
         () =>
-            calcTotal(orders.value, (order) => order.totalMoney) -
+            calcTotal(orders.value, (order) => order.totalMoney.amount) -
             refunds.value,
     );
 
     const fees = computed(() =>
-        calcTotal(payments.value, (payment) => payment.processingFee || 0),
+        calcTotal(orders.value, (order) =>
+            calcTotal(
+                order.tenders,
+                (tender) =>
+                    tender.payment?.processingFees?.reduce(
+                        (feeTotal, fee) =>
+                            feeTotal + (fee.amountMoney?.amount || 0),
+                        0,
+                    ) || 0,
+            ),
+        ),
     );
 
     const netTotal = computed(() => netSales.value - fees.value);
@@ -116,7 +117,9 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
         computed(() =>
             calcTotal(orders.value, (order) =>
                 calcTotal(order.tenders, (tender) =>
-                    tender.type === tenderType ? tender.amountMoney || 0 : 0,
+                    tender.type === tenderType
+                        ? tender.amountMoney.amount || 0
+                        : 0,
                 ),
             ),
         );
@@ -126,7 +129,6 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
 
     return {
         orders,
-        payments,
         netSales,
         transactions,
         grossSales,

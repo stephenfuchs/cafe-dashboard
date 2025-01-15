@@ -43,7 +43,7 @@ export function useItemSales(
 
                 if (Array.isArray(order.lineItems)) {
                     order.lineItems.forEach((item) => {
-                        const itemName = item?.name?.toLowerCase();
+                        const itemName = item?.name;
                         if (!itemName || exclude.includes(itemName)) return;
 
                         const quantity = Number(item?.quantity || 0); // Ensure quantity is a number
@@ -103,14 +103,26 @@ export function useItemSales(
             const previousQuantity = previousSales.value[item] || 0;
             const trend = currentQuantity - previousQuantity;
 
+            let itemImage = "/img/item-default.png"; // default image
+
+            // Loop through orders to find the matching item image
+            orders.value.forEach((order) => {
+                if (Array.isArray(order.lineItems)) {
+                    order.lineItems.forEach((lineItem) => {
+                        if (lineItem?.name === item) {
+                            itemImage =
+                                lineItem?.itemVariation?.item?.images?.[0]
+                                    ?.url || "/img/default-item.png"; // fallback image if not found
+                        }
+                    });
+                }
+            });
+
             return {
-                item,
+                item: item?.toLowerCase(),
                 quantity: currentQuantity,
                 trend,
-                img: `/img/item-${item
-                    .toLowerCase()
-                    .replace(/\s+/g, "_")
-                    .replace(/[^a-z0-9-]/g, "")}.png`,
+                img: itemImage,
             };
         });
     });

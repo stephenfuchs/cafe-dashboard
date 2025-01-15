@@ -92,7 +92,6 @@ const MyPreset = definePreset(Aura, {
 export default defineNuxtConfig({
     pages: true,
     devtools: { enabled: true },
-    // css: ["@material-symbols/font-400"],
 
     compatibilityDate: "2024-12-03",
     modules: [
@@ -104,6 +103,7 @@ export default defineNuxtConfig({
         // The private keys which are only available server-side
         squareApiSecret: process.env.NUXT_SQUARE_API_SECRET,
         squareLocationSecret: process.env.NUXT_SQUARE_LOCATION_SECRET,
+        squareMerchantSecret: process.env.NUXT_SQUARE_MERCHANT_SECRET,
     },
 
     googleFonts: {
