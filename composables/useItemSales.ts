@@ -60,8 +60,7 @@ export function useItemSales(
                         if (Array.isArray(returnItem.returnLineItems)) {
                             returnItem.returnLineItems.forEach(
                                 (returnedItem) => {
-                                    const itemName =
-                                        returnedItem?.name?.toLowerCase();
+                                    const itemName = returnedItem?.name;
                                     if (!itemName || exclude.includes(itemName))
                                         return;
 

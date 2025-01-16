@@ -13,6 +13,7 @@ const exclude = ["COFFEE POT", "COFFEE DONATION"];
 const itemCount = 5;
 
 const { topItems } = useItemSales(orders, previousOrders, exclude, itemCount);
+const { topCategories } = useCategorySales(orders, previousOrders, itemCount); // topCategories should already be an array here
 </script>
 
 <template>
@@ -21,6 +22,11 @@ const { topItems } = useItemSales(orders, previousOrders, exclude, itemCount);
         <template #options>
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
-        <SalesList :products="topItems" />
+        <div v-if="selected === 'Items'">
+            <SalesList :products="topItems" />
+        </div>
+        <div v-else-if="selected === 'Categories'">
+            <SalesList :products="topCategories" money />
+        </div>
     </UiAppCard>
 </template>

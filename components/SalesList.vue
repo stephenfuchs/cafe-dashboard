@@ -20,11 +20,15 @@
                     {{ product.item }}
                 </div>
             </div>
-            <div class="flex w-1/3 gap-8">
+            <div class="flex w-2/5 gap-8">
                 <div class="w-1/2 text-end text-base font-semibold text-color">
-                    {{ product.quantity }}
+                    {{
+                        money
+                            ? formatCurrency(product.quantity)
+                            : product.quantity
+                    }}
                 </div>
-                <div class="w-1/2">
+                <div class="w-1/2 text-end">
                     <div
                         class="flex items-center justify-end gap-1 text-start text-base font-semibold"
                         :class="{
@@ -44,9 +48,11 @@
                         </div>
                         <div class="flex-1">
                             {{
-                                product.trend < 0
-                                    ? Math.abs(product.trend)
-                                    : product.trend
+                                money
+                                    ? formatCurrency(Math.abs(product.trend))
+                                    : product.trend < 0
+                                      ? Math.abs(product.trend)
+                                      : product.trend
                             }}
                         </div>
                     </div>
@@ -57,10 +63,16 @@
 </template>
 
 <script setup>
+import { formatCurrency } from "~/server/utils/formatCurrency";
+
 defineProps({
     products: {
         type: Array,
         required: true,
+    },
+    money: {
+        type: Boolean,
+        default: false,
     },
 });
 
