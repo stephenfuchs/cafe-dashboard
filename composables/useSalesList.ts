@@ -10,6 +10,7 @@ interface LineItem {
             images?: { url: string }[];
         };
     };
+    modifiers?: Modifier[];
 }
 
 interface ReturnLineItem {
@@ -33,10 +34,14 @@ interface SalesData {
     img: string;
 }
 
+interface Modifier {
+    name: string;
+}
+
 export function useSalesList(
     orders: Ref<Order[]>,
     previousOrders: Ref<Order[]>,
-    type: "item" | "category",
+    type: "item" | "category" | "coffee",
     exclude: string[] = [],
     itemCount: number,
 ) {
@@ -64,6 +69,16 @@ export function useSalesList(
                                 item?.itemVariation?.item?.categories?.[0]
                                     ?.category?.name;
                             value = Number(item?.grossSalesMoney?.amount || 0);
+                        } else if (type === "coffee") {
+                            if (item?.name === "COFFEE POT") {
+                                name = item.modifiers![1].name!;
+
+                                if (item.modifiers![0].name === "HALF POT") {
+                                    value = Number(item?.quantity) / 2;
+                                } else {
+                                    value = Number(item?.quantity || 0);
+                                }
+                            }
                         }
 
                         if (!name || exclude.includes(name)) return;
@@ -121,6 +136,14 @@ export function useSalesList(
             WINE: "/img/category-wine.png",
         };
 
+        const coffeeImages: Record<string, string> = {
+            REGULAR: "/img/coffee-regular.png",
+            HAZELNUT: "/img/coffee-hazelnut.png",
+            "FRENCH VANILLA": "/img/coffee-vanilla.png",
+            CARAMEL: "/img/coffee-caramel.png",
+            DECAF: "/img/coffee-decaf.png",
+        };
+
         return Array.from(allItems).map((item) => {
             const currentQuantity = currentSales.value[item] || 0;
             const previousQuantity = previousSales.value[item] || 0;
@@ -140,6 +163,8 @@ export function useSalesList(
                 });
             } else if (type === "category") {
                 image = categoryImages[item] || image;
+            } else if (type === "coffee") {
+                image = coffeeImages[item] || image;
             }
 
             return {

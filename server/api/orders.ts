@@ -42,6 +42,9 @@ const getOrders = async (start: string, end: string) => {
                             itemVariation {
                                 item {
                                     id
+                                    images {
+                                        url
+                                    }
                                     categories {
                                         category {
                                             id
@@ -51,8 +54,21 @@ const getOrders = async (start: string, end: string) => {
                                             }
                                         }
                                     }
-                                    images {
-                                        url
+                                    modifierListInfos {
+                                        modifierList {
+                                            ordinal
+                                            id
+                                            name
+                                            modifiers {
+                                                ordinal
+                                                id
+                                                name
+                                                modifierList {
+                                                    id
+                                                    name
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -90,17 +106,14 @@ const getOrders = async (start: string, end: string) => {
                                 itemVariation {
                                     item {
                                         id
+                                        images {
+                                            url
+                                        }
                                         categories {
                                             category {
                                                 id
                                                 name
-                                                images {
-                                                    url
-                                                }
                                             }
-                                        }
-                                        images {
-                                            url
                                         }
                                     }
                                 }
@@ -137,7 +150,6 @@ const getOrders = async (start: string, end: string) => {
                         totalMoney {
                             amount
                         }
-                        merchantId
                     }
                 }
             }

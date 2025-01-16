@@ -1,44 +1,28 @@
+<script setup type="ts">
+const filters = useFilters();
+const { orders } = useOrders(filters.startDate, filters.endDate);
+const { orders: previousOrders } = useOrders(
+    filters.comparisonStartDate,
+    filters.comparisonEndDate,
+);
+
+const itemCount = 5;
+
+const { topResults } = useSalesList(
+    orders,
+    previousOrders,
+    "coffee",
+    [],
+    itemCount,
+);
+</script>
+
 <template>
     <UiAppCard>
         <template #title> Brewed Coffees </template>
         <template #options>
             <Tag severity="success" value="$19.00" />
         </template>
-        <SalesList :products="coffees" />
+        <SalesList :products="topResults" />
     </UiAppCard>
 </template>
-
-<script setup>
-const coffees = ref([
-    {
-        item: "Regular",
-        img: "/img/coffee-regular.png",
-        quantity: 2.5,
-        trend: 1,
-    },
-    {
-        item: "French Vanilla",
-        img: "/img/coffee-vanilla.png",
-        quantity: 1,
-        trend: 1,
-    },
-    {
-        item: "Caramel",
-        img: "/img/coffee-caramel.png",
-        quantity: 1,
-        trend: 1,
-    },
-    {
-        item: "Hazelnut",
-        img: "/img/coffee-hazelnut.png",
-        quantity: 1,
-        trend: 1,
-    },
-    {
-        item: "Decaf",
-        img: "/img/coffee-decaf.png",
-        quantity: 1,
-        trend: 1,
-    },
-]);
-</script>

@@ -1,6 +1,10 @@
 <template>
     <div class="flex flex-col gap-4">
+        <div v-if="products.length === 0" class="mt-4 self-center italic">
+            No Sales Data Available
+        </div>
         <div
+            v-else
             v-for="product in products"
             :key="product.item"
             class="box-content flex items-center gap-4 border-b border-surface-300 last:border-b-0 dark:border-surface-700"
@@ -75,8 +79,4 @@ defineProps({
         default: false,
     },
 });
-
-function handleImageError(event) {
-    event.target.src = "/img/item-default.png";
-}
 </script>

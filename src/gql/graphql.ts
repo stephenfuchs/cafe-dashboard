@@ -247,7 +247,7 @@ export type AddressFilterInput = {
    */
   locality?: InputMaybe<StringFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -655,7 +655,7 @@ export type BankAccountPaymentAccountOwnershipTypeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BankAccountPaymentAccountOwnershipTypeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -716,7 +716,7 @@ export type BankAccountPaymentAchDetailsFilterInput = {
    */
   anyOf?: InputMaybe<Array<BankAccountPaymentAchDetailsFilterInput>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -864,7 +864,7 @@ export type BankAccountPaymentTransferTypeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BankAccountPaymentTransferTypeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -934,7 +934,7 @@ export type BankAccountTypeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BankAccountTypeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -1314,7 +1314,7 @@ export type BooleanFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Boolean']['input']>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -1649,7 +1649,7 @@ export type BuyNowPayLaterPaymentBrandFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BuyNowPayLaterPaymentBrandInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -1993,7 +1993,7 @@ export type CardBrandFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardBrandInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2250,7 +2250,7 @@ export type CardBrandListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<CardBrandListFilterInput>>;
   /**
@@ -2268,7 +2268,7 @@ export type CardBrandListFilterInput = {
    */
   anySatisfy?: InputMaybe<CardBrandListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2307,7 +2307,7 @@ export type CardCoBrandFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardCoBrandInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2534,7 +2534,7 @@ export type CardPaymentDetailsAvsStatusFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsAvsStatusInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2580,7 +2580,7 @@ export type CardPaymentDetailsCvvStatusFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsCvvStatusInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2633,7 +2633,7 @@ export type CardPaymentDetailsEntryMethodFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsEntryMethodInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2703,7 +2703,7 @@ export type CardPaymentDetailsStatusFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsStatusInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2752,7 +2752,7 @@ export type CardPaymentDetailsVerificationMethodFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsVerificationMethodInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2800,7 +2800,7 @@ export type CardPaymentDetailsVerificationResultFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsVerificationResultInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2893,7 +2893,7 @@ export type CardPrepaidTypeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPrepaidTypeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -2939,7 +2939,7 @@ export type CardTypeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardTypeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -6575,7 +6575,7 @@ export type CountryCodeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CountryCodeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -7116,7 +7116,7 @@ export type CountryFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CountryInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -7670,7 +7670,7 @@ export type CountryListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<CountryListFilterInput>>;
   /**
@@ -7688,7 +7688,7 @@ export type CountryListFilterInput = {
    */
   anySatisfy?: InputMaybe<CountryListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -8876,7 +8876,7 @@ export type CurrencyCodeListFilterInput = {
    * collisions between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<CurrencyCodeListFilterInput>>;
   /**
@@ -8894,7 +8894,7 @@ export type CurrencyCodeListFilterInput = {
    */
   anySatisfy?: InputMaybe<CurrencyCodeListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -9345,7 +9345,7 @@ export type CurrencyListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<CurrencyListFilterInput>>;
   /**
@@ -9363,7 +9363,7 @@ export type CurrencyListFilterInput = {
    */
   anySatisfy?: InputMaybe<CurrencyListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -10330,7 +10330,11 @@ export type DateTimeListElementFilterInput = {
    * Will be ignored when `null` is passed.
    */
   lte?: InputMaybe<Scalars['DateTime']['input']>;
-  /** Matches records based on the time-of-day of the `DateTime` values. */
+  /**
+   * Matches records based on the time-of-day of the `DateTime` values.
+   *
+   * Will be ignored when `null` or an empty list is passed.
+   */
   timeOfDay?: InputMaybe<DateTimeTimeOfDayFilter>;
 };
 
@@ -10348,7 +10352,7 @@ export type DateTimeListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<DateTimeListFilterInput>>;
   /**
@@ -10366,7 +10370,7 @@ export type DateTimeListFilterInput = {
    */
   anySatisfy?: InputMaybe<DateTimeListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -10641,7 +10645,7 @@ export type DigitalWalletPaymentBrandFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<DigitalWalletPaymentBrandInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -10741,7 +10745,7 @@ export type DigitalWalletPaymentStatusFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<DigitalWalletPaymentStatusInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -10845,7 +10849,7 @@ export type DurationFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Duration']['input']>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -10877,7 +10881,7 @@ export type EmailAddressFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['EmailAddress']['input']>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -11024,7 +11028,7 @@ export type ErrorCategoryListFilterInput = {
    * collisions between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<ErrorCategoryListFilterInput>>;
   /**
@@ -11042,7 +11046,7 @@ export type ErrorCategoryListFilterInput = {
    */
   anySatisfy?: InputMaybe<ErrorCategoryListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -11346,6 +11350,10 @@ export enum ErrorCode {
   ItemsBulkBulkActionsSalePriceInvalidAmount = 'ITEMS_BULK_BULK_ACTIONS_SALE_PRICE_INVALID_AMOUNT',
   /** Invalid percentage error encountered during bulk actions. */
   ItemsBulkBulkActionsSalePriceInvalidPercentage = 'ITEMS_BULK_BULK_ACTIONS_SALE_PRICE_INVALID_PERCENTAGE',
+  /** Completing the request would exceed the limit of custom attribute objects. */
+  ItemsCustomAttributeLimitExceeded = 'ITEMS_CUSTOM_ATTRIBUTE_LIMIT_EXCEEDED',
+  /** Completing the request would result in duplicate custom attribute objects. */
+  ItemsCustomAttributeNotUnique = 'ITEMS_CUSTOM_ATTRIBUTE_NOT_UNIQUE',
   /** A catalog category with a free text donation name has a non-donation item for a canadian seller. */
   ItemsInvalidCanadianFreeTextDonationCategory = 'ITEMS_INVALID_CANADIAN_FREE_TEXT_DONATION_CATEGORY',
   /** There already exists a job template with the given name. */
@@ -11407,6 +11415,8 @@ export enum ErrorCode {
   PriceMismatch = 'PRICE_MISMATCH',
   /** Rate Limited - a general error occurred. */
   RateLimited = 'RATE_LIMITED',
+  /** The Square Card Reader declined the payment for an unknown reason. */
+  ReaderDeclined = 'READER_DECLINED',
   /**
    * The Square Card Reader used is not supported because there is no EMV capable
    * reader connected (but is otherwise supported in the region if there were one connected).
@@ -11818,6 +11828,10 @@ export enum ErrorCodeInput {
   ItemsBulkBulkActionsSalePriceInvalidAmount = 'ITEMS_BULK_BULK_ACTIONS_SALE_PRICE_INVALID_AMOUNT',
   /** Invalid percentage error encountered during bulk actions. */
   ItemsBulkBulkActionsSalePriceInvalidPercentage = 'ITEMS_BULK_BULK_ACTIONS_SALE_PRICE_INVALID_PERCENTAGE',
+  /** Completing the request would exceed the limit of custom attribute objects. */
+  ItemsCustomAttributeLimitExceeded = 'ITEMS_CUSTOM_ATTRIBUTE_LIMIT_EXCEEDED',
+  /** Completing the request would result in duplicate custom attribute objects. */
+  ItemsCustomAttributeNotUnique = 'ITEMS_CUSTOM_ATTRIBUTE_NOT_UNIQUE',
   /** A catalog category with a free text donation name has a non-donation item for a canadian seller. */
   ItemsInvalidCanadianFreeTextDonationCategory = 'ITEMS_INVALID_CANADIAN_FREE_TEXT_DONATION_CATEGORY',
   /** There already exists a job template with the given name. */
@@ -11879,6 +11893,8 @@ export enum ErrorCodeInput {
   PriceMismatch = 'PRICE_MISMATCH',
   /** Rate Limited - a general error occurred. */
   RateLimited = 'RATE_LIMITED',
+  /** The Square Card Reader declined the payment for an unknown reason. */
+  ReaderDeclined = 'READER_DECLINED',
   /**
    * The Square Card Reader used is not supported because there is no EMV capable
    * reader connected (but is otherwise supported in the region if there were one connected).
@@ -12033,7 +12049,7 @@ export type ErrorCodeListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<ErrorCodeListFilterInput>>;
   /**
@@ -12051,7 +12067,7 @@ export type ErrorCodeListFilterInput = {
    */
   anySatisfy?: InputMaybe<ErrorCodeListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -12114,7 +12130,7 @@ export type ErrorFieldsListFilterInput = {
    */
   field?: InputMaybe<StringListFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -12256,7 +12272,7 @@ export type ExternalPaymentTypeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<ExternalPaymentTypeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -12386,7 +12402,7 @@ export type FloatFilterInput = {
    */
   lte?: InputMaybe<Scalars['Float']['input']>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -12476,7 +12492,7 @@ export type GeoLocationFilterInput = {
    */
   near?: InputMaybe<GeoLocationDistanceFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -13518,7 +13534,7 @@ export type IdListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<IdListFilterInput>>;
   /**
@@ -13536,7 +13552,7 @@ export type IdListFilterInput = {
    */
   anySatisfy?: InputMaybe<IdListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -14217,7 +14233,7 @@ export type JsonSafeLongListFilterInput = {
    * collisions between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<JsonSafeLongListFilterInput>>;
   /**
@@ -14235,7 +14251,7 @@ export type JsonSafeLongListFilterInput = {
    */
   anySatisfy?: InputMaybe<JsonSafeLongListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -14542,7 +14558,7 @@ export type LongStringFilterInput = {
    */
   lte?: InputMaybe<Scalars['LongString']['input']>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -19441,7 +19457,7 @@ export type PaymentAppProcessingFeeFieldsListFilterInput = {
    */
   effectiveAt?: InputMaybe<DateTimeListFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -19525,7 +19541,7 @@ export type PaymentAppProcessingFeeTypeListFilterInput = {
    * because of collisions between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<PaymentAppProcessingFeeTypeListFilterInput>>;
   /**
@@ -19543,7 +19559,7 @@ export type PaymentAppProcessingFeeTypeListFilterInput = {
    */
   anySatisfy?: InputMaybe<PaymentAppProcessingFeeTypeListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -19610,7 +19626,7 @@ export type PaymentApplicationDetailsExternalSquareProductFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentApplicationDetailsExternalSquareProductInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -19735,7 +19751,7 @@ export type PaymentCapabilityListFilterInput = {
    * collisions between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<PaymentCapabilityListFilterInput>>;
   /**
@@ -19753,7 +19769,7 @@ export type PaymentCapabilityListFilterInput = {
    */
   anySatisfy?: InputMaybe<PaymentCapabilityListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -19809,7 +19825,7 @@ export type PaymentDelayActionFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentDelayActionInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -20368,7 +20384,7 @@ export type PaymentProcessingFeeTypeListFilterInput = {
    * because of collisions between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * Will be ignored when `null` or an empty list is passed.
    */
   allOf?: InputMaybe<Array<PaymentProcessingFeeTypeListFilterInput>>;
   /**
@@ -20386,7 +20402,7 @@ export type PaymentProcessingFeeTypeListFilterInput = {
    */
   anySatisfy?: InputMaybe<PaymentProcessingFeeTypeListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -20693,7 +20709,7 @@ export type PaymentRefundStatusFilter = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentRefundStatus>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -20779,7 +20795,7 @@ export type PaymentRiskEvaluationRiskLevelFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentRiskEvaluationRiskLevelInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -21183,7 +21199,7 @@ export type PaymentSourceTypeFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentSourceType>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -21224,7 +21240,7 @@ export type PaymentStatusFilter = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentStatus>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -24369,7 +24385,7 @@ export type UntypedFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Untyped']['input']>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -24401,7 +24417,7 @@ export type UrlFilterInput = {
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Url']['input']>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
    * Will be ignored when `null` or an empty object is passed.
@@ -24507,7 +24523,7 @@ export type OrdersQueryVariables = Exact<{
 }>;
 
 
-export type OrdersQuery = { __typename?: 'Query', orders?: { __typename?: 'OrderConnection', nodes: Array<{ __typename?: 'Order', id?: string | null, closedAt?: any | null, merchantId: string, lineItems?: Array<{ __typename?: 'OrderLineItem', uid?: any | null, name?: string | null, quantity?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null> | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null, modifiers?: Array<{ __typename?: 'OrderLineItemModifier', uid?: any | null, name?: string | null } | null> | null, appliedDiscounts?: Array<{ __typename?: 'OrderLineItemAppliedDiscount', uid?: any | null, discountUid?: any | null, appliedMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, grossSalesMoney?: { __typename?: 'Money', amount: any } | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, discounts?: Array<{ __typename?: 'OrderLineItemDiscount', uid?: any | null, name?: string | null } | null> | null, returns?: Array<{ __typename?: 'OrderReturn', lineItems?: Array<{ __typename?: 'OrderReturnLineItem', name?: string | null, quantity?: any | null, sourceLineItemUid?: any | null, uid?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null> | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null } | null> | null } | null> | null, refunds?: Array<{ __typename?: 'Refund', id: string, transactionId?: string | null, reason?: string | null, processingFeeMoney?: { __typename?: 'Money', amount: any } | null, amountMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, tenders?: Array<{ __typename?: 'OrderBankAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderBuyNowPayLaterTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCardTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCashTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderOtherTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderSquareAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | null> | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null }> } | null };
+export type OrdersQuery = { __typename?: 'Query', orders?: { __typename?: 'OrderConnection', nodes: Array<{ __typename?: 'Order', id?: string | null, closedAt?: any | null, lineItems?: Array<{ __typename?: 'OrderLineItem', uid?: any | null, name?: string | null, quantity?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null> | null, modifierListInfos?: Array<{ __typename?: 'CatalogItemModifierListInfo', modifierList?: { __typename?: 'CatalogModifierList', ordinal?: any | null, id: string, name?: string | null, modifiers?: Array<{ __typename?: 'CatalogModifier', ordinal?: any | null, id: string, name?: string | null, modifierList?: { __typename?: 'CatalogModifierList', id: string, name?: string | null } | null } | null> | null } | null } | null> | null } | null } | null, modifiers?: Array<{ __typename?: 'OrderLineItemModifier', uid?: any | null, name?: string | null } | null> | null, appliedDiscounts?: Array<{ __typename?: 'OrderLineItemAppliedDiscount', uid?: any | null, discountUid?: any | null, appliedMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, grossSalesMoney?: { __typename?: 'Money', amount: any } | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, discounts?: Array<{ __typename?: 'OrderLineItemDiscount', uid?: any | null, name?: string | null } | null> | null, returns?: Array<{ __typename?: 'OrderReturn', lineItems?: Array<{ __typename?: 'OrderReturnLineItem', name?: string | null, quantity?: any | null, sourceLineItemUid?: any | null, uid?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null } | null } | null> | null } | null } | null } | null> | null } | null> | null, refunds?: Array<{ __typename?: 'Refund', id: string, transactionId?: string | null, reason?: string | null, processingFeeMoney?: { __typename?: 'Money', amount: any } | null, amountMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, tenders?: Array<{ __typename?: 'OrderBankAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderBuyNowPayLaterTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCardTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCashTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderOtherTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderSquareAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | null> | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null }> } | null };
 
 
-export const OrdersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Orders"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"locationID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"merchantId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"location"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"locationID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"state"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"COMPLETED"}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"closedAt"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"endAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"closedAt"}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"appliedDiscounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"discountUid"}},{"kind":"Field","name":{"kind":"Name","value":"appliedMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"grossSalesMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"returns"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"sourceLineItemUid"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"refunds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"processingFeeMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"tenders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"processingFees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"merchantId"}}]}}]}}]}}]} as unknown as DocumentNode<OrdersQuery, OrdersQueryVariables>;
+export const OrdersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Orders"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"locationID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"merchantId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"location"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"locationID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"state"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"COMPLETED"}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"closedAt"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"endAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"closedAt"}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifierListInfos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"appliedDiscounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"discountUid"}},{"kind":"Field","name":{"kind":"Name","value":"appliedMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"grossSalesMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"returns"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"sourceLineItemUid"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"refunds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"processingFeeMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"tenders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"processingFees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}}]} as unknown as DocumentNode<OrdersQuery, OrdersQueryVariables>;
