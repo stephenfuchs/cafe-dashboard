@@ -1,4 +1,4 @@
-<script setup>
+<script setup type="ts">
 const filters = useFilters();
 const { orders } = useOrders(filters.startDate, filters.endDate);
 const { orders: previousOrders } = useOrders(
@@ -12,8 +12,20 @@ const options = ref(["Items", "Categories"]);
 const exclude = ["COFFEE POT", "COFFEE DONATION"];
 const itemCount = 5;
 
-const { topItems } = useItemSales(orders, previousOrders, exclude, itemCount);
-const { topCategories } = useCategorySales(orders, previousOrders, itemCount); // topCategories should already be an array here
+const { topResults: topItems } = useSalesList(
+    orders,
+    previousOrders,
+    "item",
+    exclude,
+    itemCount,
+);
+const { topResults: topCategories } = useSalesList(
+    orders,
+    previousOrders,
+    "category",
+    [],
+    itemCount,
+);
 </script>
 
 <template>
