@@ -9,7 +9,12 @@ BigInt.prototype.toJSON = function () {
     return int ?? this.toString();
 };
 
-const getOrders = async (start: string, end: string) => {
+const getOrders = async (
+    start: string,
+    end: string,
+    first = 50,
+    after?: string,
+) => {
     const runtimeConfig = useRuntimeConfig();
     const locationID = runtimeConfig.squareLocationSecret;
     const merchantID = runtimeConfig.squareMerchantSecret;

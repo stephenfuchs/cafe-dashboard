@@ -1317,7 +1317,7 @@ export type BooleanFilterInput = {
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<BooleanFilterInput>;
 };
@@ -12405,7 +12405,7 @@ export type FloatFilterInput = {
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<FloatFilterInput>;
 };
@@ -13534,7 +13534,7 @@ export type IdListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<IdListFilterInput>>;
   /**
@@ -13555,7 +13555,7 @@ export type IdListFilterInput = {
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<IdListFilterInput>;
 };
@@ -14480,7 +14480,7 @@ export type LocationConnection = {
 /**
  * Input type used to specify filters on `Location` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type LocationRefFilterInput = {
   /**
@@ -14488,7 +14488,7 @@ export type LocationRefFilterInput = {
    *
    * > The Square-issued ID of the location.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   id?: InputMaybe<IdFilterInput>;
 };
@@ -14513,55 +14513,55 @@ export enum LocationType {
 /**
  * Input type used to specify filters on `LongString` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type LongStringFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<LongStringFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['LongString']['input']>>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['LongString']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['LongString']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['LongString']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['LongString']['input']>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<LongStringFilterInput>;
 };
@@ -16004,7 +16004,7 @@ export enum MerchantPublicCapability {
 /**
  * Input type used to specify filters on `Merchant` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type MerchantRefFilterInput = {
   /**
@@ -16012,7 +16012,7 @@ export type MerchantRefFilterInput = {
    *
    * > The Square-issued ID of the merchant.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   id?: InputMaybe<IdFilterInput>;
 };

@@ -1,3 +1,18 @@
+<script setup>
+import { formatCurrency } from "~/server/utils/formatCurrency";
+
+defineProps({
+    products: {
+        type: Array,
+        required: true,
+    },
+    money: {
+        type: Boolean,
+        default: false,
+    },
+});
+</script>
+
 <template>
     <div class="flex flex-col gap-4">
         <div v-if="products.length === 0" class="mt-4 self-center italic">
@@ -17,7 +32,6 @@
                         :src="product.img"
                         :alt="`Image of ` + product.item"
                         class="h-full max-h-full object-contain"
-                        @error="handleImageError"
                     />
                 </div>
                 <div class="flex-1 capitalize">
@@ -65,18 +79,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import { formatCurrency } from "~/server/utils/formatCurrency";
-
-defineProps({
-    products: {
-        type: Array,
-        required: true,
-    },
-    money: {
-        type: Boolean,
-        default: false,
-    },
-});
-</script>

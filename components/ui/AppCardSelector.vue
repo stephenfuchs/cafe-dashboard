@@ -5,6 +5,7 @@ defineProps({
         required: true,
     },
 });
+defineEmits(["update:selected"]);
 const popoverRef = ref();
 const selected = defineModel("selected");
 
@@ -39,7 +40,7 @@ const selectOption = (option) => {
                 <li
                     v-for="option in options"
                     :key="option"
-                    class="flex cursor-pointer items-center p-2 text-sm hover:bg-emphasis"
+                    class="flex cursor-pointer items-center p-2 text-sm capitalize hover:bg-emphasis"
                     :class="{
                         'font-bold text-primary-400': selected === option,
                         'font-semibold text-muted-color': selected !== option,

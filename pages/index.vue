@@ -11,18 +11,13 @@ const filters = useFilters();
 const { netTotal, transactions, grossSales, avgTransaction } = useOrders(
     filters.startDate,
     filters.endDate,
-    "orders",
 ); // Assume orders is a reactive ref
 const {
     netTotal: prevNetTotal,
     transactions: prevTransactions,
     grossSales: prevGrossSales,
     avgTransaction: prevAvgTransaction,
-} = useOrders(
-    filters.comparisonStartDate,
-    filters.comparisonEndDate,
-    "prevOrders",
-);
+} = useOrders(filters.comparisonStartDate, filters.comparisonEndDate);
 </script>
 
 <template>

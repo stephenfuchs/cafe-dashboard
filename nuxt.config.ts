@@ -136,8 +136,19 @@ export default defineNuxtConfig({
                     },
                     pcToggleButton: {
                         root: {
-                            class: "flex-auto border-0 dark:bg-surface-900 text-sm text-muted-color font-semibold data-[p-checked=true]:text-color",
+                            class: "capitalize flex-auto border-0 dark:bg-surface-900 text-sm text-muted-color font-semibold data-[p-checked=true]:text-color",
                         },
+                    },
+                },
+                select: {
+                    root: {
+                        class: "border-surface-200 dark:border-surface-700 border dark:bg-surface-900",
+                    },
+                    label: {
+                        class: "text-sm text-color font-semibold",
+                    },
+                    option: {
+                        class: "text-sm",
                     },
                 },
                 datePicker: {

@@ -1,6 +1,22 @@
+<script setup>
+import { twMerge } from "tailwind-merge";
+
+const props = defineProps({
+    stat: {
+        type: Boolean,
+        default: false,
+    },
+    noTitle: {
+        type: Boolean,
+        default: false,
+    },
+});
+</script>
+
 <template>
     <div class="h-full rounded-md bg-surface-50 p-4 dark:bg-surface-800">
         <div
+            v-if="!noTitle"
             :class="
                 twMerge([
                     'mb-2',
@@ -16,14 +32,3 @@
         <slot></slot>
     </div>
 </template>
-
-<script setup>
-import { twMerge } from "tailwind-merge";
-
-const props = defineProps({
-    stat: {
-        type: Boolean,
-        default: false,
-    },
-});
-</script>
