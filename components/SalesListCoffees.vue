@@ -18,7 +18,7 @@ const { topResults } = useSalesList(
 </script>
 
 <template>
-    <UiAppCard>
+    <UiAppCard full>
         <template #title> Brewed Coffees </template>
         <template #options>
             <Tag severity="success" value="$19.00" />

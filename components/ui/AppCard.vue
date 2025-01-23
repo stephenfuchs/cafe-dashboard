@@ -10,11 +10,22 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    full: {
+        type: Boolean,
+        default: false,
+    },
 });
 </script>
 
 <template>
-    <div class="h-full rounded-md bg-surface-50 p-4 dark:bg-surface-800">
+    <div
+        :class="
+            twMerge([
+                'rounded-md bg-surface-50 p-4 dark:bg-surface-800',
+                full && 'h-full',
+            ])
+        "
+    >
         <div
             v-if="!noTitle"
             :class="

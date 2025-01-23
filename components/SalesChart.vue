@@ -1,5 +1,5 @@
 <template>
-    <UiAppCard>
+    <UiAppCard full>
         <template #title>
             <div class="flex items-center gap-4">
                 {{ selected }} Summary

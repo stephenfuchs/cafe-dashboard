@@ -29,7 +29,7 @@ const { topResults: topCategories } = useSalesList(
 </script>
 
 <template>
-    <UiAppCard>
+    <UiAppCard full>
         <template #title> Top {{ selected }} </template>
         <template #options>
             <UiAppCardSelector :options="options" v-model:selected="selected" />

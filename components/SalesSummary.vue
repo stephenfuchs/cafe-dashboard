@@ -18,7 +18,7 @@ const {
 </script>
 
 <template>
-    <UiAppCard>
+    <UiAppCard full>
         <template #title
             >{{ selected !== "All" ? selected : "" }} Sales Summary</template
         >
