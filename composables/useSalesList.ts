@@ -28,10 +28,13 @@ interface Order {
 }
 
 interface SalesData {
-    item: string;
+    name: string;
+    category: string | null;
     quantity: number;
-    trend: number;
-    img: string;
+    grossSales: number;
+    imgItem: string;
+    imgCategory: string;
+    imgCoffee: string;
 }
 
 interface Modifier {
@@ -41,13 +44,37 @@ interface Modifier {
 export function useSalesList(
     orders: Ref<Order[]>,
     previousOrders: Ref<Order[]>,
-    type: "item" | "category" | "coffee",
     exclude: string[] = [],
-    itemCount: number,
 ) {
+    const categoryImages: Record<string, string> = {
+        bagels: "/img/category-bagels.png",
+        "baked goods": "/img/category-baked_goods.png",
+        barista: "/img/category-barista.png",
+        donations: "/img/category-donations.png",
+        "drink cooler": "/img/category-drink_cooler.png",
+        "nica angels": "/img/category-nica.png",
+        snacks: "/img/category-snacks.png",
+        wine: "/img/category-wine.png",
+    };
+
+    const coffeeImages: Record<string, string> = {
+        regular: "/img/coffee-regular.png",
+        hazelnut: "/img/coffee-hazelnut.png",
+        "french vanilla": "/img/coffee-vanilla.png",
+        caramel: "/img/coffee-caramel.png",
+        decaf: "/img/coffee-decaf.png",
+    };
+
+    const defaultImage = "/img/item-default.png";
+
+    const nameMappings: Record<string, string> = {
+        "cup of coffee": "coffee donation",
+        "hot tea": "coffee donation",
+        "cookies (2 for $1)": "cookies",
+    };
     // Helper function to calculate item quantities
-    const calcQuantities = (ordersArray: Order[]): Record<string, number> => {
-        const data: Record<string, number> = {};
+    const calcSalesData = (ordersArray: Order[]) => {
+        const data: Record<string, SalesData> = {};
 
         try {
             ordersArray.forEach((order) => {
@@ -58,53 +85,73 @@ export function useSalesList(
 
                 if (Array.isArray(order.lineItems)) {
                     order.lineItems.forEach((item) => {
-                        let name: string | undefined;
-                        let value: number = 0;
+                        let name = item?.name?.toLowerCase() || "Unknown Item";
 
-                        if (type === "item") {
-                            name = item?.name;
-                            value = Number(item?.quantity || 0);
-                        } else if (type === "category") {
-                            name =
-                                item?.itemVariation?.item?.categories?.[0]
-                                    ?.category?.name;
-                            value = Number(item?.grossSalesMoney?.amount || 0);
-                        } else if (type === "coffee") {
-                            if (item?.name === "COFFEE POT") {
-                                name = item.modifiers![1].name!;
+                        if (nameMappings[name]) {
+                            name = nameMappings[name];
+                        }
 
-                                if (item.modifiers![0].name === "HALF POT") {
-                                    value = Number(item?.quantity) / 2;
-                                } else {
-                                    value = Number(item?.quantity || 0);
-                                }
+                        const category =
+                            item?.itemVariation?.item?.categories?.[0]?.category?.name?.toLowerCase() ||
+                            "";
+
+                        let quantity = Number(item?.quantity || 0);
+
+                        const grossSales = Number(
+                            item?.grossSalesMoney?.amount || 0,
+                        );
+
+                        if (name === "coffee pot") {
+                            name = item.modifiers![1].name?.toLowerCase();
+
+                            if (item.modifiers![0].name === "HALF POT") {
+                                quantity = Number(item?.quantity) / 2;
                             }
                         }
+                        const imgItem =
+                            item.itemVariation?.item?.images?.[0]?.url ||
+                            defaultImage;
+                        const imgCategory =
+                            categoryImages[category] || defaultImage;
 
+                        const imgCoffee = coffeeImages[name] || defaultImage;
                         if (!name || exclude.includes(name)) return;
 
-                        data[name] = (data[name] || 0) + value;
-                    });
-                }
-
-                if (type === "item" && Array.isArray(order.returns)) {
-                    order.returns.forEach((returnItem) => {
-                        if (Array.isArray(returnItem.returnLineItems)) {
-                            returnItem.returnLineItems.forEach(
-                                (returnedItem) => {
-                                    const name = returnedItem?.name;
-                                    if (!name || exclude.includes(name)) return;
-
-                                    const value = Number(
-                                        returnedItem?.value || 0,
-                                    );
-
-                                    data[name] = (data[name] || 0) - value;
-                                },
-                            );
+                        if (!data[name]) {
+                            data[name] = {
+                                name,
+                                category,
+                                quantity,
+                                grossSales,
+                                imgItem,
+                                imgCategory,
+                                imgCoffee,
+                            };
+                        } else {
+                            data[name].quantity += quantity;
+                            data[name].grossSales += grossSales;
                         }
                     });
                 }
+
+                // if (type === "item" && Array.isArray(order.returns)) {
+                //     order.returns.forEach((returnItem) => {
+                //         if (Array.isArray(returnItem.returnLineItems)) {
+                //             returnItem.returnLineItems.forEach(
+                //                 (returnedItem) => {
+                //                     const name = returnedItem?.name;
+                //                     if (!name || exclude.includes(name)) return;
+
+                //                     const value = Number(
+                //                         returnedItem?.value || 0,
+                //                     );
+
+                //                     data[name] = (data[name] || 0) - value;
+                //                 },
+                //             );
+                //         }
+                //     });
+                // }
             });
 
             return data;
@@ -114,76 +161,67 @@ export function useSalesList(
         }
     };
 
-    const currentSales = computed(() => calcQuantities(orders.value || []));
-    const previousSales = computed(() =>
-        calcQuantities(previousOrders.value || []),
-    );
+    const salesList = computed(() => {
+        // Ensure orders and previousOrders are not empty or undefined
+        const currentOrdersData = orders.value || [];
+        const previousOrdersData = previousOrders.value || [];
 
-    const fullList = computed<SalesData[]>(() => {
+        // Early return if no data to process
+        if (currentOrdersData.length === 0 || previousOrdersData.length === 0)
+            return [];
+
+        const currentSales = calcSalesData(currentOrdersData);
+        const previousSales = calcSalesData(previousOrdersData);
+
         const allItems = new Set([
-            ...Object.keys(currentSales.value),
-            ...Object.keys(previousSales.value),
+            ...Object.keys(currentSales),
+            ...Object.keys(previousSales),
         ]);
 
-        const categoryImages: Record<string, string> = {
-            BAGELS: "/img/category-bagels.png",
-            "BAKED GOODS": "/img/category-baked_goods.png",
-            BARISTA: "/img/category-barista.png",
-            DONATIONS: "/img/category-donations.png",
-            "DRINK COOLER": "/img/category-drink_cooler.png",
-            "NICA ANGELS": "/img/category-nica.png",
-            SNACKS: "/img/category-snacks.png",
-            WINE: "/img/category-wine.png",
-        };
+        const filteredCurrentSales = Object.entries(currentSales)
+            .filter(([key]) => !exclude.includes(key))
+            .sort(([, a], [, b]) => b.quantity - a.quantity);
+        const filteredPreviousSales = Object.entries(previousSales)
+            .filter(([key]) => !exclude.includes(key))
+            .sort(([, a], [, b]) => b.quantity - a.quantity);
 
-        const coffeeImages: Record<string, string> = {
-            REGULAR: "/img/coffee-regular.png",
-            HAZELNUT: "/img/coffee-hazelnut.png",
-            "FRENCH VANILLA": "/img/coffee-vanilla.png",
-            CARAMEL: "/img/coffee-caramel.png",
-            DECAF: "/img/coffee-decaf.png",
-        };
+        const currentSortOrder = new Map(
+            filteredCurrentSales.map(([key], index) => [key, index + 1]),
+        );
+        const previousSortOrder = new Map(
+            filteredPreviousSales.map(([key], index) => [key, index + 1]),
+        );
 
         return Array.from(allItems).map((item) => {
-            const currentQuantity = currentSales.value[item] || 0;
-            const previousQuantity = previousSales.value[item] || 0;
-            const trend = currentQuantity - previousQuantity;
+            const current: SalesData | undefined = currentSales[item];
+            const previous: SalesData | undefined = previousSales[item];
 
-            let image = "/img/item-default.png"; // default image
-
-            if (type === "item") {
-                orders.value.forEach((order) => {
-                    order.lineItems?.forEach((lineItem) => {
-                        if (lineItem?.name === item) {
-                            image =
-                                lineItem?.itemVariation?.item?.images?.[0]
-                                    ?.url || image;
-                        }
-                    });
-                });
-            } else if (type === "category") {
-                image = categoryImages[item] || image;
-            } else if (type === "coffee") {
-                image = coffeeImages[item] || image;
-            }
+            const trendQuantity =
+                (current?.quantity || 0) - (previous?.quantity || 0);
+            const trendGrossSales =
+                (current?.grossSales || 0) - (previous?.grossSales || 0);
 
             return {
-                item: item?.toLowerCase(),
-                quantity: currentQuantity,
-                trend,
-                img: image,
+                name: current?.name || previous?.name || "Unknown Item",
+                category: current?.category || previous?.category || null,
+                quantity: current?.quantity || 0,
+                grossSales: current?.grossSales || 0,
+                imgItem: current?.imgItem || previous?.imgItem || defaultImage,
+                imgCategory:
+                    current?.imgCategory ||
+                    previous?.imgCategory ||
+                    defaultImage,
+                imgCoffee:
+                    current?.imgCoffee || previous?.imgCoffee || defaultImage,
+                trendQuantity,
+                trendGrossSales,
+                currentSortOrder: currentSortOrder.get(item) || 0,
+                previousSortOrder: previousSortOrder.get(item) || 0,
             };
         });
     });
 
-    const topResults = computed<SalesData[]>(() =>
-        fullList.value
-            .sort((a, b) => b.quantity - a.quantity)
-            .slice(0, itemCount),
-    );
-
     return {
-        fullList,
-        topResults,
+        salesList,
     };
 }

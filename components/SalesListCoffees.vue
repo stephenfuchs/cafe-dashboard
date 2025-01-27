@@ -6,15 +6,18 @@ const { orders: previousOrders } = useOrders(
     filters.comparisonEndDate,
 );
 
-const itemCount = 5;
-
-const { topResults } = useSalesList(
+const { salesList } = useSalesList(
     orders,
     previousOrders,
-    "coffee",
     [],
-    itemCount,
 );
+
+const coffees = computed(() => {
+    const coffeeNames = ["regular", "hazelnut", "french vanilla", "caramel", "decaf"]
+    let filteredList = salesList.value.filter((item) => coffeeNames.includes(item.name));
+
+    return filteredList.sort((a,b) => b.quantity - a.quantity);
+});
 </script>
 
 <template>
@@ -23,6 +26,6 @@ const { topResults } = useSalesList(
         <template #options>
             <Tag severity="success" value="$19.00" />
         </template>
-        <SalesList :products="topResults" />
+        <SalesList :source="coffees" type="coffee" />
     </UiAppCard>
 </template>

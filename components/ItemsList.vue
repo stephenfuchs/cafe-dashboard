@@ -10,6 +10,11 @@ const exclude = [
     "next gen events",
     "nica angels donation",
     "ukraine donations",
+    "regular",
+    "caramel",
+    "decaf",
+    "french vanilla",
+    "hazelnut",
 ];
 
 const { orders } = useOrders(filters.startDate, filters.endDate);
@@ -18,7 +23,7 @@ const { orders: previousOrders } = useOrders(
     filters.comparisonEndDate,
 );
 
-const { salesList } = useItemSales(orders, previousOrders, exclude);
+const { salesList } = useSalesList(orders, previousOrders, exclude);
 
 const categoryFilter = ref("all items");
 const categoryOptions = ["all items", "baked goods", "barista", "drink cooler"];

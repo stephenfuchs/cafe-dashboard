@@ -9,23 +9,44 @@ const { orders: previousOrders } = useOrders(
 const selected = ref("Items");
 const options = ref(["Items", "Categories"]);
 
-const exclude = ["COFFEE POT", "COFFEE DONATION"];
-const itemCount = 5;
+const exclude = ["coffee pot", "coffee donation"];
 
-const { topResults: topItems } = useSalesList(
+const { salesList: items } = useSalesList(
     orders,
     previousOrders,
-    "item",
     exclude,
-    itemCount,
 );
-const { topResults: topCategories } = useSalesList(
+const { salesList: categories } = useSalesList(
     orders,
     previousOrders,
-    "category",
     [],
-    itemCount,
 );
+
+const topItems = computed(() => {
+    return [...items.value]
+        .sort((a, b) => b.quantity - a.quantity)
+        .slice(0, 5);
+});
+
+const topCategories = computed(() => {
+    // Reduce to get unique categories with summed grossSales
+    const uniqueCategories = categories.value.reduce((acc, item) => {
+        const existingCategory = acc.find(c => c.category === item.category);
+        if (existingCategory) {
+            // If the category already exists, sum the grossSales
+            existingCategory.grossSales += item.grossSales;
+        } else {
+            // If the category doesn't exist, add a new entry
+            acc.push({ ...item });
+        }
+        return acc;
+    }, []);
+
+    // Sort the unique categories by grossSales
+    return uniqueCategories
+        .sort((a, b) => b.grossSales - a.grossSales)
+        .slice(0, 5);
+});
 </script>
 
 <template>
@@ -35,10 +56,10 @@ const { topResults: topCategories } = useSalesList(
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
         <div v-if="selected === 'Items'">
-            <SalesList :products="topItems" />
+            <SalesList :source="topItems" type="item" />
         </div>
         <div v-else-if="selected === 'Categories'">
-            <SalesList :products="topCategories" money />
+            <SalesList :source="topCategories" type="category" money />
         </div>
     </UiAppCard>
 </template>
