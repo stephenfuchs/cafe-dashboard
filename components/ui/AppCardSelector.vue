@@ -24,6 +24,7 @@ const selectOption = (option) => {
         v-model="selected"
         :options="options"
         size="small"
+        :allow-empty="false"
         class="max-xl:hidden"
     />
     <Button variant="link" @click="togglePopover" class="w-auto p-0 xl:hidden">

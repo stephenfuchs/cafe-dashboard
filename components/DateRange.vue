@@ -39,6 +39,7 @@
         :options="compareOptions"
         option-label="label"
         option-value="value"
+        :allow-empty="false"
     />
 </template>
 
