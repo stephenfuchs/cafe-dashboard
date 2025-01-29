@@ -8,6 +8,11 @@ const exclude = [
     "next gen events",
     "nica angels donation",
     "ukraine donations",
+    "regular",
+    "caramel",
+    "decaf",
+    "french vanilla",
+    "hazelnut",
 ];
 
 const { orders } = useOrders(filters.startDate, filters.endDate);

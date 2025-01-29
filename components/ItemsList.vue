@@ -41,8 +41,8 @@ const filteredSalesList = computed(() => {
 });
 
 const sortOptions = ref([
-    { label: "Quantity", value: "!quantity" },
-    { label: "Item", value: "name" },
+    { optionLabel: "Quantity", value: "!quantity" },
+    { optionLabel: "Item", value: "name" },
 ]);
 const sortKey = ref(sortOptions.value[0]);
 const sortOrder = ref(-1);
@@ -83,7 +83,7 @@ const dataviewPassthrough = {
                     size="small"
                     v-model="sortKey"
                     :options="sortOptions"
-                    optionLabel="label"
+                    optionLabel="optionLabel"
                     @change="onSortChange($event)"
                 />
                 <UiAppCardSelector
