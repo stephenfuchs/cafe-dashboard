@@ -8,6 +8,12 @@ interface LineItem {
                 category?: { name?: string };
             }[];
             images?: { url: string }[];
+            modifierListInfos?: {
+                modifierList?: {
+                    name: string;
+                    modifiers?: { name: string }[];
+                };
+            }[];
         };
     };
     modifiers?: Modifier[];
@@ -35,6 +41,7 @@ interface SalesData {
     imgItem: string;
     imgCategory: string;
     imgCoffee: string;
+    modifiers: Record<string, Record<string, number>>;
 }
 
 interface Modifier {
@@ -72,9 +79,9 @@ export function useSalesList(
         "hot tea": "coffee donation",
         "cookies (2 for $1)": "cookies",
     };
-    // Helper function to calculate item quantities
-    const calcSalesData = (ordersArray: Order[]) => {
-        const data: Record<string, SalesData> = {};
+
+    const calcSalesData = (ordersArray: Order[]): Record<string, SalesData> => {
+        const data: Record<string, SalesData> = {}; // Use an object to track unique items
 
         try {
             ordersArray.forEach((order) => {
@@ -96,27 +103,80 @@ export function useSalesList(
                             "";
 
                         let quantity = Number(item?.quantity || 0);
-
                         const grossSales = Number(
                             item?.grossSalesMoney?.amount || 0,
                         );
 
-                        if (name === "coffee pot") {
+                        if (name === "coffee pot" && item.modifiers?.length) {
                             name = item.modifiers![1].name?.toLowerCase();
 
                             if (item.modifiers![0].name === "HALF POT") {
                                 quantity = Number(item?.quantity) / 2;
                             }
                         }
+
                         const imgItem =
                             item.itemVariation?.item?.images?.[0]?.url ||
                             defaultImage;
                         const imgCategory =
                             categoryImages[category] || defaultImage;
-
                         const imgCoffee = coffeeImages[name] || defaultImage;
+
                         if (!name || exclude.includes(name)) return;
 
+                        // Initialize modifiers storage
+                        const modifiers: Record<
+                            string,
+                            Record<string, number>
+                        > = {};
+
+                        // Process Modifiers
+                        if (
+                            Array.isArray(item.modifiers) &&
+                            item.itemVariation?.item?.modifierListInfos
+                        ) {
+                            item.modifiers.forEach((modifier) => {
+                                const modifierName =
+                                    modifier.name.toLowerCase();
+                                let categoryName = "unknown category";
+
+                                // Find the category name by matching the modifier in modifierListInfos
+                                item.itemVariation?.item?.modifierListInfos?.forEach(
+                                    (modListInfo) => {
+                                        if (
+                                            modListInfo.modifierList &&
+                                            Array.isArray(
+                                                modListInfo.modifierList
+                                                    .modifiers,
+                                            )
+                                        ) {
+                                            const foundModifier =
+                                                modListInfo.modifierList.modifiers.find(
+                                                    (mod) =>
+                                                        mod.name.toLowerCase() ===
+                                                        modifierName,
+                                                );
+                                            if (foundModifier) {
+                                                categoryName =
+                                                    modListInfo.modifierList.name.toLowerCase(); // Modifier category name
+                                            }
+                                        }
+                                    },
+                                );
+
+                                // Initialize category in modifiers object
+                                if (!modifiers[categoryName]) {
+                                    modifiers[categoryName] = {};
+                                }
+
+                                // Increment count for this modifier
+                                modifiers[categoryName][modifierName] =
+                                    (modifiers[categoryName][modifierName] ||
+                                        0) + quantity;
+                            });
+                        }
+
+                        // If the item already exists, combine the quantities and gross sales
                         if (!data[name]) {
                             data[name] = {
                                 name,
@@ -126,34 +186,37 @@ export function useSalesList(
                                 imgItem,
                                 imgCategory,
                                 imgCoffee,
+                                modifiers,
                             };
                         } else {
+                            // Combine quantities and gross sales
                             data[name].quantity += quantity;
                             data[name].grossSales += grossSales;
+
+                            // Merge modifiers as well
+                            Object.entries(modifiers).forEach(
+                                ([category, mods]) => {
+                                    if (!data[name].modifiers[category]) {
+                                        data[name].modifiers[category] = {};
+                                    }
+                                    Object.entries(mods).forEach(
+                                        ([mod, count]) => {
+                                            data[name].modifiers[category][
+                                                mod
+                                            ] =
+                                                (data[name].modifiers[category][
+                                                    mod
+                                                ] || 0) + count;
+                                        },
+                                    );
+                                },
+                            );
                         }
                     });
                 }
-
-                // if (type === "item" && Array.isArray(order.returns)) {
-                //     order.returns.forEach((returnItem) => {
-                //         if (Array.isArray(returnItem.returnLineItems)) {
-                //             returnItem.returnLineItems.forEach(
-                //                 (returnedItem) => {
-                //                     const name = returnedItem?.name;
-                //                     if (!name || exclude.includes(name)) return;
-
-                //                     const value = Number(
-                //                         returnedItem?.value || 0,
-                //                     );
-
-                //                     data[name] = (data[name] || 0) - value;
-                //                 },
-                //             );
-                //         }
-                //     });
-                // }
             });
 
+            // Convert the object to an array before returning
             return data;
         } catch (error) {
             console.error("Error processing orders:", error);
@@ -217,6 +280,7 @@ export function useSalesList(
                 trendGrossSales,
                 currentSortOrder: currentSortOrder.get(item) || 0,
                 previousSortOrder: previousSortOrder.get(item) || 0,
+                modifiers: current?.modifiers,
             };
         });
     });
