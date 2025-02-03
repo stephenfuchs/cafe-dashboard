@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import { formatCurrency } from "~/server/utils/formatCurrency";
+import { calcChange } from "~/server/utils/calcChange";
+interface Modifier {
+    selection: string;
+    count: number;
+    trend: number;
+}
 
 const props = defineProps({
     item: {
@@ -13,6 +19,10 @@ const isVisible = ref(false); // Keeps track of visibility
 const toggleVisibility = () => {
     isVisible.value = !isVisible.value; // Toggles visibility
 };
+
+const hasModifiers = computed(() => {
+    return Object.keys(props.item?.modifiers ?? {}).length > 0;
+});
 </script>
 
 <template>
@@ -150,7 +160,7 @@ const toggleVisibility = () => {
                     </div>
                 </div>
                 <Button
-                    :disabled="Object.keys(item?.modifiers).length < 1"
+                    :disabled="!hasModifiers"
                     severity="secondary"
                     size="small"
                     @click="toggleVisibility"
@@ -164,32 +174,80 @@ const toggleVisibility = () => {
         <Drawer v-model:visible="isVisible" position="full" blockScroll>
             <template #header>
                 <div class="mx-8 flex items-center gap-2">
-                    <h2 class="text-2xl font-bold uppercase text-color">
+                    <h2 class="text-3xl font-bold capitalize text-color">
                         {{ item?.name }} Modifier Sales
                     </h2>
                 </div>
             </template>
-            <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-12">
                 <div
                     v-for="(modifierGroup, category) in item?.modifiers"
                     :key="category"
                     class="mx-8"
                 >
-                    {{ category }}
+                    <h3 class="text-xl font-bold capitalize text-color">
+                        {{ category }}
+                    </h3>
                     <div class="grid grid-cols-6 gap-4">
                         <UiAppCard
                             stat
-                            v-for="[modifier, count] in Object.entries(
-                                modifierGroup as Record<string, number>,
-                            ).sort((a, b) => b[1] - a[1])"
-                            :key="modifier"
+                            v-for="modifier in modifierGroup.sort(
+                                (a: Modifier, b: Modifier) => b.count - a.count,
+                            )"
+                            :key="modifier.selection"
                         >
                             <template #title :class="'truncate'">{{
-                                modifier
+                                modifier.selection
                             }}</template>
-                            <div class="text-4xl font-bold text-color">
-                                {{ count }}
+                            <div
+                                class="flex flex-col flex-wrap justify-between max-xl:gap-5 xl:flex-row xl:items-center"
+                            >
+                                <div class="text-4xl font-bold text-color">
+                                    {{ modifier.count }}
+                                </div>
+                                <div
+                                    :class="
+                                        modifier.count -
+                                            modifier.previousCount <
+                                        0
+                                            ? `bg-orange-100 text-orange-700`
+                                            : `bg-green-100 text-green-700`
+                                    "
+                                    class="flex items-center gap-1 self-start rounded px-2 py-1 text-sm font-bold"
+                                >
+                                    <div class="material-symbols-outlined">
+                                        {{
+                                            modifier.count -
+                                                modifier.previousCount <
+                                            0
+                                                ? "trending_down"
+                                                : "trending_up"
+                                        }}
+                                    </div>
+                                    <div>
+                                        {{
+                                            modifier.count -
+                                                modifier.previousCount <
+                                            0
+                                                ? Math.abs(
+                                                      modifier.previousCount,
+                                                  )
+                                                : modifier.previousCount
+                                        }}
+                                        |
+                                        {{
+                                            calcChange(
+                                                modifier.previousCount,
+                                                modifier.count,
+                                            ).toFixed(2)
+                                        }}%
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- <div class="text-4xl font-bold text-color">
+                                {{ modifier.count }} {{ modifier.trend }}
+                            </div> -->
                         </UiAppCard>
                     </div>
                 </div>

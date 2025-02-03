@@ -41,7 +41,10 @@ interface SalesData {
     imgItem: string;
     imgCategory: string;
     imgCoffee: string;
-    modifiers: Record<string, Record<string, number>>;
+    modifiers: Record<
+        string,
+        { selection: string; count: number; previousCount: number }[]
+    >;
 }
 
 interface Modifier {
@@ -127,7 +130,11 @@ export function useSalesList(
                         // Initialize modifiers storage
                         const modifiers: Record<
                             string,
-                            Record<string, number>
+                            {
+                                selection: string;
+                                count: number;
+                                previousCount: number;
+                            }[]
                         > = {};
 
                         // Process Modifiers
@@ -137,42 +144,40 @@ export function useSalesList(
                         ) {
                             item.modifiers.forEach((modifier) => {
                                 const modifierName =
-                                    modifier.name.toLowerCase();
+                                    modifier.name?.toLowerCase();
                                 let categoryName = "unknown category";
 
-                                // Find the category name by matching the modifier in modifierListInfos
                                 item.itemVariation?.item?.modifierListInfos?.forEach(
                                     (modListInfo) => {
                                         if (
-                                            modListInfo.modifierList &&
-                                            Array.isArray(
-                                                modListInfo.modifierList
-                                                    .modifiers,
+                                            modListInfo.modifierList?.modifiers?.some(
+                                                (mod) =>
+                                                    mod.name.toLowerCase() ===
+                                                    modifierName,
                                             )
                                         ) {
-                                            const foundModifier =
-                                                modListInfo.modifierList.modifiers.find(
-                                                    (mod) =>
-                                                        mod.name.toLowerCase() ===
-                                                        modifierName,
-                                                );
-                                            if (foundModifier) {
-                                                categoryName =
-                                                    modListInfo.modifierList.name.toLowerCase(); // Modifier category name
-                                            }
+                                            categoryName =
+                                                modListInfo.modifierList.name.toLowerCase();
                                         }
                                     },
                                 );
 
-                                // Initialize category in modifiers object
                                 if (!modifiers[categoryName]) {
-                                    modifiers[categoryName] = {};
+                                    modifiers[categoryName] = [];
                                 }
 
-                                // Increment count for this modifier
-                                modifiers[categoryName][modifierName] =
-                                    (modifiers[categoryName][modifierName] ||
-                                        0) + quantity;
+                                const existingModifier = modifiers[
+                                    categoryName
+                                ].find((mod) => mod.selection === modifierName);
+                                if (existingModifier) {
+                                    existingModifier.count += quantity;
+                                } else {
+                                    modifiers[categoryName].push({
+                                        selection: modifierName,
+                                        count: quantity,
+                                        previousCount: 0, // Initialize trend to 0
+                                    });
+                                }
                             });
                         }
 
@@ -197,18 +202,24 @@ export function useSalesList(
                             Object.entries(modifiers).forEach(
                                 ([category, mods]) => {
                                     if (!data[name].modifiers[category]) {
-                                        data[name].modifiers[category] = {};
+                                        data[name].modifiers[category] = [];
                                     }
-                                    Object.entries(mods).forEach(
-                                        ([mod, count]) => {
-                                            data[name].modifiers[category][
-                                                mod
-                                            ] =
-                                                (data[name].modifiers[category][
-                                                    mod
-                                                ] || 0) + count;
-                                        },
-                                    );
+
+                                    mods.forEach((mod) => {
+                                        const existingMod = data[
+                                            name
+                                        ].modifiers[category].find(
+                                            (m) =>
+                                                m.selection === mod.selection,
+                                        );
+                                        if (existingMod) {
+                                            existingMod.count += mod.count;
+                                        } else {
+                                            data[name].modifiers[category].push(
+                                                mod,
+                                            );
+                                        }
+                                    });
                                 },
                             );
                         }
@@ -264,6 +275,31 @@ export function useSalesList(
             const trendGrossSales =
                 (current?.grossSales || 0) - (previous?.grossSales || 0);
 
+            const previousModifiers = Object.entries(
+                current?.modifiers || {},
+            ).reduce(
+                (acc, [category, mods]) => {
+                    acc[category] = mods.map((mod) => {
+                        const previousMod = previous?.modifiers[category]?.find(
+                            (prevMod) => prevMod.selection === mod.selection,
+                        );
+
+                        const previousCount = previousMod?.count || 0;
+
+                        return { ...mod, previousCount };
+                    });
+                    return acc;
+                },
+                {} as Record<
+                    string,
+                    {
+                        selection: string;
+                        count: number;
+                        previousCount: number;
+                    }[]
+                >,
+            );
+
             return {
                 name: current?.name || previous?.name || "Unknown Item",
                 category: current?.category || previous?.category || null,
@@ -280,7 +316,7 @@ export function useSalesList(
                 trendGrossSales,
                 currentSortOrder: currentSortOrder.get(item) || 0,
                 previousSortOrder: previousSortOrder.get(item) || 0,
-                modifiers: current?.modifiers,
+                modifiers: previousModifiers,
             };
         });
     });
