@@ -179,6 +179,21 @@ const hasModifiers = computed(() => {
                     </h2>
                 </div>
             </template>
+            <div class="mx-8">
+                <h3 class="text-xl font-bold capitalize text-color">
+                    Unique Modifer Sets
+                </h3>
+                <div class="grid grid-cols-5 gap-4">
+                    <UiAppCard stat v-for="(set, index) in item?.modifierSets">
+                        <template #title>Modifier Set {{ index + 1 }}</template>
+                        <div>Ordered {{ set.count }} times</div>
+
+                        <div v-for="modifier in set.modifiers">
+                            {{ modifier.category }} : {{ modifier.selection }}
+                        </div>
+                    </UiAppCard>
+                </div>
+            </div>
             <div class="flex flex-col gap-12">
                 <div
                     v-for="(modifierGroup, category) in item?.modifiers"
@@ -226,13 +241,10 @@ const hasModifiers = computed(() => {
                                     </div>
                                     <div>
                                         {{
-                                            modifier.count -
-                                                modifier.previousCount <
-                                            0
-                                                ? Math.abs(
-                                                      modifier.previousCount,
-                                                  )
-                                                : modifier.previousCount
+                                            Math.abs(
+                                                modifier.count -
+                                                    modifier.previousCount,
+                                            )
                                         }}
                                         |
                                         {{
