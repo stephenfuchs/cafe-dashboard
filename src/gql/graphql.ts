@@ -13534,7 +13534,7 @@ export type IdListFilterInput = {
    * between key names. For example, if you want to provide
    * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
    *
-   * When `null` or an empty list is passed, matches all documents.
+   * Will be ignored when `null` is passed or an empty list is passed.
    */
   allOf?: InputMaybe<Array<IdListFilterInput>>;
   /**
@@ -13552,10 +13552,10 @@ export type IdListFilterInput = {
    */
   anySatisfy?: InputMaybe<IdListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter evaluates to false.
+   * Matches records where the provided sub-filter does not evaluate to true.
    * This works just like a NOT operator in SQL.
    *
-   * When `null` or an empty object is passed, matches no documents.
+   * Will be ignored when `null` or an empty object is passed.
    */
   not?: InputMaybe<IdListFilterInput>;
 };

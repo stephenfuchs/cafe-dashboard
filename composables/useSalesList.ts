@@ -10,6 +10,7 @@ interface LineItem {
             images?: { url: string }[];
             modifierListInfos?: {
                 modifierList?: {
+                    ordinal: number;
                     name: string;
                     modifiers?: { name: string }[];
                 };
@@ -55,38 +56,21 @@ interface Modifier {
     name: string;
 }
 
+import {
+    categoryImages,
+    coffeeImages,
+    nameMappings,
+    modifierNameMappings,
+    modifierCategoryMappings,
+    skippedModifiers,
+    defaultImage,
+} from "../server/utils/mappings";
+
 export function useSalesList(
     orders: Ref<Order[]>,
     previousOrders: Ref<Order[]>,
     exclude: string[] = [],
 ) {
-    const categoryImages: Record<string, string> = {
-        bagels: "/img/category-bagels.png",
-        "baked goods": "/img/category-baked_goods.png",
-        barista: "/img/category-barista.png",
-        donations: "/img/category-donations.png",
-        "drink cooler": "/img/category-drink_cooler.png",
-        "nica angels": "/img/category-nica.png",
-        snacks: "/img/category-snacks.png",
-        wine: "/img/category-wine.png",
-    };
-
-    const coffeeImages: Record<string, string> = {
-        regular: "/img/coffee-regular.png",
-        hazelnut: "/img/coffee-hazelnut.png",
-        "french vanilla": "/img/coffee-vanilla.png",
-        caramel: "/img/coffee-caramel.png",
-        decaf: "/img/coffee-decaf.png",
-    };
-
-    const defaultImage = "/img/item-default.png";
-
-    const nameMappings: Record<string, string> = {
-        "cup of coffee": "coffee donation",
-        "hot tea": "coffee donation",
-        "cookies (2 for $1)": "cookies",
-    };
-
     const calcSalesData = (ordersArray: Order[]): Record<string, SalesData> => {
         const data: Record<string, SalesData> = {};
 
@@ -155,12 +139,14 @@ export function useSalesList(
                             const currentSet: {
                                 category: string;
                                 selection: string;
+                                ordinal?: number;
                             }[] = [];
 
                             item.modifiers.forEach((modifier) => {
-                                const modifierName =
-                                    modifier.name?.toLowerCase();
+                                let modifierName = modifier.name?.toLowerCase();
+
                                 let categoryName = "unknown category";
+                                let ordinal = Number.MAX_SAFE_INTEGER;
 
                                 item.itemVariation?.item?.modifierListInfos?.forEach(
                                     (modListInfo) => {
@@ -173,9 +159,32 @@ export function useSalesList(
                                         ) {
                                             categoryName =
                                                 modListInfo.modifierList.name.toLowerCase();
+                                            ordinal =
+                                                modListInfo.modifierList
+                                                    .ordinal ?? ordinal;
                                         }
                                     },
                                 );
+
+                                if (skippedModifiers.includes(categoryName)) {
+                                    return; // Skip this modifier if its category is in the list of categories to skip
+                                }
+
+                                if (
+                                    categoryName &&
+                                    modifierCategoryMappings[categoryName]
+                                ) {
+                                    categoryName =
+                                        modifierCategoryMappings[categoryName];
+                                }
+
+                                if (
+                                    modifierName &&
+                                    modifierNameMappings[modifierName]
+                                ) {
+                                    modifierName =
+                                        modifierNameMappings[modifierName];
+                                }
 
                                 if (!modifiers[categoryName]) {
                                     modifiers[categoryName] = [];
@@ -197,14 +206,15 @@ export function useSalesList(
                                 currentSet.push({
                                     category: categoryName,
                                     selection: modifierName,
+                                    ordinal,
                                 });
                             });
 
                             if (currentSet.length > 0) {
                                 currentSet.sort(
                                     (a, b) =>
-                                        a.category.localeCompare(b.category) ||
-                                        a.selection.localeCompare(b.selection),
+                                        (a.ordinal ?? Number.MAX_SAFE_INTEGER) -
+                                        (b.ordinal ?? Number.MAX_SAFE_INTEGER),
                                 );
 
                                 const existingSet = modifierSets.find(
