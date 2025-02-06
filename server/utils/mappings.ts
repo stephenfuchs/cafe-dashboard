@@ -1,4 +1,5 @@
-export const categoryImages: Record<string, string> = {
+// Item Image Mappings
+export const imagesCategory: Record<string, string> = {
     bagels: "/img/category-bagels.png",
     "baked goods": "/img/category-baked_goods.png",
     barista: "/img/category-barista.png",
@@ -9,7 +10,7 @@ export const categoryImages: Record<string, string> = {
     wine: "/img/category-wine.png",
 };
 
-export const coffeeImages: Record<string, string> = {
+export const imagesCoffee: Record<string, string> = {
     regular: "/img/coffee-regular.png",
     hazelnut: "/img/coffee-hazelnut.png",
     "french vanilla": "/img/coffee-vanilla.png",
@@ -17,32 +18,57 @@ export const coffeeImages: Record<string, string> = {
     decaf: "/img/coffee-decaf.png",
 };
 
-export const defaultImage = "/img/item-default.png";
+export const imagesDefault = "/img/item-default.png";
 
+// Item Name Mappings
 export const nameMappings: Record<string, string> = {
     "cup of coffee": "coffee donation",
     "hot tea": "coffee donation",
     "cookies (2 for $1)": "cookies",
 };
+
+// Modifier Name Mappings
 export const modifierNameMappings: Record<string, string> = {
     "mocha (chocolate sauce)": "mocha",
     "plain ol boring hot cocoa for linda": "no add-on",
+    "double chocolate": "chocolate",
+    "everything but the bagel seasonings": "everything seasoning",
+    "reg cream cheese": "regular cream cheese",
 };
 export const modifierCategoryMappings: Record<string, string> = {
     "pop flavor": "flavor",
     "sparkling ice flavor": "flavor",
     "iced tea variety": "variety",
+    "latte flavors & additions": "flavor",
+    "drink topping": "add-ons",
     "add-ons (chai)": "add-ons",
     "add-ons (cocoa)": "add-ons",
+    "milk options": "milk",
     "size (cocoa)": "size",
     "cookie flavor": "flavor",
     "danish flavor": "flavor",
+    "muffin flavor": "flavor",
     "bagel flavor": "flavor",
     "bagel cook type": "cook type",
     "bagel topping": "topping",
     "bagel preparation": "preparation",
     "english muffin cook type": "cook type",
     "english muffin spread": "spread",
+    "breakfast sandwich": "modifications",
 };
 
 export const skippedModifiers = ["ask for order name"];
+
+export const modifierCategoryAssignment: Record<string, string> = {
+    "hazelnut praline": "flavor",
+    "caramel cookie": "flavor",
+    "apple pie": "flavor",
+    "white pumpkin": "flavor",
+    coconut: "flavor",
+    blueberry: "flavor",
+    "cinnamon raisin": "bagel flavor",
+    "honey wheat": "bagel flavor",
+    "coffee cake": "muffin flavor",
+    "double chocolate": "muffin flavor",
+    chocolate: "muffin flavor",
+};

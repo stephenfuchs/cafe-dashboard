@@ -13,6 +13,7 @@ const props = defineProps({
         required: true,
     },
 });
+const first = ref(0);
 
 const isVisible = ref(false); // Keeps track of visibility
 
@@ -23,6 +24,42 @@ const toggleVisibility = () => {
 const hasModifiers = computed(() => {
     return Object.keys(props.item?.modifiers ?? {}).length > 0;
 });
+
+const modifierSetsWithKeys = computed(() => {
+    return (
+        props.item?.modifierSets?.map((set: any, index: any) => ({
+            ...set,
+            _uniqueKey: `set-${set.id || index}`, // Use a persistent unique key
+        })) || []
+    );
+});
+
+const modifierSetCount = computed(() => {
+    return props.item?.modifierSets.length;
+});
+
+const topModifiersByCategory = computed(() => {
+    const topModifiers: Record<string, { selection: string; count: number }> =
+        {};
+
+    Object.entries(props.item?.modifiers || {}).forEach(([category, mods]) => {
+        if (Array.isArray(mods) && mods.length) {
+            const topModifier = mods
+                .slice()
+                .sort((a, b) => b.count - a.count)[0];
+
+            topModifiers[category] = {
+                selection: topModifier.selection,
+                count: topModifier.count,
+            };
+        }
+    });
+
+    return topModifiers;
+});
+
+const selected = ref("Count");
+const options = ref(["Count", "Trend"]);
 </script>
 
 <template>
@@ -174,119 +211,246 @@ const hasModifiers = computed(() => {
         <Drawer v-model:visible="isVisible" position="full" blockScroll>
             <template #header>
                 <div class="mx-8 flex items-center gap-2">
+                    <img
+                        :src="item?.imgItem"
+                        :alt="`Image of ` + item?.name"
+                        class="w-10 rounded bg-neutral-100 dark:bg-neutral-700"
+                    />
                     <h2 class="text-3xl font-bold capitalize text-color">
                         {{ item?.name }} Modifier Sales
                     </h2>
                 </div>
             </template>
-            <div class="mx-8">
-                <h3 class="text-xl font-bold capitalize text-color">
-                    Unique Modifer Sets
-                </h3>
-                <div class="grid grid-cols-5 gap-4">
-                    <UiAppCard stat v-for="(set, index) in item?.modifierSets">
-                        <template #title>Modifier Set {{ index + 1 }}</template>
-                        <div>Ordered {{ set.count }} times</div>
-
-                        <div v-for="modifier in set.modifiers">
-                            {{ modifier.category }} : {{ modifier.selection }}
-                        </div>
-                    </UiAppCard>
+            <div class="mx-8 mb-6">
+                <p class="mb-3 text-base font-normal uppercase text-color">
+                    <span class="font-bold text-primary">{{
+                        item?.quantity
+                    }}</span>
+                    {{ item?.name
+                    }}<span v-if="item?.quantity > 1">'s</span> sold with
+                    <span class="font-bold text-primary">{{
+                        modifierSetCount
+                    }}</span>
+                    unique combinations &
+                    <span class="font-bold text-primary">{{
+                        formatCurrency(item?.grossSales)
+                    }}</span>
+                    in gross sales.
+                </p>
+                <div class="flex flex-wrap gap-x-4 gap-y-2">
+                    <p
+                        class="text-sm font-normal capitalize text-color"
+                        v-for="(modifier, category) in topModifiersByCategory"
+                        :key="category"
+                    >
+                        Top {{ category }}:
+                        <span class="font-bold uppercase text-primary">{{
+                            modifier.selection
+                        }}</span>
+                    </p>
                 </div>
             </div>
-            <div class="flex flex-col gap-12">
-                <div
-                    v-for="(modifierGroup, category) in item?.modifiers"
-                    :key="category"
-                    class="mx-8"
-                >
-                    <h3 class="text-xl font-bold capitalize text-color">
-                        {{ category }}
+            <div class="mx-8 grid grid-cols-5 gap-6">
+                <div class="col-span-3">
+                    <h3 class="mb-2 text-xl font-bold capitalize text-color">
+                        Unique Modifer Sets
                     </h3>
-                    <div class="grid grid-cols-6 gap-4">
+                    <!-- <DataView
+                        :value="modifierSetsWithKeys"
+                        layout="grid"
+                        dataKey="_uniqueKey"
+                        paginator
+                        :rows="12"
+                        v-model:first="first"
+                    >
+                        <template #grid="{ items }">
+                            <div class="grid grid-cols-4 gap-4">
+                                <template
+                                    v-for="(set, index) in items.sort(
+                                        (a: Modifier, b: Modifier) =>
+                                            b.count - a.count,
+                                    )"
+                                    :key="set._uniqueKey"
+                                >
+                                    <UiAppCard class="flex flex-col gap-2" stat>
+                                        <template #title>
+                                            <div
+                                                class="flex items-center justify-between"
+                                            >
+                                                <div>
+                                                    Modifier Set
+                                                    {{ first + index + 1 }}
+                                                </div>
+                                                <div
+                                                    class="text-xs capitalize text-primary"
+                                                >
+                                                    {{ set.count }}
+                                                    <span v-if="set.count > 1"
+                                                        >orders</span
+                                                    >
+                                                    <span v-else>order</span>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div
+                                            v-for="modifier in set.modifiers"
+                                            :key="modifier.selection"
+                                        >
+                                            <span
+                                                class="block text-xs font-bold uppercase text-color"
+                                            >
+                                                {{ modifier.category }}:
+                                            </span>
+                                            <span
+                                                class="text-sm font-normal capitalize text-color"
+                                            >
+                                                {{ modifier.selection }}
+                                            </span>
+                                        </div>
+                                    </UiAppCard>
+                                </template>
+                            </div>
+                        </template>
+                    </DataView> -->
+                    <div class="grid grid-cols-3 gap-6">
                         <UiAppCard
+                            class="flex flex-col gap-2"
                             stat
-                            v-for="modifier in modifierGroup.sort(
+                            v-for="(set, index) in item?.modifierSets.sort(
                                 (a: Modifier, b: Modifier) => b.count - a.count,
                             )"
-                            :key="modifier.selection"
                         >
-                            <template #title :class="'truncate'">{{
-                                modifier.selection
-                            }}</template>
-                            <div
-                                class="flex flex-col flex-wrap justify-between max-xl:gap-5 xl:flex-row xl:items-center"
+                            <template #title
+                                ><div class="flex items-center justify-between">
+                                    <div>Modifier Set {{ index + 1 }}</div>
+                                    <div
+                                        class="text-xs capitalize text-primary"
+                                    >
+                                        {{ set.count }}
+                                        <span v-if="set.count > 1">orders</span>
+                                        <span v-else>order</span>
+                                    </div>
+                                </div></template
                             >
-                                <div class="text-4xl font-bold text-color">
-                                    {{ modifier.count }}
-                                </div>
-                                <div
-                                    :class="
-                                        modifier.count -
-                                            modifier.previousCount <
-                                        0
-                                            ? `bg-orange-100 text-orange-700`
-                                            : `bg-green-100 text-green-700`
-                                    "
-                                    class="flex items-center gap-1 self-start rounded px-2 py-1 text-sm font-bold"
+                            <div v-for="modifier in set.modifiers">
+                                <span
+                                    class="block text-xs font-bold uppercase text-muted-color"
+                                    >{{ modifier.category }}:</span
                                 >
-                                    <div class="material-symbols-outlined">
-                                        {{
-                                            modifier.count -
-                                                modifier.previousCount <
-                                            0
-                                                ? "trending_down"
-                                                : "trending_up"
-                                        }}
-                                    </div>
-                                    <div>
-                                        {{
-                                            Math.abs(
-                                                modifier.count -
-                                                    modifier.previousCount,
-                                            )
-                                        }}
-                                        |
-                                        {{
-                                            calcChange(
-                                                modifier.previousCount,
-                                                modifier.count,
-                                            ).toFixed(2)
-                                        }}%
-                                    </div>
-                                </div>
+                                <span
+                                    class="text-sm font-normal capitalize text-color"
+                                    >{{ modifier.selection }}</span
+                                >
                             </div>
-
-                            <!-- <div class="text-4xl font-bold text-color">
-                                {{ modifier.count }} {{ modifier.trend }}
-                            </div> -->
                         </UiAppCard>
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <h3 class="mb-2 text-xl font-bold capitalize text-color">
+                        Modifiers
+                    </h3>
+                    <div class="flex flex-col gap-6">
+                        <div
+                            v-for="(modifierGroup, category) in item?.modifiers"
+                            :key="category"
+                        >
+                            <div class="flex flex-col gap-4">
+                                <UiAppCard>
+                                    <template #title> {{ category }} </template>
+                                    <template #options>
+                                        <UiAppCardSelector
+                                            :options="options"
+                                            v-model:selected="selected"
+                                        />
+                                    </template>
+                                    <div
+                                        v-if="modifierGroup.length === 0"
+                                        class="mt-4 self-center italic"
+                                    >
+                                        No Sales Data Available
+                                    </div>
+                                    <div
+                                        v-else
+                                        v-for="modifier in [
+                                            ...modifierGroup,
+                                        ].sort((a, b) =>
+                                            selected === 'Count'
+                                                ? b.count - a.count
+                                                : b.count -
+                                                  b.previousCount -
+                                                  (a.count - a.previousCount),
+                                        )"
+                                        :key="modifier.selection"
+                                        class="box-content flex items-center justify-between gap-4 border-b border-surface-300 py-2 last:border-b-0 last:pb-0 dark:border-surface-700"
+                                    >
+                                        <div
+                                            class="flex items-center gap-4 truncate text-base font-semibold text-color"
+                                        >
+                                            <div
+                                                class="h-7 min-w-12 content-center rounded bg-primary-100 px-2 text-center text-base font-bold text-color dark:bg-primary-600"
+                                            >
+                                                {{ modifier.count }}
+                                            </div>
+                                            <div
+                                                class="flex-1 truncate capitalize"
+                                            >
+                                                {{ modifier.selection }}
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-2 self-start rounded px-2 py-1 text-end text-sm font-bold"
+                                            :class="
+                                                modifier.count -
+                                                    modifier.previousCount <
+                                                0
+                                                    ? `bg-orange-100 text-orange-700`
+                                                    : modifier.count -
+                                                            modifier.previousCount >
+                                                        0
+                                                      ? `bg-green-100 text-green-700`
+                                                      : `bg-neutral-200 text-muted-color`
+                                            "
+                                        >
+                                            <div
+                                                class="material-symbols-outlined"
+                                            >
+                                                {{
+                                                    modifier.count -
+                                                        modifier.previousCount <
+                                                    0
+                                                        ? "trending_down"
+                                                        : modifier.count -
+                                                                modifier.previousCount >
+                                                            0
+                                                          ? "trending_up"
+                                                          : "trending_flat"
+                                                }}
+                                            </div>
+                                            <div class="whitespace-nowrap">
+                                                {{
+                                                    Math.abs(
+                                                        modifier.count -
+                                                            modifier.previousCount,
+                                                    )
+                                                }}
+                                                |
+                                                {{
+                                                    Math.abs(
+                                                        calcChange(
+                                                            modifier.previousCount,
+                                                            modifier.count,
+                                                        ),
+                                                    ).toFixed(2)
+                                                }}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </UiAppCard>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </Drawer>
-        <!-- <div v-show="isVisible" class="mt-4 space-y-2">
-            <div
-                v-for="(modifierGroup, category) in item?.modifiers"
-                :key="category"
-            >
-                <h6 class="text-sm font-bold uppercase text-muted-color">
-                    {{ category }}:
-                </h6>
-                <div class="flex flex-wrap gap-4">
-                    <div
-                        v-for="(count, modifier) in modifierGroup"
-                        :key="modifier"
-                        class="flex items-center gap-2 text-sm font-medium capitalize"
-                    >
-                        <span>{{ modifier }}</span>
-                        <span
-                            class="rounded-md bg-neutral-900 px-2 py-1 text-center text-xs font-bold text-neutral-100"
-                            >{{ count }}</span
-                        >
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </UiAppCard>
 </template>

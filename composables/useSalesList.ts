@@ -1,3 +1,11 @@
+interface ModifierListInfo {
+    modifierList?: {
+        name: string;
+        ordinal: number;
+        modifiers?: { name: string }[];
+    };
+}
+
 interface LineItem {
     name?: string;
     quantity?: number;
@@ -8,13 +16,7 @@ interface LineItem {
                 category?: { name?: string };
             }[];
             images?: { url: string }[];
-            modifierListInfos?: {
-                modifierList?: {
-                    ordinal: number;
-                    name: string;
-                    modifiers?: { name: string }[];
-                };
-            }[];
+            modifierListInfos?: ModifierListInfo[];
         };
     };
     modifiers?: Modifier[];
@@ -57,13 +59,14 @@ interface Modifier {
 }
 
 import {
-    categoryImages,
-    coffeeImages,
+    imagesCategory,
+    imagesCoffee,
+    imagesDefault,
     nameMappings,
     modifierNameMappings,
     modifierCategoryMappings,
     skippedModifiers,
-    defaultImage,
+    modifierCategoryAssignment,
 } from "../server/utils/mappings";
 
 export function useSalesList(
@@ -74,304 +77,266 @@ export function useSalesList(
     const calcSalesData = (ordersArray: Order[]): Record<string, SalesData> => {
         const data: Record<string, SalesData> = {};
 
-        try {
-            ordersArray.forEach((order) => {
-                if (!order) {
-                    console.warn("Malformed order:", order);
-                    return;
+        ordersArray.forEach((order) => {
+            if (!order.lineItems) return;
+
+            order.lineItems.forEach((item) => {
+                let name = item?.name?.toLowerCase() || "Unknown Item";
+                const category =
+                    item?.itemVariation?.item?.categories?.[0]?.category?.name?.toLowerCase() ||
+                    "";
+                let quantity = Number(item?.quantity || 0);
+                const grossSales = Number(item?.grossSalesMoney?.amount || 0);
+                const imgItem =
+                    item.itemVariation?.item?.images?.[0]?.url || imagesDefault;
+                const imgCategory = imagesCategory[category] || imagesDefault;
+                const imgCoffee = imagesCoffee[name] || imagesDefault;
+
+                if (nameMappings[name]) {
+                    name = nameMappings[name];
                 }
 
-                if (Array.isArray(order.lineItems)) {
-                    order.lineItems.forEach((item) => {
-                        let name = item?.name?.toLowerCase() || "Unknown Item";
+                if (name === "coffee pot" && item.modifiers?.length) {
+                    name = item.modifiers![1].name?.toLowerCase();
+                    if (item.modifiers![0].name === "HALF POT") quantity /= 2;
+                }
 
-                        if (nameMappings[name]) {
-                            name = nameMappings[name];
-                        }
+                if (!name || exclude.includes(name)) return;
 
-                        const category =
-                            item?.itemVariation?.item?.categories?.[0]?.category?.name?.toLowerCase() ||
-                            "";
+                const modifiers: Record<
+                    string,
+                    {
+                        selection: string;
+                        count: number;
+                        previousCount: number;
+                    }[]
+                > = {};
 
-                        let quantity = Number(item?.quantity || 0);
-                        const grossSales = Number(
-                            item?.grossSalesMoney?.amount || 0,
-                        );
+                const modifierSets: {
+                    modifiers: {
+                        category: string;
+                        selection: string;
+                    }[];
+                    count: number;
+                }[] = [];
 
-                        if (name === "coffee pot" && item.modifiers?.length) {
-                            name = item.modifiers![1].name?.toLowerCase();
+                const processModifiers = (
+                    itemModifiers: Modifier[],
+                    modifierListInfos: ModifierListInfo[],
+                ) => {
+                    const currentSet: {
+                        category: string;
+                        selection: string;
+                        ordinal?: number;
+                    }[] = [];
 
-                            if (item.modifiers![0].name === "HALF POT") {
-                                quantity = Number(item?.quantity) / 2;
-                            }
-                        }
+                    itemModifiers?.forEach((modifier) => {
+                        let modifierName = modifier.name?.toLowerCase();
+                        let categoryName = "unknown category";
+                        let ordinal = Number.MAX_SAFE_INTEGER;
 
-                        const imgItem =
-                            item.itemVariation?.item?.images?.[0]?.url ||
-                            defaultImage;
-                        const imgCategory =
-                            categoryImages[category] || defaultImage;
-                        const imgCoffee = coffeeImages[name] || defaultImage;
-
-                        if (!name || exclude.includes(name)) return;
-
-                        const modifiers: Record<
-                            string,
-                            {
-                                selection: string;
-                                count: number;
-                                previousCount: number;
-                            }[]
-                        > = {};
-
-                        const modifierSets: {
-                            modifiers: {
-                                category: string;
-                                selection: string;
-                            }[];
-                            count: number;
-                        }[] = [];
-
-                        if (
-                            Array.isArray(item.modifiers) &&
-                            item.itemVariation?.item?.modifierListInfos
-                        ) {
-                            const currentSet: {
-                                category: string;
-                                selection: string;
-                                ordinal?: number;
-                            }[] = [];
-
-                            item.modifiers.forEach((modifier) => {
-                                let modifierName = modifier.name?.toLowerCase();
-
-                                let categoryName = "unknown category";
-                                let ordinal = Number.MAX_SAFE_INTEGER;
-
-                                item.itemVariation?.item?.modifierListInfos?.forEach(
-                                    (modListInfo) => {
-                                        if (
-                                            modListInfo.modifierList?.modifiers?.some(
-                                                (mod) =>
-                                                    mod.name.toLowerCase() ===
-                                                    modifierName,
-                                            )
-                                        ) {
-                                            categoryName =
-                                                modListInfo.modifierList.name.toLowerCase();
-                                            ordinal =
-                                                modListInfo.modifierList
-                                                    .ordinal ?? ordinal;
-                                        }
-                                    },
-                                );
-
-                                if (skippedModifiers.includes(categoryName)) {
-                                    return; // Skip this modifier if its category is in the list of categories to skip
-                                }
-
+                        if (modifierCategoryAssignment[modifierName]) {
+                            categoryName =
+                                modifierCategoryAssignment[modifierName];
+                            modifierListInfos.forEach((modListInfo) => {
                                 if (
-                                    categoryName &&
-                                    modifierCategoryMappings[categoryName]
-                                ) {
-                                    categoryName =
-                                        modifierCategoryMappings[categoryName];
-                                }
-
-                                if (
-                                    modifierName &&
-                                    modifierNameMappings[modifierName]
-                                ) {
-                                    modifierName =
-                                        modifierNameMappings[modifierName];
-                                }
-
-                                if (!modifiers[categoryName]) {
-                                    modifiers[categoryName] = [];
-                                }
-
-                                const existingModifier = modifiers[
+                                    modListInfo.modifierList?.name.toLowerCase() ===
                                     categoryName
-                                ].find((mod) => mod.selection === modifierName);
-                                if (existingModifier) {
-                                    existingModifier.count += quantity;
-                                } else {
-                                    modifiers[categoryName].push({
-                                        selection: modifierName,
-                                        count: quantity,
-                                        previousCount: 0,
-                                    });
+                                ) {
+                                    ordinal =
+                                        modListInfo.modifierList.ordinal ??
+                                        ordinal;
                                 }
-
-                                currentSet.push({
-                                    category: categoryName,
-                                    selection: modifierName,
-                                    ordinal,
-                                });
                             });
-
-                            if (currentSet.length > 0) {
-                                currentSet.sort(
-                                    (a, b) =>
-                                        (a.ordinal ?? Number.MAX_SAFE_INTEGER) -
-                                        (b.ordinal ?? Number.MAX_SAFE_INTEGER),
-                                );
-
-                                const existingSet = modifierSets.find(
-                                    (set) =>
-                                        JSON.stringify(set.modifiers) ===
-                                        JSON.stringify(currentSet),
-                                );
-
-                                if (existingSet) {
-                                    existingSet.count += quantity;
-                                } else {
-                                    modifierSets.push({
-                                        modifiers: currentSet,
-                                        count: quantity,
-                                    });
-                                }
-                            }
-                        }
-
-                        // **Added logic to merge duplicate modifier categories**
-                        Object.keys(modifiers).forEach((category) => {
-                            if (modifiers[category].length > 1) {
-                                const uniqueSelections = new Map<
-                                    string,
-                                    number
-                                >();
-
-                                modifiers[category].forEach((mod) => {
-                                    if (uniqueSelections.has(mod.selection)) {
-                                        uniqueSelections.set(
-                                            mod.selection,
-                                            uniqueSelections.get(
-                                                mod.selection,
-                                            )! + mod.count,
-                                        );
-                                    } else {
-                                        uniqueSelections.set(
-                                            mod.selection,
-                                            mod.count,
-                                        );
-                                    }
-                                });
-
-                                const mergedSelections = Array.from(
-                                    uniqueSelections.keys(),
-                                ).join(" ");
-                                const totalCount = Math.max(
-                                    ...Array.from(uniqueSelections.values()),
-                                );
-
-                                modifiers[category] = [
-                                    {
-                                        selection: mergedSelections,
-                                        count: totalCount,
-                                        previousCount: 0,
-                                    },
-                                ];
-                            }
-                        });
-
-                        modifierSets.forEach((set) => {
-                            const mergedModifiers: { [key: string]: string[] } =
-                                {};
-
-                            set.modifiers.forEach((mod) => {
-                                const { category, selection } = mod;
-                                if (!mergedModifiers[category]) {
-                                    mergedModifiers[category] = [];
-                                }
-
+                        } else {
+                            modifierListInfos.forEach((modListInfo) => {
                                 if (
-                                    !mergedModifiers[category].includes(
-                                        selection,
+                                    modListInfo.modifierList?.modifiers?.some(
+                                        (mod) =>
+                                            mod.name.toLowerCase() ===
+                                            modifierName,
                                     )
                                 ) {
-                                    mergedModifiers[category].push(selection);
+                                    categoryName =
+                                        modListInfo.modifierList.name.toLowerCase();
+                                    ordinal =
+                                        modListInfo.modifierList.ordinal ??
+                                        ordinal;
                                 }
                             });
+                        }
 
-                            // Now merge the selections with a space separator for each category
-                            set.modifiers = Object.entries(mergedModifiers).map(
-                                ([category, selections]) => ({
-                                    category,
-                                    selection: selections.join(" "), // Join selections with a space
-                                }),
+                        if (skippedModifiers.includes(categoryName)) return;
+
+                        categoryName =
+                            modifierCategoryMappings[categoryName] ||
+                            categoryName;
+                        modifierName =
+                            modifierNameMappings[modifierName] || modifierName;
+
+                        if (!modifiers[categoryName]) {
+                            modifiers[categoryName] = [];
+                        }
+                        const existingModifier = modifiers[categoryName].find(
+                            (mod) => mod.selection === modifierName,
+                        );
+
+                        if (existingModifier) {
+                            existingModifier.count += quantity;
+                        } else {
+                            modifiers[categoryName].push({
+                                selection: modifierName,
+                                count: quantity,
+                                previousCount: 0,
+                            });
+                        }
+
+                        currentSet.push({
+                            category: categoryName,
+                            selection: modifierName,
+                            ordinal,
+                        });
+                    });
+
+                    currentSet.sort(
+                        (a, b) =>
+                            (a.ordinal ?? Number.MAX_SAFE_INTEGER) -
+                            (b.ordinal ?? Number.MAX_SAFE_INTEGER),
+                    );
+
+                    const existingSet = modifierSets.find(
+                        (set) =>
+                            JSON.stringify(set.modifiers) ===
+                            JSON.stringify(currentSet),
+                    );
+                    if (existingSet) {
+                        existingSet.count += quantity;
+                    } else {
+                        modifierSets.push({
+                            modifiers: currentSet,
+                            count: quantity,
+                        });
+                    }
+                };
+
+                if (
+                    Array.isArray(item.modifiers) &&
+                    item.itemVariation?.item?.modifierListInfos
+                ) {
+                    processModifiers(
+                        item.modifiers,
+                        item.itemVariation.item.modifierListInfos,
+                    );
+                }
+
+                // **Added logic to merge duplicate modifier categories**
+                Object.keys(modifiers).forEach((category) => {
+                    if (modifiers[category].length > 1) {
+                        const uniqueSelections = new Map<string, number>();
+                        modifiers[category].forEach((mod) => {
+                            uniqueSelections.set(
+                                mod.selection,
+                                (uniqueSelections.get(mod.selection) || 0) +
+                                    mod.count,
                             );
                         });
 
-                        if (!data[name]) {
-                            data[name] = {
-                                name,
-                                category,
-                                quantity,
-                                grossSales,
-                                imgItem,
-                                imgCategory,
-                                imgCoffee,
-                                modifiers,
-                                modifierSets,
-                            };
+                        const mergedSelections = Array.from(
+                            uniqueSelections.keys(),
+                        ).join(", ");
+                        const totalCount = Math.max(
+                            ...Array.from(uniqueSelections.values()),
+                        );
+
+                        modifiers[category] = [
+                            {
+                                selection: mergedSelections,
+                                count: totalCount,
+                                previousCount: 0,
+                            },
+                        ];
+                    }
+                });
+
+                modifierSets.forEach((set) => {
+                    const mergedModifiers: { [key: string]: string[] } = {};
+
+                    set.modifiers.forEach((mod) => {
+                        if (!mergedModifiers[mod.category]) {
+                            mergedModifiers[mod.category] = [];
+                        }
+
+                        if (
+                            !mergedModifiers[mod.category].includes(
+                                mod.selection,
+                            )
+                        ) {
+                            mergedModifiers[mod.category].push(mod.selection);
+                        }
+                    });
+
+                    set.modifiers = Object.entries(mergedModifiers).map(
+                        ([category, selections]) => ({
+                            category,
+                            selection: selections.join(", "),
+                        }),
+                    );
+                });
+
+                if (!data[name]) {
+                    data[name] = {
+                        name,
+                        category,
+                        quantity,
+                        grossSales,
+                        imgItem,
+                        imgCategory,
+                        imgCoffee,
+                        modifiers,
+                        modifierSets,
+                    };
+                } else {
+                    data[name].quantity += quantity;
+                    data[name].grossSales += grossSales;
+
+                    Object.entries(modifiers).forEach(([category, mods]) => {
+                        if (!data[name].modifiers[category]) {
+                            data[name].modifiers[category] = [];
+                        }
+
+                        mods.forEach((mod) => {
+                            const existingMod = data[name].modifiers[
+                                category
+                            ].find((m) => m.selection === mod.selection);
+                            if (existingMod) {
+                                existingMod.count += mod.count;
+                            } else {
+                                data[name].modifiers[category].push(mod);
+                            }
+                        });
+                    });
+
+                    modifierSets.forEach((newSet) => {
+                        const existingSet = data[name].modifierSets.find(
+                            (set) =>
+                                JSON.stringify(set.modifiers) ===
+                                JSON.stringify(newSet.modifiers),
+                        );
+
+                        if (existingSet) {
+                            existingSet.count += newSet.count;
                         } else {
-                            data[name].quantity += quantity;
-                            data[name].grossSales += grossSales;
-
-                            Object.entries(modifiers).forEach(
-                                ([category, mods]) => {
-                                    if (!data[name].modifiers[category]) {
-                                        data[name].modifiers[category] = [];
-                                    }
-
-                                    mods.forEach((mod) => {
-                                        const existingMod = data[
-                                            name
-                                        ].modifiers[category].find(
-                                            (m) =>
-                                                m.selection === mod.selection,
-                                        );
-                                        if (existingMod) {
-                                            existingMod.count += mod.count;
-                                        } else {
-                                            data[name].modifiers[category].push(
-                                                mod,
-                                            );
-                                        }
-                                    });
-                                },
-                            );
-
-                            modifierSets.forEach((newSet) => {
-                                const existingSet = data[
-                                    name
-                                ].modifierSets.find(
-                                    (set) =>
-                                        JSON.stringify(set.modifiers) ===
-                                        JSON.stringify(newSet.modifiers),
-                                );
-
-                                if (existingSet) {
-                                    existingSet.count += newSet.count;
-                                } else {
-                                    data[name].modifierSets.push(newSet);
-                                }
-                            });
+                            data[name].modifierSets.push(newSet);
                         }
                     });
                 }
             });
+        });
 
-            return data;
-        } catch (error) {
-            console.error("Error processing orders:", error);
-            return {};
-        }
+        return data;
     };
 
     const salesList = computed(() => {
-        // Ensure orders and previousOrders are not empty or undefined
         const currentOrdersData = orders.value || [];
         const previousOrdersData = previousOrders.value || [];
 
@@ -402,8 +367,8 @@ export function useSalesList(
         );
 
         return Array.from(allItems).map((item) => {
-            const current: SalesData | undefined = currentSales[item];
-            const previous: SalesData | undefined = previousSales[item];
+            const current = currentSales[item];
+            const previous = previousSales[item];
 
             const trendQuantity =
                 (current?.quantity || 0) - (previous?.quantity || 0);
@@ -419,9 +384,10 @@ export function useSalesList(
                             (prevMod) => prevMod.selection === mod.selection,
                         );
 
-                        const previousCount = previousMod?.count || 0;
-
-                        return { ...mod, previousCount };
+                        return {
+                            ...mod,
+                            previousCount: previousMod?.count || 0,
+                        };
                     });
                     return acc;
                 },
@@ -440,13 +406,13 @@ export function useSalesList(
                 category: current?.category || previous?.category || null,
                 quantity: current?.quantity || 0,
                 grossSales: current?.grossSales || 0,
-                imgItem: current?.imgItem || previous?.imgItem || defaultImage,
+                imgItem: current?.imgItem || previous?.imgItem || imagesDefault,
                 imgCategory:
                     current?.imgCategory ||
                     previous?.imgCategory ||
-                    defaultImage,
+                    imagesDefault,
                 imgCoffee:
-                    current?.imgCoffee || previous?.imgCoffee || defaultImage,
+                    current?.imgCoffee || previous?.imgCoffee || imagesDefault,
                 trendQuantity,
                 trendGrossSales,
                 currentSortOrder: currentSortOrder.get(item) || 0,
