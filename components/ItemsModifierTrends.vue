@@ -23,14 +23,33 @@ const { orders: previousOrders } = useOrders(
 
 const { salesList } = useSalesList(orders, previousOrders, exclude);
 
+const trendingModifiers = computed(() => {
+    const trending = [];
+    salesList.value.forEach((item) => {
+        Object.entries(item.modifiers).forEach(([category, mods]) => {
+            mods.forEach((mod) => {
+                trending.push({
+                    imgItem: item.imgItem,
+                    category,
+                    name: mod.selection + " " + item.name,
+                    quantity: mod.count,
+                    trendQuantity: mod.count - mod.previousCount,
+                });
+            });
+        });
+    });
+
+    return trending;
+});
+
 const topTrending = computed(() => {
-    return [...salesList.value]
+    return trendingModifiers.value
         .sort((a, b) => b.trendQuantity - a.trendQuantity)
         .slice(0, 5);
 });
 
 const bottomTrending = computed(() => {
-    return [...salesList.value]
+    return trendingModifiers.value
         .sort((a, b) => a.trendQuantity - b.trendQuantity)
         .slice(0, 5);
 });
@@ -41,7 +60,7 @@ const options = ref(["Top", "Bottom"]);
 
 <template>
     <UiAppCard>
-        <template #title> {{ selected }} Trending </template>
+        <template #title> {{ selected }} Trending Modifiers</template>
         <template #options>
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>

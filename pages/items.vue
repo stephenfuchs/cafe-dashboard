@@ -13,7 +13,8 @@ definePageMeta({
             class="col-span-1 flex flex-col gap-6 overflow-y-scroll lg:sticky lg:top-0 lg:h-lvh"
         >
             <ItemsDonations />
-            <ItemsTrends />
+            <ItemsItemTrends />
+            <ItemsModifierTrends />
         </div>
     </div>
 </template>
