@@ -28,6 +28,10 @@ import type { Order, OrdersQuery, OrderConnection } from "../src/gql/graphql";
 //     lineItems: LineItem[];
 // };
 
+import {
+    globalExclude,
+} from "../server/utils/excludes";
+
 export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const dateKey = computed(
         () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
@@ -57,6 +61,15 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
         }
     });
 
+    const filteredOrders = computed(() =>
+    orders.value.map((order) => ({
+        ...order,
+        lineItems: order.lineItems.filter(
+            (item) => !globalExclude.includes(item.name),
+        ),
+    }))
+);
+
     const calcTotal = <T>(
         array: T[] | undefined,
         callback: (item: T) => number,
@@ -65,32 +78,32 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     //// computed
 
     const refunds = computed(() =>
-        calcTotal(orders.value, (order) =>
+        calcTotal(filteredOrders.value, (order) =>
             calcTotal(order.refunds, (refund) => refund.amountMoney.amount),
         ),
     );
 
     const discounts = computed(() =>
         calcTotal(
-            orders.value,
+            filteredOrders.value,
             (order) => order.totalDiscountMoney.amount || 0,
         ),
     );
 
     const grossSales = computed(() =>
-        calcTotal(orders.value, (order) =>
+        calcTotal(filteredOrders.value, (order) =>
             calcTotal(order.lineItems, (item) => item.grossSalesMoney.amount),
         ),
     );
 
     const netSales = computed(
         () =>
-            calcTotal(orders.value, (order) => order.totalMoney.amount) -
+            calcTotal(filteredOrders.value, (order) => order.totalMoney.amount) -
             refunds.value,
     );
 
     const fees = computed(() =>
-        calcTotal(orders.value, (order) =>
+        calcTotal(filteredOrders.value, (order) =>
             calcTotal(
                 order.tenders,
                 (tender) =>
@@ -106,7 +119,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const netTotal = computed(() => netSales.value - fees.value);
 
     const transactions = computed(() =>
-        calcTotal(orders.value, (order) => (order.refunds?.length ? 0 : 1)),
+        calcTotal(filteredOrders.value, (order) => (order.refunds?.length ? 0 : 1)),
     );
 
     const avgTransaction = computed(() =>
@@ -115,7 +128,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
 
     const tenderTotal = (tenderType: string) =>
         computed(() =>
-            calcTotal(orders.value, (order) =>
+            calcTotal(filteredOrders.value, (order) =>
                 calcTotal(order.tenders, (tender) =>
                     tender.type === tenderType
                         ? tender.amountMoney.amount || 0
@@ -128,7 +141,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const cardPayments = tenderTotal("CARD");
 
     return {
-        orders,
+        orders: filteredOrders,
         netSales,
         transactions,
         grossSales,

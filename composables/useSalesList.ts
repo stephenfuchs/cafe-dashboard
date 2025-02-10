@@ -63,6 +63,8 @@ import {
     imagesCoffee,
     imagesDefault,
     nameMappings,
+    categoryMappings,
+    itemCategoryAssignment,
     modifierNameMappings,
     modifierCategoryMappings,
     skippedModifiers,
@@ -74,6 +76,7 @@ export function useSalesList(
     previousOrders: Ref<Order[]>,
     exclude: string[] = [],
 ) {
+    
     const calcSalesData = (ordersArray: Order[]): Record<string, SalesData> => {
         const data: Record<string, SalesData> = {};
 
@@ -81,27 +84,35 @@ export function useSalesList(
             if (!order.lineItems) return;
 
             order.lineItems.forEach((item) => {
-                let name = item?.name?.toLowerCase() || "Unknown Item";
-                const category =
+                let name = item?.name?.trimEnd().toLowerCase() || "Unknown Item";
+                let category =
                     item?.itemVariation?.item?.categories?.[0]?.category?.name?.toLowerCase() ||
-                    "";
+                    "unknown category";
                 let quantity = Number(item?.quantity || 0);
                 const grossSales = Number(item?.grossSalesMoney?.amount || 0);
-                const imgItem =
-                    item.itemVariation?.item?.images?.[0]?.url || imagesDefault;
-                const imgCategory = imagesCategory[category] || imagesDefault;
-                const imgCoffee = imagesCoffee[name] || imagesDefault;
-
+                
                 if (nameMappings[name]) {
                     name = nameMappings[name];
                 }
-
+                if (categoryMappings[category]) {
+                    category = categoryMappings[category];
+                }
+                
+                if (category === "unknown category") {
+                    category = itemCategoryAssignment[name]
+                }
+                
                 if (name === "coffee pot" && item.modifiers?.length) {
                     name = item.modifiers![1].name?.toLowerCase();
                     if (item.modifiers![0].name === "HALF POT") quantity /= 2;
                 }
-
+                
                 if (!name || exclude.includes(name)) return;
+
+                const imgItem =
+                    item.itemVariation?.item?.images?.[0]?.url || imagesDefault;
+                const imgCategory = imagesCategory[category] || imagesDefault;
+                const imgCoffee = imagesCoffee[name] || imagesDefault;
 
                 const modifiers: Record<
                     string,
@@ -427,3 +438,6 @@ export function useSalesList(
         salesList,
     };
 }
+
+
+

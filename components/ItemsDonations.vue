@@ -2,7 +2,6 @@
 import { formatCurrency } from "~/server/utils/formatCurrency";
 
 const filters = useFilters();
-const exclude = [];
 
 const { orders } = useOrders(filters.startDate, filters.endDate);
 const { orders: previousOrders } = useOrders(
@@ -10,7 +9,7 @@ const { orders: previousOrders } = useOrders(
     filters.comparisonEndDate,
 );
 
-const { salesList } = useSalesList(orders, previousOrders, exclude);
+const { salesList } = useSalesList(orders, previousOrders, []);
 
 const donations = computed(() => {
     return salesList.value

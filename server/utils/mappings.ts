@@ -25,7 +25,47 @@ export const nameMappings: Record<string, string> = {
     "cup of coffee": "coffee donation",
     "hot tea": "coffee donation",
     "cookies (2 for $1)": "cookies",
+    "cookies (2 for $1.00)": "cookies",
+    "hot chocolate": "hot cocoa",
+    "donation": "donation (general giving)",
+    "cake ball / pop": "cake pop",
+    "chai tea latte": "chai latte",
+    "chai tea": "chai latte",
+    "iced chai latte": "chai latte",
+    "iced latte": "latte",
+    "cup of milk": "milk",
+    "custom amount": "coffee donation",
+    "tazo tea": "coffee donation",
+    "danish / turnover": "danish",
+    "holiday cookie": "cookies",
+    "juice box": "juice",
+    "organic milk": "milk",
+    "starbucks frappuccino": "frappuccino",
 };
+
+export const categoryMappings: Record<string, string> = {
+    "hot drinks": "barista",
+    "cold drinks": "drink cooler",
+    "bakery items": "baked goods",
+}
+
+export const itemCategoryAssignment: Record<string, string> = {
+    "apple juice": "drink cooler",
+    "chips": "snacks",
+    "breakfast pizza": "baked goods",
+    "pop": "drink cooler",
+    "scone": "baked goods",
+    "donut": "baked goods",
+    "cupcake": "baked goods",
+    "frappuccino": "drink cooler",
+    "powerade": "drink cooler",
+    "orange juice": "drink cooler",
+    "vitamin water": "drink cooler",
+    "unsweetened tea": "drink cooler",
+    "steamer": "barista",
+}
+
+
 
 // Modifier Name Mappings
 export const modifierNameMappings: Record<string, string> = {

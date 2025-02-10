@@ -1,19 +1,8 @@
 <script setup>
+import {
+    donationsExclude,
+} from "../server/utils/excludes";
 const filters = useFilters();
-const exclude = [
-    "coffee pot",
-    "coffee donation",
-    "card ministry donation",
-    "donation (general giving)",
-    "next gen events",
-    "nica angels donation",
-    "ukraine donations",
-    "regular",
-    "caramel",
-    "decaf",
-    "french vanilla",
-    "hazelnut",
-];
 
 const { orders } = useOrders(filters.startDate, filters.endDate);
 const { orders: previousOrders } = useOrders(
@@ -21,7 +10,7 @@ const { orders: previousOrders } = useOrders(
     filters.comparisonEndDate,
 );
 
-const { salesList } = useSalesList(orders, previousOrders, exclude);
+const { salesList } = useSalesList(orders, previousOrders, donationsExclude);
 
 const trendingModifiers = computed(() => {
     const trending = [];

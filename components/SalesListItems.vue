@@ -1,4 +1,8 @@
 <script setup type="ts">
+import {
+    donationsExclude,
+} from "../server/utils/excludes";
+
 const filters = useFilters();
 const { orders } = useOrders(filters.startDate, filters.endDate);
 const { orders: previousOrders } = useOrders(
@@ -9,12 +13,10 @@ const { orders: previousOrders } = useOrders(
 const selected = ref("Items");
 const options = ref(["Items", "Categories"]);
 
-const exclude = ["coffee pot", "coffee donation"];
-
 const { salesList: items } = useSalesList(
     orders,
     previousOrders,
-    exclude,
+    donationsExclude,
 );
 const { salesList: categories } = useSalesList(
     orders,
