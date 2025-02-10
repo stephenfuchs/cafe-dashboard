@@ -1,5 +1,5 @@
-import type { TZDate } from "@date-fns/tz";
-import { formatISO } from "date-fns";
+import { TZDate } from "@date-fns/tz";
+import { formatISO, parseISO, format } from "date-fns";
 import type { Order, OrdersQuery, OrderConnection } from "../src/gql/graphql";
 // Define type aliases for data structures
 // type Money = number;
@@ -28,10 +28,6 @@ import type { Order, OrdersQuery, OrderConnection } from "../src/gql/graphql";
 //     lineItems: LineItem[];
 // };
 
-import {
-    globalExclude,
-} from "../server/utils/excludes";
-
 export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const dateKey = computed(
         () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
@@ -55,20 +51,19 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
                     endDate: formatISO(end.value),
                 },
             });
-            orders.value = response;
+
+            const timeZone = "America/Chicago";
+
+            orders.value = response.map(order => ({
+            ...order,
+            closedAt: order.closedAt
+                ? format(new TZDate(parseISO(order.closedAt), timeZone), "MM-dd-yyyy hh:mm aaa")
+                : null
+        }));
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
     });
-
-    const filteredOrders = computed(() =>
-    orders.value.map((order) => ({
-        ...order,
-        lineItems: order.lineItems.filter(
-            (item) => !globalExclude.includes(item.name),
-        ),
-    }))
-);
 
     const calcTotal = <T>(
         array: T[] | undefined,
@@ -78,32 +73,32 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     //// computed
 
     const refunds = computed(() =>
-        calcTotal(filteredOrders.value, (order) =>
+        calcTotal(orders.value, (order) =>
             calcTotal(order.refunds, (refund) => refund.amountMoney.amount),
         ),
     );
 
     const discounts = computed(() =>
         calcTotal(
-            filteredOrders.value,
+            orders.value,
             (order) => order.totalDiscountMoney.amount || 0,
         ),
     );
 
     const grossSales = computed(() =>
-        calcTotal(filteredOrders.value, (order) =>
+        calcTotal(orders.value, (order) =>
             calcTotal(order.lineItems, (item) => item.grossSalesMoney.amount),
         ),
     );
 
     const netSales = computed(
         () =>
-            calcTotal(filteredOrders.value, (order) => order.totalMoney.amount) -
+            calcTotal(orders.value, (order) => order.totalMoney.amount) -
             refunds.value,
     );
 
     const fees = computed(() =>
-        calcTotal(filteredOrders.value, (order) =>
+        calcTotal(orders.value, (order) =>
             calcTotal(
                 order.tenders,
                 (tender) =>
@@ -119,7 +114,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const netTotal = computed(() => netSales.value - fees.value);
 
     const transactions = computed(() =>
-        calcTotal(filteredOrders.value, (order) => (order.refunds?.length ? 0 : 1)),
+        calcTotal(orders.value, (order) => (order.refunds?.length ? 0 : 1)),
     );
 
     const avgTransaction = computed(() =>
@@ -128,7 +123,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
 
     const tenderTotal = (tenderType: string) =>
         computed(() =>
-            calcTotal(filteredOrders.value, (order) =>
+            calcTotal(orders.value, (order) =>
                 calcTotal(order.tenders, (tender) =>
                     tender.type === tenderType
                         ? tender.amountMoney.amount || 0
@@ -141,7 +136,7 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
     const cardPayments = tenderTotal("CARD");
 
     return {
-        orders: filteredOrders,
+        orders,
         netSales,
         transactions,
         grossSales,
