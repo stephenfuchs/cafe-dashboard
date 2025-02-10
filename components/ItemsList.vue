@@ -1,6 +1,6 @@
 <script setup>
 import {
-    donationsExclude,
+    excludeDonations,
 } from "../server/utils/excludes";
 const filters = useFilters();
 
@@ -11,7 +11,7 @@ const { orders: previousOrders } = useOrders(
     filters.comparisonEndDate,
 );
 
-const { salesList } = useSalesList(orders, previousOrders, donationsExclude);
+const { salesList } = useSalesList(orders, previousOrders, excludeDonations);
 
 const categoryFilter = ref("all items");
 const categoryOptions = ["all items", "baked goods", "barista", "drink cooler"];

@@ -8,24 +8,7 @@ export const excludeItem: Set<string> = new Set([
     "Silent Auction"
 ]);
 
-export const globalExclude: Array<string> = [
-    "Hot Dog",
-    "HOT DOG",
-    "HOT DOG MEAL ",
-    "PIZZA SLICE ",
-    "PREMIUM RED WINE",
-    "PREMIUM WHITE WINE ",
-    "RED WINE",
-    "WHITE WINE",
-    "WINE DONATION RED",
-    "WINE DONATION WHITE",
-    "SACRED SAND T-SHIRT",
-    "SACRED SAND T-SHIRT ",
-    "The Voice ",
-    "The Voice (plain Cover) ",
-];
-
-export const donationsExclude: Array<string> = [
+export const excludeDonations: Array<string> = [
     "coffee pot",
     "coffee donation",
     "card ministry donation",

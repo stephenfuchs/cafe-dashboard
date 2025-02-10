@@ -21,7 +21,7 @@ export const imagesCoffee: Record<string, string> = {
 export const imagesDefault = "/img/item-default.png";
 
 // Item Name Mappings
-export const nameMappings: Record<string, string> = {
+export const itemNameMap: Record<string, string> = {
     "cup of coffee": "coffee donation",
     "hot tea": "coffee donation",
     "cookies (2 for $1)": "cookies",
@@ -41,9 +41,15 @@ export const nameMappings: Record<string, string> = {
     "juice box": "juice",
     "organic milk": "milk",
     "starbucks frappuccino": "frappuccino",
+    "hot dog meal": "hot dog",
+    "wine donation white": "white wine",
+    "wine donation red": "red wine",
+    "premium white wine": "white wine",
+    "premium red wine": "red wine",
+    "iced coffee": "americano",
 };
 
-export const categoryMappings: Record<string, string> = {
+export const itemCategoryMap: Record<string, string> = {
     "hot drinks": "barista",
     "cold drinks": "drink cooler",
     "bakery items": "baked goods",
@@ -68,14 +74,14 @@ export const itemCategoryAssignment: Record<string, string> = {
 
 
 // Modifier Name Mappings
-export const modifierNameMappings: Record<string, string> = {
+export const modifierNameMap: Record<string, string> = {
     "mocha (chocolate sauce)": "mocha",
     "plain ol boring hot cocoa for linda": "no add-on",
     "double chocolate": "chocolate",
     "everything but the bagel seasonings": "everything seasoning",
     "reg cream cheese": "regular cream cheese",
 };
-export const modifierCategoryMappings: Record<string, string> = {
+export const modifierCategoryMap: Record<string, string> = {
     "pop flavor": "flavor",
     "sparkling ice flavor": "flavor",
     "iced tea variety": "variety",
@@ -97,7 +103,7 @@ export const modifierCategoryMappings: Record<string, string> = {
     "breakfast sandwich": "modifications",
 };
 
-export const skippedModifiers = ["ask for order name"];
+export const modifierSkipped = ["ask for order name"];
 
 export const modifierCategoryAssignment: Record<string, string> = {
     "hazelnut praline": "flavor",

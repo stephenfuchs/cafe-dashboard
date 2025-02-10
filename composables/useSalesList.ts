@@ -62,12 +62,12 @@ import {
     imagesCategory,
     imagesCoffee,
     imagesDefault,
-    nameMappings,
-    categoryMappings,
+    itemNameMap,
+    itemCategoryMap,
     itemCategoryAssignment,
-    modifierNameMappings,
-    modifierCategoryMappings,
-    skippedModifiers,
+    modifierNameMap,
+    modifierCategoryMap,
+    modifierSkipped,
     modifierCategoryAssignment,
 } from "../server/utils/mappings";
 
@@ -91,11 +91,11 @@ export function useSalesList(
                 let quantity = Number(item?.quantity || 0);
                 const grossSales = Number(item?.grossSalesMoney?.amount || 0);
                 
-                if (nameMappings[name]) {
-                    name = nameMappings[name];
+                if (itemNameMap[name]) {
+                    name = itemNameMap[name];
                 }
-                if (categoryMappings[category]) {
-                    category = categoryMappings[category];
+                if (itemCategoryMap[category]) {
+                    category = itemCategoryMap[category];
                 }
                 
                 if (category === "unknown category") {
@@ -177,13 +177,13 @@ export function useSalesList(
                             });
                         }
 
-                        if (skippedModifiers.includes(categoryName)) return;
+                        if (modifierSkipped.includes(categoryName)) return;
 
                         categoryName =
-                            modifierCategoryMappings[categoryName] ||
+                            modifierCategoryMap[categoryName] ||
                             categoryName;
                         modifierName =
-                            modifierNameMappings[modifierName] || modifierName;
+                            modifierNameMap[modifierName] || modifierName;
 
                         if (!modifiers[categoryName]) {
                             modifiers[categoryName] = [];

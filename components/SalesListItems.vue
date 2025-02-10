@@ -1,6 +1,6 @@
 <script setup type="ts">
 import {
-    donationsExclude,
+    excludeDonations,
 } from "../server/utils/excludes";
 
 const filters = useFilters();
@@ -16,7 +16,7 @@ const options = ref(["Items", "Categories"]);
 const { salesList: items } = useSalesList(
     orders,
     previousOrders,
-    donationsExclude,
+    excludeDonations,
 );
 const { salesList: categories } = useSalesList(
     orders,

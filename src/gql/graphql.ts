@@ -6027,7 +6027,6 @@ export enum Country {
   Wf = 'WF',
   /** Samoa */
   Ws = 'WS',
-  Xt = 'XT',
   /** Yemen */
   Ye = 'YE',
   /** Mayotte */
