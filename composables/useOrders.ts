@@ -1,6 +1,10 @@
 import { TZDate } from "@date-fns/tz";
 import { formatISO, parseISO, format } from "date-fns";
 import type { Order, OrdersQuery, OrderConnection } from "../src/gql/graphql";
+import {
+    excludeDate, excludeItem
+} from "../server/utils/excludes";
+
 // Define type aliases for data structures
 // type Money = number;
 // type Tender = {
@@ -52,14 +56,23 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
                 },
             });
 
-            const timeZone = "America/Chicago";
-
             orders.value = response.map(order => ({
             ...order,
             closedAt: order.closedAt
-                ? format(new TZDate(parseISO(order.closedAt), timeZone), "MM-dd-yyyy hh:mm aaa")
+                ? format(new TZDate(parseISO(order.closedAt), "America/Chicago"), "MM-dd-yyyy hh:mm aaa")
                 : null
-        }));
+        })).filter(order => {
+            if (!order.closedAt) return false;
+
+            const orderDate = order?.closedAt?.split(" ")[0];
+            if (excludeDate.has(orderDate)) return false;
+
+            const hasExcludedItems = order.lineItems?.some(item => excludeItem.has(item.name));
+            if (hasExcludedItems) return false
+
+            return true
+
+        });
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
