@@ -65,7 +65,8 @@ import {
     itemNameMap,
     itemCategoryMap,
     itemCategoryAssignment,
-    modifierNameMap,
+    modifierGlobalNameMap,
+    modifierItemNameMap,
     modifierCategoryMap,
     modifierSkipped,
     modifierCategoryAssignment,
@@ -146,6 +147,14 @@ export function useSalesList(
                         let categoryName = "unknown category";
                         let ordinal = Number.MAX_SAFE_INTEGER;
 
+                        if (modifierItemNameMap[name]?.[modifierName]) {
+                            modifierName = modifierItemNameMap[name][modifierName]
+                        }
+
+                        if (modifierGlobalNameMap[modifierName]) {
+                            modifierName = modifierGlobalNameMap[modifierName]
+                        }
+
                         if (modifierCategoryAssignment[modifierName]) {
                             categoryName =
                                 modifierCategoryAssignment[modifierName];
@@ -182,10 +191,8 @@ export function useSalesList(
                         categoryName =
                             modifierCategoryMap[categoryName] ||
                             categoryName;
-                        modifierName =
-                            modifierNameMap[modifierName] || modifierName;
 
-                        if (!modifiers[categoryName]) {
+                            if (!modifiers[categoryName]) {
                             modifiers[categoryName] = [];
                         }
                         const existingModifier = modifiers[categoryName].find(
