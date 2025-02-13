@@ -155,36 +155,41 @@ export function useSalesList(
                             modifierName = modifierGlobalNameMap[modifierName]
                         }
 
-                        if (modifierCategoryAssignment[modifierName]) {
-                            categoryName =
-                                modifierCategoryAssignment[modifierName];
-                            modifierListInfos.forEach((modListInfo) => {
-                                if (
-                                    modListInfo.modifierList?.name.toLowerCase() ===
-                                    categoryName
-                                ) {
-                                    ordinal =
-                                        modListInfo.modifierList.ordinal ??
-                                        ordinal;
-                                }
-                            });
+                        if (modifierListInfos) {
+                            if (modifierCategoryAssignment[modifierName]) {
+                                categoryName =
+                                    modifierCategoryAssignment[modifierName];
+                                modifierListInfos.forEach((modListInfo) => {
+                                    if (
+                                        modListInfo.modifierList?.name.toLowerCase() ===
+                                        categoryName
+                                    ) {
+                                        ordinal =
+                                            modListInfo.modifierList.ordinal ??
+                                            ordinal;
+                                    }
+                                });
+                            } else {
+                                modifierListInfos.forEach((modListInfo) => {
+                                    if (
+                                        modListInfo.modifierList?.modifiers?.some(
+                                            (mod) =>
+                                                mod.name.toLowerCase() ===
+                                                modifierName,
+                                        )
+                                    ) {
+                                        categoryName =
+                                            modListInfo.modifierList.name.toLowerCase();
+                                        ordinal =
+                                            modListInfo.modifierList.ordinal ??
+                                            ordinal;
+                                    }
+                                });
+                            }
                         } else {
-                            modifierListInfos.forEach((modListInfo) => {
-                                if (
-                                    modListInfo.modifierList?.modifiers?.some(
-                                        (mod) =>
-                                            mod.name.toLowerCase() ===
-                                            modifierName,
-                                    )
-                                ) {
-                                    categoryName =
-                                        modListInfo.modifierList.name.toLowerCase();
-                                    ordinal =
-                                        modListInfo.modifierList.ordinal ??
-                                        ordinal;
-                                }
-                            });
+                            categoryName = modifierCategoryAssignment[modifierName] || "unknown category";
                         }
+
 
                         if (modifierSkipped.includes(categoryName)) return;
 
@@ -237,15 +242,10 @@ export function useSalesList(
                     }
                 };
 
-                if (
-                    Array.isArray(item.modifiers) &&
-                    item.itemVariation?.item?.modifierListInfos
-                ) {
-                    processModifiers(
-                        item.modifiers,
-                        item.itemVariation.item.modifierListInfos,
-                    );
-                }
+                processModifiers(
+                    item.modifiers ?? [],
+                    item.itemVariation?.item?.modifierListInfos ?? []
+                );
 
                 // **Added logic to merge duplicate modifier categories**
                 Object.keys(modifiers).forEach((category) => {
