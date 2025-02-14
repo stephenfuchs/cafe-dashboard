@@ -157,34 +157,19 @@ export function useSalesList(
 
                         if (modifierListInfos) {
                             if (modifierCategoryAssignment[modifierName]) {
-                                categoryName =
-                                    modifierCategoryAssignment[modifierName];
-                                modifierListInfos.forEach((modListInfo) => {
-                                    if (
-                                        modListInfo.modifierList?.name.toLowerCase() ===
-                                        categoryName
-                                    ) {
-                                        ordinal =
-                                            modListInfo.modifierList.ordinal ??
-                                            ordinal;
-                                    }
-                                });
+                                categoryName = modifierCategoryAssignment[modifierName];
+
+                                const categoryInfo = modifierListInfos.find((modListInfo) => modListInfo.modifierList?.name.toLowerCase() === categoryName )
+                                ordinal = categoryInfo?.modifierList?.ordinal ?? ordinal;
                             } else {
-                                modifierListInfos.forEach((modListInfo) => {
-                                    if (
-                                        modListInfo.modifierList?.modifiers?.some(
-                                            (mod) =>
-                                                mod.name.toLowerCase() ===
-                                                modifierName,
-                                        )
-                                    ) {
-                                        categoryName =
-                                            modListInfo.modifierList.name.toLowerCase();
-                                        ordinal =
-                                            modListInfo.modifierList.ordinal ??
-                                            ordinal;
-                                    }
-                                });
+                                const matchingCategory = modifierListInfos.find((modListInfo) => modListInfo.modifierList?.modifiers?.some(
+                                        (mod) => mod.name.toLowerCase() === modifierName,
+                                    )
+                                );
+                                if (matchingCategory) {
+                                    categoryName = matchingCategory?.modifierList?.name.toLowerCase() ?? "unknown category";
+                                    ordinal = matchingCategory?.modifierList?.ordinal ?? ordinal;
+                                }
                             }
                         } else {
                             categoryName = modifierCategoryAssignment[modifierName] || "unknown category";
@@ -193,13 +178,10 @@ export function useSalesList(
 
                         if (modifierSkipped.includes(categoryName)) return;
 
-                        categoryName =
-                            modifierCategoryMap[categoryName] ||
-                            categoryName;
+                        categoryName = modifierCategoryMap[categoryName] || categoryName;
+                        modifiers[categoryName] = modifiers[categoryName] || [];
 
-                            if (!modifiers[categoryName]) {
-                            modifiers[categoryName] = [];
-                        }
+
                         const existingModifier = modifiers[categoryName].find(
                             (mod) => mod.selection === modifierName,
                         );
@@ -247,59 +229,41 @@ export function useSalesList(
                     item.itemVariation?.item?.modifierListInfos ?? []
                 );
 
-                // **Added logic to merge duplicate modifier categories**
-                Object.keys(modifiers).forEach((category) => {
-                    if (modifiers[category].length > 1) {
-                        const uniqueSelections = new Map<string, number>();
-                        modifiers[category].forEach((mod) => {
-                            uniqueSelections.set(
-                                mod.selection,
-                                (uniqueSelections.get(mod.selection) || 0) +
-                                    mod.count,
-                            );
-                        });
-
-                        const mergedSelections = Array.from(
-                            uniqueSelections.keys(),
-                        ).join(", ");
-                        const totalCount = Math.max(
-                            ...Array.from(uniqueSelections.values()),
-                        );
+                // Group multiple modifier selections in modifiers list into one comma seperated selection
+                Object.entries(modifiers).forEach(([category, mods]) => {
+                    if (mods.length > 1) {
+                        const uniqueSelections = mods.reduce((acc, mod) => {
+                            acc.set(mod.selection, (acc.get(mod.selection) || 0) + mod.count);
+                            return acc;
+                        }, new Map<string, number>());
 
                         modifiers[category] = [
                             {
-                                selection: mergedSelections,
-                                count: totalCount,
-                                previousCount: 0,
-                            },
-                        ];
+                                selection: Array.from(uniqueSelections.keys()).join(", "),
+                                count: Math.max(...uniqueSelections.values()),
+                                previousCount: 0
+                            }
+                        ]
                     }
-                });
+                })
 
+                // Group multiple modifier selections in modifierSet into one comma seperated selection
                 modifierSets.forEach((set) => {
-                    const mergedModifiers: { [key: string]: string[] } = {};
-
-                    set.modifiers.forEach((mod) => {
-                        if (!mergedModifiers[mod.category]) {
-                            mergedModifiers[mod.category] = [];
-                        }
-
-                        if (
-                            !mergedModifiers[mod.category].includes(
-                                mod.selection,
-                            )
-                        ) {
-                            mergedModifiers[mod.category].push(mod.selection);
-                        }
-                    });
-
-                    set.modifiers = Object.entries(mergedModifiers).map(
-                        ([category, selections]) => ({
-                            category,
-                            selection: selections.join(", "),
-                        }),
+                    const mergedModifiers = set.modifiers.reduce<Record<string, Set<string>>>(
+                        (acc, mod) => {
+                            if (!acc[mod.category]) {
+                                acc[mod.category] = new Set();
+                            }
+                            acc[mod.category].add(mod.selection);
+                            return acc
+                        }, {},
                     );
-                });
+
+                    set.modifiers = Object.entries(mergedModifiers).map(([category, selections]) => ({
+                        category,
+                        selection: Array.from(selections).join(", ")
+                    }))
+                })
 
                 if (!data[name]) {
                     data[name] = {
@@ -314,39 +278,44 @@ export function useSalesList(
                         modifierSets,
                     };
                 } else {
-                    data[name].quantity += quantity;
-                    data[name].grossSales += grossSales;
+                    const item = data[name]
+                    item.quantity += quantity;
+                    item.grossSales += grossSales;
 
                     Object.entries(modifiers).forEach(([category, mods]) => {
-                        if (!data[name].modifiers[category]) {
-                            data[name].modifiers[category] = [];
+                        if (!item.modifiers[category]) {
+                            item.modifiers[category] = [];
                         }
 
-                        mods.forEach((mod) => {
-                            const existingMod = data[name].modifiers[
-                                category
-                            ].find((m) => m.selection === mod.selection);
-                            if (existingMod) {
-                                existingMod.count += mod.count;
-                            } else {
-                                data[name].modifiers[category].push(mod);
-                            }
-                        });
-                    });
-
-                    modifierSets.forEach((newSet) => {
-                        const existingSet = data[name].modifierSets.find(
-                            (set) =>
-                                JSON.stringify(set.modifiers) ===
-                                JSON.stringify(newSet.modifiers),
+                        const categoryModifiers = new Map(
+                            item.modifiers[category].map((mod) => [mod.selection, mod])
                         );
 
-                        if (existingSet) {
-                            existingSet.count += newSet.count;
+                        mods.forEach((mod) => {
+                            if (categoryModifiers.has(mod.selection)) {
+                                categoryModifiers.get(mod.selection)!.count += mod.count
+                            } else {
+                                categoryModifiers.set(mod.selection, mod)
+                            }
+                        });
+
+                        item.modifiers[category] = Array.from(categoryModifiers.values());
+                    });
+
+                    const existingSets = new Map(
+                        item.modifierSets.map((set) => [JSON.stringify(set.modifiers), set])
+                    );
+
+                    modifierSets.forEach((newSet) => {
+                        const key = JSON.stringify(newSet.modifiers);
+                        if (existingSets.has(key)) {
+                            existingSets.get(key)!.count += newSet.count
                         } else {
-                            data[name].modifierSets.push(newSet);
+                            existingSets.set(key, newSet)
                         }
                     });
+
+                    item.modifierSets = Array.from(existingSets.values());
                 }
             });
         });
@@ -445,6 +414,3 @@ export function useSalesList(
         salesList,
     };
 }
-
-
-
