@@ -13,7 +13,6 @@ const props = defineProps({
         required: true,
     },
 });
-const first = ref(0);
 
 const isVisible = ref(false); // Keeps track of visibility
 
@@ -23,15 +22,6 @@ const toggleVisibility = () => {
 
 const hasModifiers = computed(() => {
     return Object.keys(props.item?.modifiers ?? {}).length > 0;
-});
-
-const modifierSetsWithKeys = computed(() => {
-    return (
-        props.item?.modifierSets?.map((set: any, index: any) => ({
-            ...set,
-            _uniqueKey: `set-${set.id || index}`, // Use a persistent unique key
-        })) || []
-    );
 });
 
 const modifierSetCount = computed(() => {
@@ -60,67 +50,94 @@ const topModifiersByCategory = computed(() => {
 
 const selected = ref("Count");
 const options = ref(["Count", "Trend"]);
+
+const drawerPassthrough = {
+    // pcCloseButton: {
+    //     root: {
+    //         class: "size-4",
+    //     },
+    // },
+    root: {
+        class: "border-none",
+    },
+};
 </script>
 
 <template>
     <UiAppCard noTitle>
         <div
-            class="grid grid-rows-2 items-center gap-4 xl:grid-cols-2 xl:grid-rows-1"
+            class="grid grid-rows-2 items-center gap-4 md:grid-cols-2 md:grid-rows-1"
         >
             <div class="flex items-center gap-4">
                 <img
                     :src="item?.imgItem"
                     :alt="`Image of ` + item?.name"
-                    class="w-16 rounded bg-neutral-100 lg:w-20 dark:bg-neutral-700"
+                    class="w-16 rounded-full bg-neutral-100 lg:w-20 dark:bg-neutral-700"
                 />
-                <h3
-                    class="flex-1 truncate text-lg font-bold uppercase text-color"
-                >
-                    <span class="block text-xs font-medium text-muted-color">{{
-                        item?.category
-                    }}</span>
-
-                    {{ item?.name }}
-                    <span class="block text-xs font-light text-muted-color"
-                        ><span
-                            class="material-symbols-outlined font-bold"
-                            :class="{
-                                'text-green-500':
-                                    item?.previousSortOrder === 0 ||
-                                    item?.previousSortOrder === null ||
-                                    item?.currentSortOrder <
-                                        item?.previousSortOrder,
-                                'text-orange-500':
-                                    item?.currentSortOrder >
-                                    (item?.previousSortOrder || Infinity),
-                                'text-muted-color':
-                                    item?.currentSortOrder ===
-                                    item?.previousSortOrder,
-                            }"
-                            >{{
-                                item?.currentSortOrder <
-                                    item?.previousSortOrder ||
-                                item?.previousSortOrder === null ||
-                                item?.previousSortOrder === 0
-                                    ? "arrow_upward"
-                                    : item?.currentSortOrder >
-                                        item?.previousSortOrder
-                                      ? "arrow_downward"
-                                      : "horizontal_rule"
-                            }}</span
-                        >
-                        {{ item?.currentSortOrder }} current |
-                        {{
-                            item?.previousSortOrder !== 0
-                                ? item?.previousSortOrder
-                                : "--"
-                        }}
-                        previous</span
+                <div class="flex flex-1 justify-between truncate">
+                    <h3
+                        class="flex-1 truncate text-lg font-bold uppercase text-color"
                     >
-                </h3>
+                        <span
+                            class="block text-xs font-medium text-muted-color"
+                            >{{ item?.category }}</span
+                        >
+
+                        {{ item?.name }}
+                        <span class="block text-xs font-light text-muted-color"
+                            ><span
+                                class="material-symbols-outlined font-bold"
+                                :class="{
+                                    'text-green-500':
+                                        item?.previousSortOrder === 0 ||
+                                        item?.previousSortOrder === null ||
+                                        item?.currentSortOrder <
+                                            item?.previousSortOrder,
+                                    'text-orange-500':
+                                        item?.currentSortOrder >
+                                        (item?.previousSortOrder || Infinity),
+                                    'text-muted-color':
+                                        item?.currentSortOrder ===
+                                        item?.previousSortOrder,
+                                }"
+                                >{{
+                                    item?.currentSortOrder <
+                                        item?.previousSortOrder ||
+                                    item?.previousSortOrder === null ||
+                                    item?.previousSortOrder === 0
+                                        ? "arrow_upward"
+                                        : item?.currentSortOrder >
+                                            item?.previousSortOrder
+                                          ? "arrow_downward"
+                                          : "horizontal_rule"
+                                }}</span
+                            >
+                            {{ item?.currentSortOrder }} current |
+                            {{
+                                item?.previousSortOrder !== 0
+                                    ? item?.previousSortOrder
+                                    : "--"
+                            }}
+                            previous</span
+                        >
+                    </h3>
+                    <Button
+                        severity="secondary"
+                        size="small"
+                        @click="toggleVisibility"
+                        class="self-center md:hidden"
+                        :class="{ hidden: !hasModifiers }"
+                    >
+                        <template #icon>
+                            <i class="material-symbols-outlined text-xl"
+                                >style</i
+                            >
+                        </template>
+                    </Button>
+                </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="flex-1">
+            <div class="flex items-center gap-4 max-md:px-2">
+                <div class="flex-1 max-md:w-1/2">
                     <span class="text-xs font-medium uppercase text-muted-color"
                         >Quantity</span
                     >
@@ -157,71 +174,91 @@ const options = ref(["Count", "Trend"]);
                         </div>
                     </div>
                 </div>
-                <div class="flex-1">
-                    <span class="text-xs font-medium uppercase text-muted-color"
-                        >Gross Sales</span
-                    >
-                    <div class="flex items-center gap-4">
-                        <div class="text-lg font-bold uppercase text-color">
-                            {{ formatCurrency(item?.grossSales) }}
-                        </div>
-                        <div
-                            class="flex gap-1 text-base font-semibold"
-                            :class="{
-                                'text-green-500': item?.trendGrossSales >= 0,
-                                'text-orange-500': item?.trendGrossSales < 0,
-                                'text-muted-color': item?.trendGrossSales === 0,
-                            }"
+                <div class="flex flex-1 justify-between gap-4 max-md:w-1/2">
+                    <div>
+                        <span
+                            class="text-xs font-medium uppercase text-muted-color"
+                            >Gross Sales</span
                         >
-                            <div
-                                class="material-symbols-outlined flex-1 text-end"
-                            >
-                                {{
-                                    item?.trendGrossSales > 0
-                                        ? "trending_up"
-                                        : item?.trendGrossSales < 0
-                                          ? "trending_down"
-                                          : "trending_flat"
-                                }}
+                        <div class="flex items-center gap-4">
+                            <div class="text-lg font-bold uppercase text-color">
+                                {{ formatCurrency(item?.grossSales) }}
                             </div>
-                            <div class="flex-1">
-                                {{
-                                    item?.trendGrossSales < 0
-                                        ? formatCurrency(
-                                              Math.abs(item?.trendGrossSales),
-                                          )
-                                        : formatCurrency(item?.trendGrossSales)
-                                }}
+                            <div
+                                class="flex gap-1 text-base font-semibold"
+                                :class="{
+                                    'text-green-500':
+                                        item?.trendGrossSales >= 0,
+                                    'text-orange-500':
+                                        item?.trendGrossSales < 0,
+                                    'text-muted-color':
+                                        item?.trendGrossSales === 0,
+                                }"
+                            >
+                                <div
+                                    class="material-symbols-outlined flex-1 text-end"
+                                >
+                                    {{
+                                        item?.trendGrossSales > 0
+                                            ? "trending_up"
+                                            : item?.trendGrossSales < 0
+                                              ? "trending_down"
+                                              : "trending_flat"
+                                    }}
+                                </div>
+                                <div class="flex-1">
+                                    {{
+                                        item?.trendGrossSales < 0
+                                            ? formatCurrency(
+                                                  Math.abs(
+                                                      item?.trendGrossSales,
+                                                  ),
+                                              )
+                                            : formatCurrency(
+                                                  item?.trendGrossSales,
+                                              )
+                                    }}
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <Button
+                        severity="secondary"
+                        size="small"
+                        @click="toggleVisibility"
+                        class="self-center max-md:hidden"
+                        :class="{ invisible: !hasModifiers }"
+                    >
+                        <template #icon>
+                            <i class="material-symbols-outlined text-xl"
+                                >style</i
+                            >
+                        </template>
+                    </Button>
                 </div>
-                <Button
-                    :disabled="!hasModifiers"
-                    severity="secondary"
-                    size="small"
-                    @click="toggleVisibility"
-                >
-                    <template #icon>
-                        <i class="material-symbols-outlined text-xl">style</i>
-                    </template>
-                </Button>
             </div>
         </div>
-        <Drawer v-model:visible="isVisible" position="full" blockScroll>
+        <Drawer
+            v-model:visible="isVisible"
+            position="full"
+            blockScroll
+            :pt="drawerPassthrough"
+        >
             <template #header>
-                <div class="mx-8 flex items-center gap-2">
+                <div class="flex items-center gap-2 xl:mx-8">
                     <img
                         :src="item?.imgItem"
                         :alt="`Image of ` + item?.name"
-                        class="w-10 rounded bg-neutral-100 dark:bg-neutral-700"
+                        class="w-10 rounded-full bg-neutral-100 dark:bg-neutral-700"
                     />
-                    <h2 class="text-3xl font-bold capitalize text-color">
+                    <h2
+                        class="truncate text-xl font-bold capitalize text-color md:text-3xl"
+                    >
                         {{ item?.name }} Modifier Sales
                     </h2>
                 </div>
             </template>
-            <div class="mx-8 mb-6">
+            <div class="mb-6 xl:mx-8">
                 <p class="mb-3 text-base font-normal uppercase text-color">
                     <span class="font-bold text-primary">{{
                         item?.quantity
@@ -237,7 +274,7 @@ const options = ref(["Count", "Trend"]);
                     }}</span>
                     in gross sales.
                 </p>
-                <div class="flex flex-wrap gap-x-4 gap-y-2">
+                <div class="flex flex-wrap gap-x-4 gap-y-2 max-sm:flex-col">
                     <p
                         class="text-sm font-normal capitalize text-color"
                         v-for="(modifier, category) in topModifiersByCategory"
@@ -250,69 +287,16 @@ const options = ref(["Count", "Trend"]);
                     </p>
                 </div>
             </div>
-            <div class="mx-8 grid grid-cols-5 gap-6">
-                <div class="col-span-3">
-                    <h3 class="mb-2 text-xl font-bold capitalize text-color">
+            <div class="grid grid-cols-5 gap-6 xl:mx-8">
+                <div class="col-span-5 max-sm:order-last lg:col-span-3">
+                    <h3
+                        class="mb-2 text-lg font-bold capitalize text-color sm:text-xl"
+                    >
                         Unique Modifer Sets
                     </h3>
-                    <!-- <DataView
-                        :value="modifierSetsWithKeys"
-                        layout="grid"
-                        dataKey="_uniqueKey"
-                        paginator
-                        :rows="12"
-                        v-model:first="first"
+                    <div
+                        class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3"
                     >
-                        <template #grid="{ items }">
-                            <div class="grid grid-cols-4 gap-4">
-                                <template
-                                    v-for="(set, index) in items.sort(
-                                        (a: Modifier, b: Modifier) =>
-                                            b.count - a.count,
-                                    )"
-                                    :key="set._uniqueKey"
-                                >
-                                    <UiAppCard class="flex flex-col gap-2" stat>
-                                        <template #title>
-                                            <div
-                                                class="flex items-center justify-between"
-                                            >
-                                                <div>
-                                                    Modifier Set
-                                                    {{ first + index + 1 }}
-                                                </div>
-                                                <div
-                                                    class="text-xs capitalize text-primary"
-                                                >
-                                                    {{ set.count }}
-                                                    <span v-if="set.count > 1"
-                                                        >orders</span
-                                                    >
-                                                    <span v-else>order</span>
-                                                </div>
-                                            </div>
-                                        </template>
-                                        <div
-                                            v-for="modifier in set.modifiers"
-                                            :key="modifier.selection"
-                                        >
-                                            <span
-                                                class="block text-xs font-bold uppercase text-color"
-                                            >
-                                                {{ modifier.category }}:
-                                            </span>
-                                            <span
-                                                class="text-sm font-normal capitalize text-color"
-                                            >
-                                                {{ modifier.selection }}
-                                            </span>
-                                        </div>
-                                    </UiAppCard>
-                                </template>
-                            </div>
-                        </template>
-                    </DataView> -->
-                    <div class="grid grid-cols-3 gap-6">
                         <UiAppCard
                             class="flex flex-col gap-2"
                             stat
@@ -345,8 +329,10 @@ const options = ref(["Count", "Trend"]);
                         </UiAppCard>
                     </div>
                 </div>
-                <div class="col-span-2">
-                    <h3 class="mb-2 text-xl font-bold capitalize text-color">
+                <div class="col-span-5 lg:col-span-2">
+                    <h3
+                        class="mb-2 text-lg font-bold capitalize text-color sm:text-xl"
+                    >
                         Modifiers
                     </h3>
                     <div class="flex flex-col gap-6">

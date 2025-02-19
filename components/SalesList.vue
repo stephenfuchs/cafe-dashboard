@@ -32,7 +32,7 @@ defineProps({
             class="box-content flex items-center gap-4 border-b border-surface-300 last:border-b-0 dark:border-surface-700"
         >
             <div
-                class="flex h-10 flex-1 items-center gap-4 truncate text-base font-semibold text-color"
+                class="flex h-10 flex-1 items-center gap-2 truncate text-base font-semibold text-color xl:gap-3 2xl:gap-4"
             >
                 <div class="h-full max-h-full">
                     <img
@@ -47,7 +47,7 @@ defineProps({
                         class="h-full max-h-full object-contain"
                     />
                 </div>
-                <div class="flex-1 capitalize">
+                <div class="flex-1 truncate capitalize">
                     {{
                         type === "category"
                             ? item.category || "N/A"
@@ -55,7 +55,7 @@ defineProps({
                     }}
                 </div>
             </div>
-            <div class="flex w-2/5 gap-8">
+            <div class="flex gap-4 xl:gap-6 2xl:gap-8">
                 <div class="w-1/2 text-end text-base font-semibold text-color">
                     {{
                         money
