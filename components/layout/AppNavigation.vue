@@ -65,19 +65,6 @@
             </Button>
             <Button
                 severity="secondary"
-                v-tooltip="'Modifier Sales'"
-                label="Modifiers"
-                iconPos="top"
-                as="router-link"
-                to="/modifiers"
-                :pt="buttonPassthrough"
-            >
-                <template #icon>
-                    <span class="material-symbols-outlined text-xl">style</span>
-                </template>
-            </Button>
-            <Button
-                severity="secondary"
                 v-tooltip="'Discounts'"
                 label="Discounts"
                 iconPos="top"
@@ -88,21 +75,6 @@
                 <template #icon>
                     <span class="material-symbols-outlined text-xl"
                         >percent</span
-                    >
-                </template>
-            </Button>
-            <Button
-                severity="secondary"
-                v-tooltip="'Expenses'"
-                label="Expenses"
-                iconPos="top"
-                as="router-link"
-                to="/expenses"
-                :pt="buttonPassthrough"
-            >
-                <template #icon>
-                    <span class="material-symbols-outlined text-xl"
-                        >receipt_long</span
                     >
                 </template>
             </Button>
