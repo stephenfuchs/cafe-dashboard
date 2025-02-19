@@ -13,15 +13,12 @@ const isVisible = ref(false); // Keeps track of visibility
 const toggleVisibility = () => {
     isVisible.value = !isVisible.value; // Toggles visibility
 };
-
-const selected = ref("Count");
-const options = ref(["Count", "Trend"]);
 </script>
 
 <template>
     <UiAppCard noTitle>
         <div
-            class="grid grid-rows-2 items-center gap-4 xl:grid-cols-2 xl:grid-rows-1"
+            class="grid grid-rows-2 items-center gap-4 md:grid-cols-2 md:grid-rows-1"
         >
             <div class="flex items-center gap-4">
                 <div
@@ -33,18 +30,32 @@ const options = ref(["Count", "Trend"]);
                         {{ discount?.imgDiscount }}
                     </span>
                 </div>
-                <h3
-                    class="flex-1 truncate text-lg font-bold uppercase text-color"
-                >
-                    <span class="block text-xs font-medium text-muted-color"
-                        >Discount</span
+                <div class="flex flex-1 justify-between">
+                    <h3
+                        class="flex-1 truncate text-lg font-bold uppercase text-color"
                     >
+                        <span class="block text-xs font-medium text-muted-color"
+                            >Discount</span
+                        >
 
-                    {{ discount?.discountName }}
-                </h3>
+                        {{ discount?.discountName }}
+                    </h3>
+                    <Button
+                        severity="secondary"
+                        size="small"
+                        @click="toggleVisibility"
+                        class="self-center md:hidden"
+                    >
+                        <template #icon>
+                            <i class="material-symbols-outlined text-xl"
+                                >style</i
+                            >
+                        </template>
+                    </Button>
+                </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="flex-1">
+            <div class="flex items-center gap-4 max-md:px-4">
+                <div class="flex-1 max-md:w-1/2">
                     <span class="text-xs font-medium uppercase text-muted-color"
                         >Claims</span
                     >
@@ -81,7 +92,7 @@ const options = ref(["Count", "Trend"]);
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-1 justify-between">
+                <div class="flex flex-1 justify-between gap-4 max-md:w-1/2">
                     <div>
                         <span
                             class="text-xs font-medium uppercase text-muted-color"
@@ -131,7 +142,7 @@ const options = ref(["Count", "Trend"]);
                         severity="secondary"
                         size="small"
                         @click="toggleVisibility"
-                        class="self-center"
+                        class="self-center max-md:hidden"
                     >
                         <template #icon>
                             <i class="material-symbols-outlined text-xl"
@@ -147,14 +158,14 @@ const options = ref(["Count", "Trend"]);
                 v-for="item in [...discount?.items].sort(
                     (a, b) => b.count - a.count,
                 )"
-                class="grid grid-rows-2 items-center gap-4 border-b border-surface-300 last:border-b-0 xl:grid-cols-2 xl:grid-rows-1 dark:border-surface-700"
+                class="grid grid-cols-2 items-center gap-4 border-b border-surface-300 last:border-b-0 dark:border-surface-700"
             >
                 <div class="flex items-center gap-4">
-                    <div class="flex w-16 items-center justify-center">
+                    <div class="flex items-center justify-center lg:w-16">
                         <img
                             :src="item.imgItem"
                             :alt="item.imgItem"
-                            class="size-12"
+                            class="size-10 lg:size-12"
                         />
                     </div>
                     <h3
