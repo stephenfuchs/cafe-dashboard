@@ -18,6 +18,17 @@ export const imagesCoffee: Record<string, string> = {
     decaf: "/img/coffee-decaf.png",
 };
 
+export const imagesDiscount: Record<string, string> = {
+    "cafe volunteer": "volunteer_activism",
+    comp: "money_off",
+    "cookie card": "cookie",
+    "bagel card": "adjust",
+    "loyalty card": "loyalty",
+    "custom discount": "price_change",
+    musician: "artist",
+    sample: "glass_cup",
+};
+
 export const imagesDefault = "/img/item-default.png";
 
 // Item Name Mappings
@@ -27,7 +38,7 @@ export const itemNameMap: Record<string, string> = {
     "cookies (2 for $1)": "cookies",
     "cookies (2 for $1.00)": "cookies",
     "hot chocolate": "hot cocoa",
-    "donation": "donation (general giving)",
+    donation: "donation (general giving)",
     "cake ball / pop": "cake pop",
     "chai tea latte": "chai latte",
     "chai tea": "chai latte",
@@ -53,128 +64,129 @@ export const itemCategoryMap: Record<string, string> = {
     "hot drinks": "barista",
     "cold drinks": "drink cooler",
     "bakery items": "baked goods",
-}
+};
 
 export const itemCategoryAssignment: Record<string, string> = {
     "apple juice": "drink cooler",
-    "chips": "snacks",
+    chips: "snacks",
     "breakfast pizza": "baked goods",
-    "pop": "drink cooler",
-    "scone": "baked goods",
-    "donut": "baked goods",
-    "cupcake": "baked goods",
-    "frappuccino": "drink cooler",
-    "powerade": "drink cooler",
+    pop: "drink cooler",
+    scone: "baked goods",
+    donut: "baked goods",
+    cupcake: "baked goods",
+    frappuccino: "drink cooler",
+    powerade: "drink cooler",
     "orange juice": "drink cooler",
     "vitamin water": "drink cooler",
     "unsweetened tea": "drink cooler",
-    "steamer": "barista",
-}
-
+    steamer: "barista",
+};
 
 // 1. Remap modifier names
 // 2. Remap modifier category names
 // 3. Assign deleted modifiers to category
 
-// Global Modifier Selection Renaming 
+// Global Modifier Selection Renaming
 export const modifierGlobalNameMap: Record<string, string> = {
     "no whip": "no add-on",
-    "whip": "whipped cream",
+    whip: "whipped cream",
     "whip cream": "whipped cream",
-    "marshmallow": "marshmallows",
+    marshmallow: "marshmallows",
     "mocha (chocolate sauce)": "mocha",
-    "special": "other",
-    "soy": "soy milk",    
-    "oat": "oat milk",    
-    "whole": "whole milk",    
-    "skim": "skim milk",    
-    "2%": "2% milk",    
-    "2 %": "2% milk", 
-    "regular (no syrup)": "no flavor",  
+    special: "other",
+    soy: "soy milk",
+    oat: "oat milk",
+    whole: "whole milk",
+    skim: "skim milk",
+    "2%": "2% milk",
+    "2 %": "2% milk",
+    "regular (no syrup)": "no flavor",
 };
 
 export const modifierItemNameMap: Record<string, Record<string, string>> = {
-    "bagel": {
+    bagel: {
         "asiago cheese": "cheese",
-        "wheat": "honey wheat",
+        wheat: "honey wheat",
         "everything but the bagel seasonings": "everything seasoning",
         "reg cream cheese": "regular cream cheese",
         "cream cheese: regular": "regular cream cheese",
         "cream cheese - regular": "regular cream cheese",
         "cream cheese: strawberry": "strawberry cream cheese",
         "cream cheese - strawberry": "strawberry cream cheese",
-        "strawberry": "strawberry cream cheese",
+        strawberry: "strawberry cream cheese",
         "cream cheese: veggie": "veggie cream cheese",
         "cream cheese - veggie": "veggie cream cheese",
         "chive & onion": "chive & onion cream cheese",
         "cream cheese: chive & onion": "chive & onion cream cheese",
         "cream cheese - chive & onion": "chive & onion cream cheese",
         "butter & cream cheese": "regular cream cheese, butter",
-        "uncooked": "untoasted",
-        "janes bagel double toasted with butter and cream cheese": "double toasted",
+        uncooked: "untoasted",
+        "janes bagel double toasted with butter and cream cheese":
+            "double toasted",
         "john's bagel after first service lots of butter": "toasted",
         "john's bagel after first service": "toasted",
         "johns bagel after first service": "toasted",
-        "the jon doyle bagel cheese bagel with chive or veggie cream cheese and bagel sprinkles": "toasted",
-        "the doyel slacker bagel cheese bagel with chive or veggie cream cheese and bagel sprinkles": "toasted",
-        
+        "the jon doyle bagel cheese bagel with chive or veggie cream cheese and bagel sprinkles":
+            "toasted",
+        "the doyel slacker bagel cheese bagel with chive or veggie cream cheese and bagel sprinkles":
+            "toasted",
     },
-    "muffin": {
+    muffin: {
         "blueberry crumb": "blueberry",
         "pumpkin swirl": "pumpkin",
-        "chocolate": "double chocolate"
-    },    
+        chocolate: "double chocolate",
+    },
     "hot cocoa": {
         "regular (16oz)": "large (16oz)",
-        "none": "no add-on",
-        "plain": "no flavor",
+        none: "no add-on",
+        plain: "no flavor",
         "chocolate strawberry": "strawberry",
         "plain ol boring hot cocoa for linda": "no add-on",
-        "plain ol boring hot chocolate for linda": "no add-on",    
-    },    
-    "latte": {
+        "plain ol boring hot chocolate for linda": "no add-on",
+    },
+    latte: {
         "chris mocha": "mocha",
-        "pumpkin": "pumpkin spice",
-        "none": "no add-on",
-        "regular": "no flavor",
+        pumpkin: "pumpkin spice",
+        none: "no add-on",
+        regular: "no flavor",
         "regular (no syrup)": "no flavor",
         "extra shot of espresso": "xtra shot espresso",
-    },   
-    "cappuccino": {
+    },
+    cappuccino: {
         "extra shot of espresso": "xtra shot espresso",
-        "none": "no add-on",
-        "regular": "no flavor",
-        "cinnamon": "cinnamon powder",
-    },   
+        none: "no add-on",
+        regular: "no flavor",
+        cinnamon: "cinnamon powder",
+    },
     "chai latte": {
-        "cinnamon": "cinnamon powder",
+        cinnamon: "cinnamon powder",
         "extra shot of espresso": "xtra shot espresso",
-        "none": "no add-on",
-        "regular": "no flavor",
-    },   
-    "juice": {
-        "red": "fruit punch",
+        none: "no add-on",
+        regular: "no flavor",
+    },
+    juice: {
+        red: "fruit punch",
         "super fruit punch": "fruit punch",
-        "purple": "grape",
+        purple: "grape",
         "goodness grapeness": "grape",
         "berry good lemonade": "berry",
-        "blue": "berry",
+        blue: "berry",
         "apple ever after": "apple",
-    },    
-    "powerade": {
-        "red": "fruit punch",
-        "blue": "berry blast",
-        "purple": "grape",
-    },    
+    },
+    powerade: {
+        red: "fruit punch",
+        blue: "berry blast",
+        purple: "grape",
+    },
     "red wine": {
-        "cab": "cabernet",
-    },    
+        cab: "cabernet",
+    },
     "white wine": {
-        "chard": "chardonnay",
-    },    
-    "pop": {
-        "orange": "crush (orange)",
-    },    
+        chard: "chardonnay",
+    },
+    pop: {
+        orange: "crush (orange)",
+    },
 };
 
 export const modifierCategoryMap: Record<string, string> = {
@@ -208,11 +220,11 @@ export const modifierCategoryAssignment: Record<string, string> = {
     gingerbread: "flavor",
     "large (16oz)": "size",
     "lemon apricot": "flavor",
-    "other": "flavor",
-    "regular": "flavor",
-    "vanilla": "flavor",
+    other: "flavor",
+    regular: "flavor",
+    vanilla: "flavor",
     // Latte & Cocoa Flavors
-    "almond": "flavor",
+    almond: "flavor",
     "apple pie": "flavor",
     blueberry: "flavor",
     butterscotch: "flavor",
@@ -260,48 +272,48 @@ export const modifierCategoryAssignment: Record<string, string> = {
     "cinnamon powder": "add-ons",
     "extra shot of espresso": "add-ons",
     "no add-on": "add-ons",
-    "sprinkles": "add-ons",
+    sprinkles: "add-ons",
     "the works": "add-ons",
     "whipped cream": "add-ons",
     // Pop Flavors
-    "coke": "flavor",
+    coke: "flavor",
     "diet coke": "flavor",
     "diet pepsi": "flavor",
-    "pepsi": "flavor",
+    pepsi: "flavor",
     "crush (orange)": "flavor",
     "diet mountain dew": "flavor",
     "mountain dew": "flavor",
     "root beer": "flavor",
     "diet root beer": "flavor",
-    "sprite": "flavor",
+    sprite: "flavor",
     "diet sprite": "flavor",
     "dr pepper": "flavor",
     "diet dr pepper": "flavor",
     // Cookie Flavors
     "oatmeal raisin": "flavor",
     // Drink Flaors
-    "apple": "flavor",
-    "berry": "flavor",
+    apple: "flavor",
+    berry: "flavor",
     "berry blast": "flavor",
     "fruit punch": "flavor",
-    "grape": "flavor",
+    grape: "flavor",
     "grape raspberry": "flavor",
-    "lemon": "flavor",
-    "orange": "flavor",
+    lemon: "flavor",
+    orange: "flavor",
     "power c": "flavor",
     "purple (grape)": "flavor",
-    "red": "flavor",
-    "revive": "flavor",
-    "xxx": "flavor",
+    red: "flavor",
+    revive: "flavor",
+    xxx: "flavor",
     // Wine Varieties
-    "blend": "variety",
-    "cabernet": "variety",
-    "chardonnay": "variety",
+    blend: "variety",
+    cabernet: "variety",
+    chardonnay: "variety",
     "pinot noir": "variety",
-    "riesling": "variety",
-    "sparkling": "variety",
+    riesling: "variety",
+    sparkling: "variety",
     // Pizza Toppings
-    "sausage": "flavor",
-    "cheese": "flavor",
-    "pepperoni": "flavor",
+    sausage: "flavor",
+    cheese: "flavor",
+    pepperoni: "flavor",
 };
