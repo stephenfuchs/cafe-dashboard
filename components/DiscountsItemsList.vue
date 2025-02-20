@@ -11,8 +11,7 @@ const { orders: previousOrders } = useOrders(
 const { itemTotals } = useDiscounts(orders, previousOrders);
 
 const topItems = computed(() => {
-    return [...itemTotals.value].filter((item) => item.value > 0)
-        .sort((a, b) => b.quantity - a.quantity)
+    return [...itemTotals.value].sort((a, b) => b.quantity - a.quantity)
 });
 
 const trendQuantity = computed(() =>

@@ -245,9 +245,14 @@ export function useDiscounts(
                     imgItem: imagesDefault,
                 };
 
+                const imgItem =
+                    current.imgItem !== imagesDefault
+                        ? current.imgItem
+                        : previous.imgItem;
+
                 return {
                     name,
-                    imgItem: current.imgItem,
+                    imgItem,
                     quantity: current.count,
                     prevQuantity: previous.count,
                     value: current.totalValue,

@@ -1,7 +1,8 @@
 <script setup>
+import { twMerge } from "tailwind-merge";
 import { formatCurrency } from "~/server/utils/formatCurrency";
 
-defineProps({
+const props = defineProps({
     source: {
         type: Array,
         required: true,
@@ -47,7 +48,14 @@ defineProps({
                         class="h-full max-h-full object-contain"
                     />
                 </div>
-                <div class="flex-1 truncate capitalize">
+                <div
+                    class="flex-1 truncate capitalize"
+                    :class="{
+                        'font-normal text-muted-color': money
+                            ? item.grossSales === 0
+                            : item.quantity === 0,
+                    }"
+                >
                     {{
                         type === "category"
                             ? item.category || "N/A"
@@ -56,7 +64,17 @@ defineProps({
                 </div>
             </div>
             <div class="flex gap-4 xl:gap-6 2xl:gap-8">
-                <div class="w-1/2 text-end text-base font-semibold text-color">
+                <div
+                    :class="
+                        twMerge(
+                            'w-1/2 text-end text-base font-semibold text-color',
+                            (money && item.grossSales === 0) ||
+                                (!money && item.quantity === 0)
+                                ? 'font-normal text-muted-color'
+                                : '',
+                        )
+                    "
+                >
                     {{
                         money
                             ? formatCurrency(item.grossSales) || 0
