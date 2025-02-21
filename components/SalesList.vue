@@ -52,7 +52,7 @@ const props = defineProps({
                     class="flex-1 truncate capitalize"
                     :class="{
                         'font-normal text-muted-color': money
-                            ? item.grossSales === 0
+                            ? item.value === 0
                             : item.quantity === 0,
                     }"
                 >
@@ -68,7 +68,7 @@ const props = defineProps({
                     :class="
                         twMerge(
                             'w-1/2 text-end text-base font-semibold text-color',
-                            (money && item.grossSales === 0) ||
+                            (money && item.value === 0) ||
                                 (!money && item.quantity === 0)
                                 ? 'font-normal text-muted-color'
                                 : '',
@@ -77,7 +77,7 @@ const props = defineProps({
                 >
                     {{
                         money
-                            ? formatCurrency(item.grossSales) || 0
+                            ? formatCurrency(item.value) || 0
                             : item.quantity || 0
                     }}
                 </div>
@@ -87,26 +87,24 @@ const props = defineProps({
                         :class="{
                             'text-green-500':
                                 (money
-                                    ? item.trendGrossSales
+                                    ? item.trendValue
                                     : item.trendQuantity) >= 0,
                             'text-orange-500':
-                                (money
-                                    ? item.trendGrossSales
-                                    : item.trendQuantity) < 0,
+                                (money ? item.trendValue : item.trendQuantity) <
+                                0,
                             'text-muted-color':
                                 (money
-                                    ? item.trendGrossSales
+                                    ? item.trendValue
                                     : item.trendQuantity) === 0,
                         }"
                     >
                         <div class="material-symbols-outlined flex-1 text-end">
                             {{
-                                (money
-                                    ? item.trendGrossSales
-                                    : item.trendQuantity) > 0
+                                (money ? item.trendValue : item.trendQuantity) >
+                                0
                                     ? "trending_up"
                                     : (money
-                                            ? item.trendGrossSales
+                                            ? item.trendValue
                                             : item.trendQuantity) < 0
                                       ? "trending_down"
                                       : "trending_flat"
@@ -118,13 +116,13 @@ const props = defineProps({
                                     ? formatCurrency(
                                           Math.abs(
                                               money
-                                                  ? item.trendGrossSales
+                                                  ? item.trendValue
                                                   : item.trendQuantity,
                                           ),
                                       )
                                     : Math.abs(
                                           money
-                                              ? item.trendGrossSales
+                                              ? item.trendValue
                                               : item.trendQuantity,
                                       )
                             }}

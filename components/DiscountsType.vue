@@ -12,13 +12,13 @@ const { orders: previousOrders } = useOrders(
 const { discountTotals } = useDiscounts(orders, previousOrders);
 
 const sortOptions = ref([
-    { optionLabel: "Claims", value: "!count" },
-    { optionLabel: "Discount", value: "discountName" },
+    { optionLabel: "Claims", value: "!quantity" },
+    { optionLabel: "Discount", value: "name" },
     { optionLabel: "Value", value: "!value" },
 ]);
 const sortKey = ref(sortOptions.value[0]);
 const sortOrder = ref(-1);
-const sortField = ref("count");
+const sortField = ref("quantity");
 
 const onSortChange = (event) => {
     const value = event.value.value;
@@ -68,7 +68,7 @@ const dataviewPassthrough = {
 
 <template>
     <DataView
-        :value="discountTotals.filter((discount) => discount.count > 0)"
+        :value="discountTotals.filter((discount) => discount.quantity > 0)"
         :sortOrder="sortOrder"
         :sortField="sortField"
         :pt="dataviewPassthrough"
@@ -124,10 +124,16 @@ const dataviewPassthrough = {
         </template>
         <template #list="slotProps">
             <div class="flex flex-col gap-6">
-                <DiscountsTypeDiscount
+                <!-- <DiscountsTypeDiscount
                     v-for="discount in slotProps.items"
                     :key="discount.name"
                     :discount
+                /> -->
+                <UiAppCardItem
+                    v-for="item in slotProps.items"
+                    type="discount"
+                    :key="item.name"
+                    :item
                 />
             </div>
         </template>

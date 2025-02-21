@@ -1,9 +1,6 @@
 <script setup>
-import {
-    excludeDonations,
-} from "../server/utils/excludes";
+import { excludeDonations } from "../server/utils/excludes";
 const filters = useFilters();
-
 
 const { orders } = useOrders(filters.startDate, filters.endDate);
 const { orders: previousOrders } = useOrders(
@@ -82,8 +79,14 @@ const dataviewPassthrough = {
         </template>
         <template #list="slotProps">
             <div class="flex flex-col gap-6">
-                <ItemsListItem
+                <!-- <ItemsListItem
                     v-for="item in slotProps.items"
+                    :key="item.name"
+                    :item
+                /> -->
+                <UiAppCardItem
+                    v-for="item in slotProps.items"
+                    type="item"
                     :key="item.name"
                     :item
                 />

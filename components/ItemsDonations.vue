@@ -14,18 +14,18 @@ const { salesList } = useSalesList(orders, previousOrders, []);
 const donations = computed(() => {
     return salesList.value
         .filter((item) => item.category === "donations")
-        .sort((a, b) => b.grossSales - a.grossSales);
+        .sort((a, b) => b.value - a.value);
 });
 
 const totalDonations = computed(() => {
     return donations.value.reduce((total, donation) => {
-        return total + donation.grossSales;
+        return total + donation.value;
     }, 0);
 });
 
 const trendDonations = computed(() => {
     return donations.value.reduce((total, donation) => {
-        return total + donation.trendGrossSales;
+        return total + donation.trendValue;
     }, 0);
 });
 </script>

@@ -28,8 +28,8 @@ const coffees = computed(() => {
 const coffeeDonations = computed(() => {
     const donation = salesList.value.find((item) => item.name === "coffee donation")
     return donation ? {
-        grossSales: donation.grossSales,
-        trendGrossSales: donation.trendGrossSales
+        value: donation.value,
+        trendValue: donation.trendValue
     } : null
 })
 </script>
@@ -40,9 +40,9 @@ const coffeeDonations = computed(() => {
         <template #options>
             <div
                 :class="
-                    coffeeDonations?.trendGrossSales > 0
+                    coffeeDonations?.trendValue > 0
                         ? 'bg-green-100 text-green-700'
-                        : coffeeDonations?.trendGrossSales < 0
+                        : coffeeDonations?.trendValue < 0
                           ? 'bg-orange-100 text-orange-700'
                           : 'bg-neutral-200 text-neutral-700'
                 "
@@ -50,7 +50,7 @@ const coffeeDonations = computed(() => {
             >
                 <div class="material-symbols-outlined">money_bag</div>
                 <div>
-                    {{ formatCurrency(coffeeDonations?.grossSales || 0) }}
+                    {{ formatCurrency(coffeeDonations?.value || 0) }}
                 </div>
             </div>
         </template>

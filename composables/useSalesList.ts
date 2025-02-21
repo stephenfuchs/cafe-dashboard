@@ -77,7 +77,6 @@ export function useSalesList(
     previousOrders: Ref<Order[]>,
     exclude: string[] = [],
 ) {
-    
     const calcSalesData = (ordersArray: Order[]): Record<string, SalesData> => {
         const data: Record<string, SalesData> = {};
 
@@ -85,29 +84,30 @@ export function useSalesList(
             if (!order.lineItems) return;
 
             order.lineItems.forEach((item) => {
-                let name = item?.name?.trimEnd().toLowerCase() || "Unknown Item";
+                let name =
+                    item?.name?.trimEnd().toLowerCase() || "Unknown Item";
                 let category =
                     item?.itemVariation?.item?.categories?.[0]?.category?.name?.toLowerCase() ||
                     "unknown category";
                 let quantity = Number(item?.quantity || 0);
                 const grossSales = Number(item?.grossSalesMoney?.amount || 0);
-                
+
                 if (itemNameMap[name]) {
                     name = itemNameMap[name];
                 }
                 if (itemCategoryMap[category]) {
                     category = itemCategoryMap[category];
                 }
-                
+
                 if (category === "unknown category") {
-                    category = itemCategoryAssignment[name]
+                    category = itemCategoryAssignment[name];
                 }
-                
+
                 if (name === "coffee pot" && item.modifiers?.length) {
                     name = item.modifiers![1].name?.toLowerCase();
                     if (item.modifiers![0].name === "HALF POT") quantity /= 2;
                 }
-                
+
                 if (!name || exclude.includes(name)) return;
 
                 const imgItem =
@@ -148,39 +148,56 @@ export function useSalesList(
                         let ordinal = Number.MAX_SAFE_INTEGER;
 
                         if (modifierItemNameMap[name]?.[modifierName]) {
-                            modifierName = modifierItemNameMap[name][modifierName]
+                            modifierName =
+                                modifierItemNameMap[name][modifierName];
                         }
 
                         if (modifierGlobalNameMap[modifierName]) {
-                            modifierName = modifierGlobalNameMap[modifierName]
+                            modifierName = modifierGlobalNameMap[modifierName];
                         }
 
                         if (modifierListInfos) {
                             if (modifierCategoryAssignment[modifierName]) {
-                                categoryName = modifierCategoryAssignment[modifierName];
+                                categoryName =
+                                    modifierCategoryAssignment[modifierName];
 
-                                const categoryInfo = modifierListInfos.find((modListInfo) => modListInfo.modifierList?.name.toLowerCase() === categoryName )
-                                ordinal = categoryInfo?.modifierList?.ordinal ?? ordinal;
+                                const categoryInfo = modifierListInfos.find(
+                                    (modListInfo) =>
+                                        modListInfo.modifierList?.name.toLowerCase() ===
+                                        categoryName,
+                                );
+                                ordinal =
+                                    categoryInfo?.modifierList?.ordinal ??
+                                    ordinal;
                             } else {
-                                const matchingCategory = modifierListInfos.find((modListInfo) => modListInfo.modifierList?.modifiers?.some(
-                                        (mod) => mod.name.toLowerCase() === modifierName,
-                                    )
+                                const matchingCategory = modifierListInfos.find(
+                                    (modListInfo) =>
+                                        modListInfo.modifierList?.modifiers?.some(
+                                            (mod) =>
+                                                mod.name.toLowerCase() ===
+                                                modifierName,
+                                        ),
                                 );
                                 if (matchingCategory) {
-                                    categoryName = matchingCategory?.modifierList?.name.toLowerCase() ?? "unknown category";
-                                    ordinal = matchingCategory?.modifierList?.ordinal ?? ordinal;
+                                    categoryName =
+                                        matchingCategory?.modifierList?.name.toLowerCase() ??
+                                        "unknown category";
+                                    ordinal =
+                                        matchingCategory?.modifierList
+                                            ?.ordinal ?? ordinal;
                                 }
                             }
                         } else {
-                            categoryName = modifierCategoryAssignment[modifierName] || "unknown category";
+                            categoryName =
+                                modifierCategoryAssignment[modifierName] ||
+                                "unknown category";
                         }
-
 
                         if (modifierSkipped.includes(categoryName)) return;
 
-                        categoryName = modifierCategoryMap[categoryName] || categoryName;
+                        categoryName =
+                            modifierCategoryMap[categoryName] || categoryName;
                         modifiers[categoryName] = modifiers[categoryName] || [];
-
 
                         const existingModifier = modifiers[categoryName].find(
                             (mod) => mod.selection === modifierName,
@@ -226,44 +243,51 @@ export function useSalesList(
 
                 processModifiers(
                     item.modifiers ?? [],
-                    item.itemVariation?.item?.modifierListInfos ?? []
+                    item.itemVariation?.item?.modifierListInfos ?? [],
                 );
 
                 // Group multiple modifier selections in modifiers list into one comma seperated selection
                 Object.entries(modifiers).forEach(([category, mods]) => {
                     if (mods.length > 1) {
                         const uniqueSelections = mods.reduce((acc, mod) => {
-                            acc.set(mod.selection, (acc.get(mod.selection) || 0) + mod.count);
+                            acc.set(
+                                mod.selection,
+                                (acc.get(mod.selection) || 0) + mod.count,
+                            );
                             return acc;
                         }, new Map<string, number>());
 
                         modifiers[category] = [
                             {
-                                selection: Array.from(uniqueSelections.keys()).join(", "),
+                                selection: Array.from(
+                                    uniqueSelections.keys(),
+                                ).join(", "),
                                 count: Math.max(...uniqueSelections.values()),
-                                previousCount: 0
-                            }
-                        ]
+                                previousCount: 0,
+                            },
+                        ];
                     }
-                })
+                });
 
                 // Group multiple modifier selections in modifierSet into one comma seperated selection
                 modifierSets.forEach((set) => {
-                    const mergedModifiers = set.modifiers.reduce<Record<string, Set<string>>>(
-                        (acc, mod) => {
-                            if (!acc[mod.category]) {
-                                acc[mod.category] = new Set();
-                            }
-                            acc[mod.category].add(mod.selection);
-                            return acc
-                        }, {},
-                    );
+                    const mergedModifiers = set.modifiers.reduce<
+                        Record<string, Set<string>>
+                    >((acc, mod) => {
+                        if (!acc[mod.category]) {
+                            acc[mod.category] = new Set();
+                        }
+                        acc[mod.category].add(mod.selection);
+                        return acc;
+                    }, {});
 
-                    set.modifiers = Object.entries(mergedModifiers).map(([category, selections]) => ({
-                        category,
-                        selection: Array.from(selections).join(", ")
-                    }))
-                })
+                    set.modifiers = Object.entries(mergedModifiers).map(
+                        ([category, selections]) => ({
+                            category,
+                            selection: Array.from(selections).join(", "),
+                        }),
+                    );
+                });
 
                 if (!data[name]) {
                     data[name] = {
@@ -278,7 +302,7 @@ export function useSalesList(
                         modifierSets,
                     };
                 } else {
-                    const item = data[name]
+                    const item = data[name];
                     item.quantity += quantity;
                     item.grossSales += grossSales;
 
@@ -288,30 +312,39 @@ export function useSalesList(
                         }
 
                         const categoryModifiers = new Map(
-                            item.modifiers[category].map((mod) => [mod.selection, mod])
+                            item.modifiers[category].map((mod) => [
+                                mod.selection,
+                                mod,
+                            ]),
                         );
 
                         mods.forEach((mod) => {
                             if (categoryModifiers.has(mod.selection)) {
-                                categoryModifiers.get(mod.selection)!.count += mod.count
+                                categoryModifiers.get(mod.selection)!.count +=
+                                    mod.count;
                             } else {
-                                categoryModifiers.set(mod.selection, mod)
+                                categoryModifiers.set(mod.selection, mod);
                             }
                         });
 
-                        item.modifiers[category] = Array.from(categoryModifiers.values());
+                        item.modifiers[category] = Array.from(
+                            categoryModifiers.values(),
+                        );
                     });
 
                     const existingSets = new Map(
-                        item.modifierSets.map((set) => [JSON.stringify(set.modifiers), set])
+                        item.modifierSets.map((set) => [
+                            JSON.stringify(set.modifiers),
+                            set,
+                        ]),
                     );
 
                     modifierSets.forEach((newSet) => {
                         const key = JSON.stringify(newSet.modifiers);
                         if (existingSets.has(key)) {
-                            existingSets.get(key)!.count += newSet.count
+                            existingSets.get(key)!.count += newSet.count;
                         } else {
-                            existingSets.set(key, newSet)
+                            existingSets.set(key, newSet);
                         }
                     });
 
@@ -392,7 +425,7 @@ export function useSalesList(
                 name: current?.name || previous?.name || "Unknown Item",
                 category: current?.category || previous?.category || null,
                 quantity: current?.quantity || 0,
-                grossSales: current?.grossSales || 0,
+                value: current?.grossSales || 0,
                 imgItem: current?.imgItem || previous?.imgItem || imagesDefault,
                 imgCategory:
                     current?.imgCategory ||
@@ -401,7 +434,7 @@ export function useSalesList(
                 imgCoffee:
                     current?.imgCoffee || previous?.imgCoffee || imagesDefault,
                 trendQuantity,
-                trendGrossSales,
+                trendValue: trendGrossSales,
                 currentSortOrder: currentSortOrder.get(item) || 0,
                 previousSortOrder: previousSortOrder.get(item) || 0,
                 modifiers: previousModifiers,

@@ -211,11 +211,12 @@ export function useDiscounts(
                 };
 
                 return {
-                    discountName,
+                    name: discountName,
                     imgDiscount: current.imgDiscount,
-                    count: current.count,
+                    quantity: current.count,
                     countPrev: previous.count,
                     trendCount: current.count - previous.count,
+                    trendQuantity: current.count - previous.count,
                     value: current.totalValue,
                     valuePrev: previous.totalValue,
                     trendValue: current.totalValue - previous.totalValue,
