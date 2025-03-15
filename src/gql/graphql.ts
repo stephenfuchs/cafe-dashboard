@@ -81,18 +81,6 @@ export type Scalars = {
   TimeZone: { input: any; output: any; }
   /** An ID for a field that is only unique within the context of its object rather than globally." */
   UID: { input: any; output: any; }
-  /**
-   * A custom scalar type that allows any type of data, including:
-   *
-   * - strings
-   * - numbers
-   * - objects and arrays (nested as deeply as you like)
-   * - booleans
-   *
-   * Note: fields of this type are effectively untyped. We recommend it only be used for
-   * parts of your schema that can't be statically typed.
-   */
-  Untyped: { input: any; output: any; }
   /** A Url scalar */
   Url: { input: any; output: any; }
   /** An iCalendar (RFC5545) event, which specifies the name, timing, duration and recurrence. */
@@ -9894,39 +9882,6 @@ export type CustomerTextFilter = {
   exact?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** A return type used from aggregations to provided aggregated values over `Date` fields. */
-export type DateAggregatedValues = {
-  __typename?: 'DateAggregatedValues';
-  /**
-   * The average (mean) of the field values within this grouping.
-   * The returned value will be rounded to the nearest `Date` value.
-   */
-  approximateAvg?: Maybe<Scalars['Date']['output']>;
-  /**
-   * An approximation of the number of unique values for this field within this grouping.
-   *
-   * The approximation uses the HyperLogLog++ algorithm from the [HyperLogLog in
-   * Practice](https://research.google.com/pubs/archive/40671.pdf)
-   * paper. The accuracy of the returned value varies based on the specific dataset, but
-   * it usually differs from the true distinct value count by less than 7%.
-   */
-  approximateDistinctValueCount?: Maybe<Scalars['JsonSafeLong']['output']>;
-  /**
-   * The maximum of the field values within this grouping.
-   *
-   * So long as the grouping contains at least one non-null value for the
-   * underlying indexed field, this will return an exact non-null value.
-   */
-  exactMax?: Maybe<Scalars['Date']['output']>;
-  /**
-   * The minimum of the field values within this grouping.
-   *
-   * So long as the grouping contains at least one non-null value for the
-   * underlying indexed field, this will return an exact non-null value.
-   */
-  exactMin?: Maybe<Scalars['Date']['output']>;
-};
-
 /**
  * Input type used to specify filters on `Date` fields.
  *
@@ -9981,28 +9936,6 @@ export type DateFilterInput = {
    * Will be ignored when `null` or an empty object is passed.
    */
   not?: InputMaybe<DateFilterInput>;
-};
-
-/** Allows for grouping `Date` values based on the desired return type. */
-export type DateGroupedBy = {
-  __typename?: 'DateGroupedBy';
-  /** Used when grouping on the full `Date` value. */
-  asDate?: Maybe<Scalars['Date']['output']>;
-  /** An alternative to `asDate` for when grouping on the day-of-week is desired. */
-  asDayOfWeek?: Maybe<DayOfWeek>;
-};
-
-
-/** Allows for grouping `Date` values based on the desired return type. */
-export type DateGroupedByAsDateArgs = {
-  offset?: InputMaybe<DateGroupingOffsetInput>;
-  truncationUnit: DateGroupingTruncationUnitInput;
-};
-
-
-/** Allows for grouping `Date` values based on the desired return type. */
-export type DateGroupedByAsDayOfWeekArgs = {
-  offset?: InputMaybe<DayOfWeekGroupingOffsetInput>;
 };
 
 /**
@@ -11107,6 +11040,8 @@ export enum ErrorCode {
   CalculateFulfillmentRatesFulfillmentTypeNotSupported = 'CALCULATE_FULFILLMENT_RATES_FULFILLMENT_TYPE_NOT_SUPPORTED',
   /** No profiles are configured with the requested shipment destination. */
   CalculateFulfillmentRatesInvalidRecipientAddress = 'CALCULATE_FULFILLMENT_RATES_INVALID_RECIPIENT_ADDRESS',
+  /** An item in the order is not configured for the shipment destination and no default profile is configured. */
+  CalculateFulfillmentRatesItemLevelShipmentDestinationNotConfigured = 'CALCULATE_FULFILLMENT_RATES_ITEM_LEVEL_SHIPMENT_DESTINATION_NOT_CONFIGURED',
   /** No profiles are configured for the fufillment type requested. */
   CalculateFulfillmentRatesNoProfilesConfigured = 'CALCULATE_FULFILLMENT_RATES_NO_PROFILES_CONFIGURED',
   /** No profiles are configured with the requested shipment destination. */
@@ -11136,6 +11071,11 @@ export enum ErrorCode {
   CardTokenExpired = 'CARD_TOKEN_EXPIRED',
   /** The provided card token (nonce) was already used to process the payment or refund. */
   CardTokenUsed = 'CARD_TOKEN_USED',
+  /**
+   * The carrier integration believes the request is invalid. When this error code is used, the error message
+   * will contain more information that should be presented directly to the user.
+   */
+  CarrierIntegrationError = 'CARRIER_INTEGRATION_ERROR',
   /** The provided checkout URL has expired. */
   CheckoutExpired = 'CHECKOUT_EXPIRED',
   /** The card issuer requires that the card be read using a chip reader. */
@@ -11391,6 +11331,8 @@ export enum ErrorCode {
   OrderExpired = 'ORDER_EXPIRED',
   /** The creation request contains too many catalog IDs. */
   OrderTooManyCatalogObjects = 'ORDER_TOO_MANY_CATALOG_OBJECTS',
+  /** The order attempting to be returned is not yet paid and cannot be returned. */
+  OrderUnpaidNotReturnable = 'ORDER_UNPAID_NOT_RETURNABLE',
   /** The specified card number is invalid. For example, it is of incorrect length or is incorrectly formatted. */
   PanFailure = 'PAN_FAILURE',
   /**
@@ -11431,6 +11373,8 @@ export enum ErrorCode {
   RefundAmountInvalid = 'REFUND_AMOUNT_INVALID',
   /** Request failed - The card issuer declined the refund. */
   RefundDeclined = 'REFUND_DECLINED',
+  /** The payment is not refundable because the payment is approved and needs to be completed first before the refund is issued. */
+  RefundErrorPaymentNeedsCompletion = 'REFUND_ERROR_PAYMENT_NEEDS_COMPLETION',
   /** Request Entity Too Large - a general error occurred. */
   RequestEntityTooLarge = 'REQUEST_ENTITY_TOO_LARGE',
   /** Request Timeout - a general error occurred. */
@@ -11585,6 +11529,8 @@ export enum ErrorCodeInput {
   CalculateFulfillmentRatesFulfillmentTypeNotSupported = 'CALCULATE_FULFILLMENT_RATES_FULFILLMENT_TYPE_NOT_SUPPORTED',
   /** No profiles are configured with the requested shipment destination. */
   CalculateFulfillmentRatesInvalidRecipientAddress = 'CALCULATE_FULFILLMENT_RATES_INVALID_RECIPIENT_ADDRESS',
+  /** An item in the order is not configured for the shipment destination and no default profile is configured. */
+  CalculateFulfillmentRatesItemLevelShipmentDestinationNotConfigured = 'CALCULATE_FULFILLMENT_RATES_ITEM_LEVEL_SHIPMENT_DESTINATION_NOT_CONFIGURED',
   /** No profiles are configured for the fufillment type requested. */
   CalculateFulfillmentRatesNoProfilesConfigured = 'CALCULATE_FULFILLMENT_RATES_NO_PROFILES_CONFIGURED',
   /** No profiles are configured with the requested shipment destination. */
@@ -11614,6 +11560,11 @@ export enum ErrorCodeInput {
   CardTokenExpired = 'CARD_TOKEN_EXPIRED',
   /** The provided card token (nonce) was already used to process the payment or refund. */
   CardTokenUsed = 'CARD_TOKEN_USED',
+  /**
+   * The carrier integration believes the request is invalid. When this error code is used, the error message
+   * will contain more information that should be presented directly to the user.
+   */
+  CarrierIntegrationError = 'CARRIER_INTEGRATION_ERROR',
   /** The provided checkout URL has expired. */
   CheckoutExpired = 'CHECKOUT_EXPIRED',
   /** The card issuer requires that the card be read using a chip reader. */
@@ -11869,6 +11820,8 @@ export enum ErrorCodeInput {
   OrderExpired = 'ORDER_EXPIRED',
   /** The creation request contains too many catalog IDs. */
   OrderTooManyCatalogObjects = 'ORDER_TOO_MANY_CATALOG_OBJECTS',
+  /** The order attempting to be returned is not yet paid and cannot be returned. */
+  OrderUnpaidNotReturnable = 'ORDER_UNPAID_NOT_RETURNABLE',
   /** The specified card number is invalid. For example, it is of incorrect length or is incorrectly formatted. */
   PanFailure = 'PAN_FAILURE',
   /**
@@ -11909,6 +11862,8 @@ export enum ErrorCodeInput {
   RefundAmountInvalid = 'REFUND_AMOUNT_INVALID',
   /** Request failed - The card issuer declined the refund. */
   RefundDeclined = 'REFUND_DECLINED',
+  /** The payment is not refundable because the payment is approved and needs to be completed first before the refund is issued. */
+  RefundErrorPaymentNeedsCompletion = 'REFUND_ERROR_PAYMENT_NEEDS_COMPLETION',
   /** Request Entity Too Large - a general error occurred. */
   RequestEntityTooLarge = 'REQUEST_ENTITY_TOO_LARGE',
   /** Request Timeout - a general error occurred. */
@@ -12351,62 +12306,6 @@ export type FilterValue = {
   any?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** A list of terms that must not be present on the field the resource */
   none?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-/**
- * Input type used to specify filters on `Float` fields.
- *
- * Will be ignored if passed as an empty object (or as `null`).
- */
-export type FloatFilterInput = {
-  /**
-   * Matches records where any of the provided sub-filters evaluate to true.
-   * This works just like an OR operator in SQL.
-   *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
-   */
-  anyOf?: InputMaybe<Array<FloatFilterInput>>;
-  /**
-   * Matches records where the field value is equal to any of the provided values.
-   * This works just like an IN operator in SQL.
-   *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
-   */
-  equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
-  /**
-   * Matches records where the field value is greater than (>) the provided value.
-   *
-   * Will be ignored when `null` is passed.
-   */
-  gt?: InputMaybe<Scalars['Float']['input']>;
-  /**
-   * Matches records where the field value is greater than or equal to (>=) the provided value.
-   *
-   * Will be ignored when `null` is passed.
-   */
-  gte?: InputMaybe<Scalars['Float']['input']>;
-  /**
-   * Matches records where the field value is less than (<) the provided value.
-   *
-   * Will be ignored when `null` is passed.
-   */
-  lt?: InputMaybe<Scalars['Float']['input']>;
-  /**
-   * Matches records where the field value is less than or equal to (<=) the provided value.
-   *
-   * Will be ignored when `null` is passed.
-   */
-  lte?: InputMaybe<Scalars['Float']['input']>;
-  /**
-   * Matches records where the provided sub-filter evaluates to false.
-   * This works just like a NOT operator in SQL.
-   *
-   * When `null` or an empty object is passed, matches no documents.
-   */
-  not?: InputMaybe<FloatFilterInput>;
 };
 
 /**
@@ -24361,38 +24260,6 @@ export type UndoProcessingFeeRefundDetailsFilterInput = {
 };
 
 /**
- * Input type used to specify filters on `Untyped` fields.
- *
- * Will be ignored if passed as an empty object (or as `null`).
- */
-export type UntypedFilterInput = {
-  /**
-   * Matches records where any of the provided sub-filters evaluate to true.
-   * This works just like an OR operator in SQL.
-   *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
-   */
-  anyOf?: InputMaybe<Array<UntypedFilterInput>>;
-  /**
-   * Matches records where the field value is equal to any of the provided values.
-   * This works just like an IN operator in SQL.
-   *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
-   */
-  equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Untyped']['input']>>>;
-  /**
-   * Matches records where the provided sub-filter evaluates to false.
-   * This works just like a NOT operator in SQL.
-   *
-   * Will be ignored when `null` or an empty object is passed.
-   */
-  not?: InputMaybe<UntypedFilterInput>;
-};
-
-/**
  * Input type used to specify filters on `Url` fields.
  *
  * Will be ignored if passed as an empty object (or as `null`).
@@ -24519,10 +24386,11 @@ export type OrdersQueryVariables = Exact<{
   endDate: Scalars['DateTime']['input'];
   locationID: Scalars['ID']['input'];
   merchantID: Scalars['ID']['input'];
+  cursor?: InputMaybe<Scalars['Cursor']['input']>;
 }>;
 
 
-export type OrdersQuery = { __typename?: 'Query', orders?: { __typename?: 'OrderConnection', nodes: Array<{ __typename?: 'Order', id?: string | null, closedAt?: any | null, lineItems?: Array<{ __typename?: 'OrderLineItem', uid?: any | null, name?: string | null, quantity?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null> | null, modifierListInfos?: Array<{ __typename?: 'CatalogItemModifierListInfo', modifierList?: { __typename?: 'CatalogModifierList', ordinal?: any | null, id: string, name?: string | null, modifiers?: Array<{ __typename?: 'CatalogModifier', ordinal?: any | null, id: string, name?: string | null, modifierList?: { __typename?: 'CatalogModifierList', id: string, name?: string | null } | null } | null> | null } | null } | null> | null } | null } | null, modifiers?: Array<{ __typename?: 'OrderLineItemModifier', uid?: any | null, name?: string | null } | null> | null, appliedDiscounts?: Array<{ __typename?: 'OrderLineItemAppliedDiscount', uid?: any | null, discountUid?: any | null, appliedMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, grossSalesMoney?: { __typename?: 'Money', amount: any } | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, discounts?: Array<{ __typename?: 'OrderLineItemDiscount', uid?: any | null, name?: string | null } | null> | null, returns?: Array<{ __typename?: 'OrderReturn', lineItems?: Array<{ __typename?: 'OrderReturnLineItem', name?: string | null, quantity?: any | null, sourceLineItemUid?: any | null, uid?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null } | null } | null> | null } | null } | null } | null> | null } | null> | null, refunds?: Array<{ __typename?: 'Refund', id: string, transactionId?: string | null, reason?: string | null, processingFeeMoney?: { __typename?: 'Money', amount: any } | null, amountMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, tenders?: Array<{ __typename?: 'OrderBankAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderBuyNowPayLaterTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCardTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCashTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderOtherTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderSquareAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | null> | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null }> } | null };
+export type OrdersQuery = { __typename?: 'Query', orders?: { __typename?: 'OrderConnection', nodes: Array<{ __typename?: 'Order', id?: string | null, closedAt?: any | null, lineItems?: Array<{ __typename?: 'OrderLineItem', uid?: any | null, name?: string | null, quantity?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null> | null, modifierListInfos?: Array<{ __typename?: 'CatalogItemModifierListInfo', modifierList?: { __typename?: 'CatalogModifierList', ordinal?: any | null, id: string, name?: string | null, modifiers?: Array<{ __typename?: 'CatalogModifier', ordinal?: any | null, id: string, name?: string | null, modifierList?: { __typename?: 'CatalogModifierList', id: string, name?: string | null } | null } | null> | null } | null } | null> | null } | null } | null, modifiers?: Array<{ __typename?: 'OrderLineItemModifier', uid?: any | null, name?: string | null } | null> | null, appliedDiscounts?: Array<{ __typename?: 'OrderLineItemAppliedDiscount', uid?: any | null, discountUid?: any | null, appliedMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, grossSalesMoney?: { __typename?: 'Money', amount: any } | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, discounts?: Array<{ __typename?: 'OrderLineItemDiscount', uid?: any | null, name?: string | null } | null> | null, returns?: Array<{ __typename?: 'OrderReturn', lineItems?: Array<{ __typename?: 'OrderReturnLineItem', name?: string | null, quantity?: any | null, sourceLineItemUid?: any | null, uid?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null } | null } | null> | null } | null } | null } | null> | null } | null> | null, refunds?: Array<{ __typename?: 'Refund', id: string, transactionId?: string | null, reason?: string | null, processingFeeMoney?: { __typename?: 'Money', amount: any } | null, amountMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, tenders?: Array<{ __typename?: 'OrderBankAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderBuyNowPayLaterTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCardTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCashTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderOtherTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderSquareAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | null> | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null } } | null };
 
 
-export const OrdersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Orders"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"locationID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"merchantId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"location"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"locationID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"state"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"COMPLETED"}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"closedAt"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"endAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"closedAt"}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifierListInfos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"appliedDiscounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"discountUid"}},{"kind":"Field","name":{"kind":"Name","value":"appliedMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"grossSalesMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"returns"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"sourceLineItemUid"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"refunds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"processingFeeMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"tenders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"processingFees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}}]} as unknown as DocumentNode<OrdersQuery, OrdersQueryVariables>;
+export const OrdersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Orders"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"locationID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Cursor"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"merchantId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"location"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"locationID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"state"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"COMPLETED"}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"closedAt"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"endAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"10"}},{"kind":"Argument","name":{"kind":"Name","value":"after"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"closedAt"}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifierListInfos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"appliedDiscounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"discountUid"}},{"kind":"Field","name":{"kind":"Name","value":"appliedMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"grossSalesMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"returns"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"sourceLineItemUid"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"refunds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"processingFeeMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"tenders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"processingFees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]}}]}}]} as unknown as DocumentNode<OrdersQuery, OrdersQueryVariables>;
