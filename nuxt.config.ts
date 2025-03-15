@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import Aura from "@primevue/themes/aura";
-import { definePreset } from "@primevue/themes";
+import { definePreset } from "@primeuix/themes";
+import Aura from "@primeuix/themes/aura";
 
 const MyPreset = definePreset(Aura, {
     primitive: {
