@@ -156,7 +156,7 @@ const hasModifiers = computed(() => {
                     severity="secondary"
                     size="small"
                     @click="toggleVisibility"
-                    class="self-center place-self-end col-span-1 order-2 md:order-4"
+                    class="w-auto self-center place-self-end col-span-1 order-2 md:order-4"
                     :class="{ invisible: type === 'item' && !hasModifiers }"
                 >
                     <template #icon>
