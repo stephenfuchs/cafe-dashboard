@@ -5,8 +5,8 @@ definePageMeta({
 </script>
 
 <template>
-    <div class="grid gap-6 lg:grid-cols-3">
-        <div class="col-span-1 lg:col-span-2">
+    <div class="grid gap-6 xl:grid-cols-3">
+        <div class="col-span-1 xl:col-span-2">
             <DiscountsType />
         </div>
         <div

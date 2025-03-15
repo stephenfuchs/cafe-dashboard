@@ -8,7 +8,6 @@
         </template>
         <template #options>
             <UiAppCardSelector :options="options" v-model:selected="selected" />
-            <!-- <SelectButton v-model="value" :options="options" size="small" /> -->
         </template>
         <Chart
             type="bar"

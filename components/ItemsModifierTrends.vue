@@ -54,10 +54,10 @@ const options = ref(["Top", "Bottom"]);
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
         <div v-if="selected === 'Top'">
-            <SalesList :source="topTrending" type="item" />
+            <UiAppCardList :source="topTrending" type="item" />
         </div>
         <div v-else-if="selected === 'Bottom'">
-            <SalesList :source="bottomTrending" type="item" />
+            <UiAppCardList :source="bottomTrending" type="item" />
         </div>
     </UiAppCard>
 </template>

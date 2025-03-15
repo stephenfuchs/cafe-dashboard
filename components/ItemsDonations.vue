@@ -35,43 +35,10 @@ const trendDonations = computed(() => {
         <template #title> Donations </template>
         <template #options>
             <div class="flex items-center gap-4">
-                <Tag
-                    :severity="
-                        trendDonations > 0
-                            ? 'success'
-                            : trendDonations < 0
-                              ? 'danger'
-                              : 'secondary'
-                    "
-                    :value="formatCurrency(totalDonations)"
-                />
-                <div
-                    class="flex w-1/2 gap-1 text-sm font-semibold"
-                    :class="{
-                        'text-green-500': trendDonations >= 0,
-                        'text-orange-500': trendDonations < 0,
-                        'text-muted-color': trendDonations === 0,
-                    }"
-                >
-                    <div class="material-symbols-outlined flex-1 text-end">
-                        {{
-                            trendDonations > 0
-                                ? "trending_up"
-                                : trendDonations < 0
-                                  ? "trending_down"
-                                  : "trending_flat"
-                        }}
-                    </div>
-                    <div class="flex-1">
-                        {{
-                            trendDonations < 0
-                                ? formatCurrency(Math.abs(trendDonations))
-                                : formatCurrency(trendDonations)
-                        }}
-                    </div>
-                </div>
+                <UiAppTrendIndicator :value="trendDonations" money/>
+                <UiAppBadgeStatus :value="totalDonations" :trendValue="trendDonations" money />
             </div>
         </template>
-        <SalesList :source="donations" type="item" money />
+        <UiAppCardList :source="donations" type="item" money />
     </UiAppCard>
 </template>

@@ -22,7 +22,7 @@ const {
 
 <template>
     <div class="flex flex-col gap-6">
-        <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:grid-cols-4">
             <SalesStat
                 title="Gross Sales"
                 :value="formatCurrency(grossSales)"
@@ -49,16 +49,16 @@ const {
             />
         </div>
         <div class="grid grid-cols-6 gap-6">
-            <div class="col-span-6 lg:col-span-3 xl:col-span-2">
+            <div class="col-span-6 lg:col-span-3 2xl:col-span-2">
                 <SalesListItems />
             </div>
-            <div class="col-span-6 lg:col-span-3 xl:col-span-2">
+            <div class="col-span-6 lg:col-span-3 2xl:col-span-2">
                 <SalesListCoffees />
             </div>
             <div class="col-span-6 lg:col-span-2">
                 <SalesSummary />
             </div>
-            <div class="col-span-6 lg:col-span-4 xl:col-span-6">
+            <div class="col-span-6 lg:col-span-4 2xl:col-span-6">
                 <SalesChart />
             </div>
         </div>

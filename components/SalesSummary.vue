@@ -40,9 +40,7 @@ const {
                 <div class="flex-1 text-sm font-medium text-color">
                     Discounts
                 </div>
-                <div
-                    class="text-sm font-medium text-orange-600 dark:text-orange-300"
-                >
+                <div class="text-sm font-medium text-red-500">
                     ({{ formatCurrency(discounts) }})
                 </div>
             </div>
@@ -58,9 +56,7 @@ const {
                 <div class="flex-1 text-sm font-medium text-color">
                     Cash Payments
                 </div>
-                <div
-                    class="text-sm font-medium text-green-600 dark:text-green-300"
-                >
+                <div class="text-sm font-medium text-green-500">
                     {{ formatCurrency(cashPayments) }}
                 </div>
             </div>
@@ -69,18 +65,14 @@ const {
                 <div class="flex-1 text-sm font-medium text-color">
                     Card Payments
                 </div>
-                <div
-                    class="text-sm font-medium text-green-600 dark:text-green-300"
-                >
+                <div class="text-sm font-medium text-green-500">
                     {{ formatCurrency(cardPayments) }}
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
                 <div class="material-symbols-outlined">paid</div>
                 <div class="flex-1 text-sm font-medium text-color">Fees</div>
-                <div
-                    class="text-sm font-medium text-orange-600 dark:text-orange-300"
-                >
+                <div class="text-sm font-medium text-red-500">
                     ({{ formatCurrency(fees) }})
                 </div>
             </div>

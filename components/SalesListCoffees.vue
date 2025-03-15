@@ -38,22 +38,8 @@ const coffeeDonations = computed(() => {
     <UiAppCard full>
         <template #title> Brewed Coffees </template>
         <template #options>
-            <div
-                :class="
-                    coffeeDonations?.trendValue > 0
-                        ? 'bg-green-100 text-green-700'
-                        : coffeeDonations?.trendValue < 0
-                          ? 'bg-orange-100 text-orange-700'
-                          : 'bg-neutral-200 text-neutral-700'
-                "
-                class="flex items-center gap-1 self-start rounded px-2 py-1 text-sm font-bold"
-            >
-                <div class="material-symbols-outlined">money_bag</div>
-                <div>
-                    {{ formatCurrency(coffeeDonations?.value || 0) }}
-                </div>
-            </div>
+            <UiAppBadgeStatus v-if="coffeeDonations" icon :value="coffeeDonations.value" :trendValue="coffeeDonations.trendValue" money />
         </template>
-        <SalesList :source="coffees" type="coffee" />
+        <UiAppCardList :source="coffees" type="coffee" />
     </UiAppCard>
 </template>

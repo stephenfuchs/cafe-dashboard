@@ -3,8 +3,16 @@
         v-model="selectedDateRange"
         :selection-mode="'range'"
         showIcon
+        iconDisplay="input"
         dateFormat="mm/dd/y"
     >
+        <template #inputicon="slotProps">
+            <i
+                class="material-symbols-outlined text-lg leading-none"
+                @click="slotProps.clickCallback"
+                >date_range</i
+            >
+        </template>
         <template #footer>
             <!-- SelectButton Component for preset date ranges -->
             <div
@@ -73,7 +81,6 @@ import {
 } from "date-fns";
 
 const { compareOptions, compareValue } = useComparison();
-// const compareValue = ref<CompareOptions[number]>("Week Prior");
 
 // Passthrough configuration object
 const selectButtonPassthrough = {

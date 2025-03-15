@@ -1,6 +1,4 @@
 <script setup>
-import { formatCurrency } from "~/server/utils/formatCurrency";
-import { calcChange } from "~/server/utils/calcChange";
 const filters = useFilters();
 
 const { orders } = useOrders(filters.startDate, filters.endDate);
@@ -48,21 +46,15 @@ const currentTotalValue = computed(() =>
         0,
     ),
 );
-const previousTotalValue = computed(() =>
-    discountTotals.value?.reduce(
-        (sum, discount) => sum + (discount?.valuePrev || 0),
-        0,
-    ),
-);
 
-const percentChange = computed(() => {
-    return calcChange(previousTotalValue.value, currentTotalValue.value);
-});
 
 const dataviewPassthrough = {
     header: {
-        class: "border-none p-0 mb-6",
+        class: "border-none p-0 mb-6 bg-transparent",
     },
+    content: {
+        class: "bg-transparent"
+    }
 };
 </script>
 
@@ -83,52 +75,13 @@ const dataviewPassthrough = {
                     @change="onSortChange($event)"
                 />
                 <div class="flex items-center gap-4">
-                    <Tag
-                        :severity="
-                            trendValue > 0
-                                ? 'success'
-                                : trendValue < 0
-                                  ? 'danger'
-                                  : 'secondary'
-                        "
-                        :value="formatCurrency(currentTotalValue)"
-                    />
-                    <div
-                        class="flex w-1/2 gap-1 text-sm font-semibold"
-                        :class="{
-                            'text-green-500': percentChange >= 0,
-                            'text-orange-500': percentChange < 0,
-                            'text-muted-color': percentChange === 0,
-                        }"
-                    >
-                        <div class="material-symbols-outlined flex-1 text-end">
-                            {{
-                                percentChange > 0
-                                    ? "trending_up"
-                                    : percentChange < 0
-                                      ? "trending_down"
-                                      : "trending_flat"
-                            }}
-                        </div>
-                        <div class="flex-1">
-                            {{
-                                (percentChange < 0
-                                    ? Math.abs(percentChange)
-                                    : percentChange
-                                ).toFixed(2)
-                            }}%
-                        </div>
-                    </div>
+                    <UiAppTrendIndicator :value="trendValue" money/>
+                    <UiAppBadgeStatus icon :value="currentTotalValue" :trendValue="trendValue" money />
                 </div>
             </UiAppCard>
         </template>
         <template #list="slotProps">
             <div class="flex flex-col gap-6">
-                <!-- <DiscountsTypeDiscount
-                    v-for="discount in slotProps.items"
-                    :key="discount.name"
-                    :discount
-                /> -->
                 <UiAppCardItem
                     v-for="item in slotProps.items"
                     type="discount"

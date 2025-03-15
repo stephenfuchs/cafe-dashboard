@@ -57,9 +57,18 @@ const options = ref(["Count", "Trend"]);
 
 const drawerPassthrough = {
     root: {
-        class: "border-none",
+        class: "border-none bg-surface-100 dark:bg-surface-950",
     },
 };
+
+
+const getValue = (modifier: Modifier) => {
+    return modifier.count - modifier.previousCount
+}
+const getTrendValue = (modifier: Modifier) => {
+    return calcChange(modifier.previousCount, modifier.count)
+}
+
 </script>
 
 <template>
@@ -72,11 +81,7 @@ const drawerPassthrough = {
     >
         <template #header>
             <div class="flex items-center gap-2 xl:mx-8">
-                <img
-                    :src="item?.imgItem"
-                    :alt="`Image of ` + item?.name"
-                    class="w-10 rounded-full bg-neutral-100 dark:bg-neutral-700"
-                />
+                <UiAppCardItemImage :src="item?.imgItem" :alt="item?.name" />
                 <h2
                     class="truncate text-xl font-bold capitalize text-color md:text-3xl"
                 >
@@ -128,16 +133,16 @@ const drawerPassthrough = {
                             (a, b) => b.count - a.count,
                         )"
                     >
-                        <template #title
-                            ><div class="flex items-center justify-between">
+                        <template #title>
+                            <div class="flex items-center justify-between">
                                 <div>Modifier Set {{ index + 1 }}</div>
                                 <div class="text-xs capitalize text-primary">
                                     {{ set.count }}
                                     <span v-if="set.count > 1">orders</span>
                                     <span v-else>order</span>
                                 </div>
-                            </div></template
-                        >
+                            </div>
+                        </template>
                         <div v-for="modifier in set.modifiers">
                             <span
                                 class="block text-xs font-bold uppercase text-muted-color"
@@ -162,7 +167,7 @@ const drawerPassthrough = {
                         v-for="(modifierGroup, category) in item?.modifiers"
                         :key="category"
                     >
-                        <div class="flex flex-col gap-4">
+                        <div class="flex flex-col">
                             <UiAppCard>
                                 <template #title> {{ category }} </template>
                                 <template #options>
@@ -188,64 +193,20 @@ const drawerPassthrough = {
                                                   (a.count - a.previousCount),
                                     )"
                                     :key="modifier.selection"
-                                    class="box-content flex items-center justify-between gap-4 border-b border-surface-300 py-2 last:border-b-0 last:pb-0 dark:border-surface-700"
+                                    class="flex items-center gap-4 group"
                                 >
-                                    <div
-                                        class="flex items-center gap-4 truncate text-base font-semibold text-color"
-                                    >
-                                        <div
-                                            class="h-7 min-w-12 content-center rounded bg-primary-100 px-2 text-center text-base font-bold text-color dark:bg-primary-600"
-                                        >
+                                    <div class="flex flex-shrink-0 items-center py-2 group-first:pt-0 group-last:pb-0">
+                                        <div class="min-w-12 content-center rounded bg-primary-100 px-2 text-center text-base font-bold text-color dark:bg-primary-600 h-7">
                                             {{ modifier.count }}
-                                        </div>
-                                        <div class="flex-1 truncate capitalize">
-                                            {{ modifier.selection }}
                                         </div>
                                     </div>
                                     <div
-                                        class="flex items-center gap-2 self-start rounded px-2 py-1 text-end text-sm font-bold"
-                                        :class="
-                                            modifier.count -
-                                                modifier.previousCount <
-                                            0
-                                                ? `bg-orange-100 text-orange-700`
-                                                : modifier.count -
-                                                        modifier.previousCount >
-                                                    0
-                                                  ? `bg-green-100 text-green-700`
-                                                  : `bg-neutral-200 text-muted-color`
-                                        "
+                                        class="flex self-stretch items-center border-b border-surface-200 group-last:border-b-0 dark:border-surface-700 w-full py-2 group-first:pt-0 group-last:pb-0 text-base font-semibold text-color justify-between gap-4 truncate"
                                     >
-                                        <div class="material-symbols-outlined">
-                                            {{
-                                                modifier.count -
-                                                    modifier.previousCount <
-                                                0
-                                                    ? "trending_down"
-                                                    : modifier.count -
-                                                            modifier.previousCount >
-                                                        0
-                                                      ? "trending_up"
-                                                      : "trending_flat"
-                                            }}
+                                        <div class="truncate capitalize">
+                                            {{ modifier.selection }}
                                         </div>
-                                        <div class="whitespace-nowrap">
-                                            {{
-                                                Math.abs(
-                                                    modifier.count -
-                                                        modifier.previousCount,
-                                                )
-                                            }}
-                                            |
-                                            {{
-                                                Math.abs(
-                                                    calcChange(
-                                                        modifier.previousCount,
-                                                        modifier.count,
-                                                    ),
-                                                ).toFixed(2)
-                                            }}%
-                                        </div>
+                                        <UiAppBadgeStatus icon trend :value="getValue(modifier)" :trendValue="getTrendValue(modifier)" />
                                     </div>
                                 </div>
                             </UiAppCard>

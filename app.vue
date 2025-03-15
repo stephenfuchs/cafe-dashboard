@@ -25,7 +25,7 @@ watchEffect(() => {
 });
 useHead({
     bodyAttrs: {
-        class: "bg-surface-0 dark:bg-surface-900",
+        class: "bg-surface-100 dark:bg-surface-950",
     },
 });
 </script>

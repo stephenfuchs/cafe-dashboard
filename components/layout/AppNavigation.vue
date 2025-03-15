@@ -1,7 +1,12 @@
+<script setup></script>
+
 <template>
     <aside
-        class="sticky bottom-0 z-50 box-content flex items-center gap-10 bg-surface-100 p-4 max-md:h-12 max-md:pt-3 md:fixed md:start-0 md:top-0 md:w-12 md:flex-col md:p-5 dark:bg-surface-950"
+        class="sticky bottom-0 z-50 box-content flex items-center gap-10 p-4 max-md:h-12 max-md:border-t max-md:border-neutral-100 max-md:pt-2 md:fixed md:start-0 md:top-0 md:w-12 md:flex-col md:p-5 max-md:dark:border-neutral-700"
     >
+        <div
+            class="absolute inset-0 z-[-1] bg-surface-0/90 backdrop-blur md:bg-surface-0 dark:bg-surface-800/90 dark:md:bg-surface-800"
+        ></div>
         <div class="flex size-12 items-center justify-center max-md:hidden">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -37,63 +42,44 @@
         <nav
             class="flex w-full flex-row items-center max-md:justify-evenly md:flex-col md:gap-4"
         >
-            <Button
-                severity="secondary"
-                v-tooltip="'Sales Overview'"
-                label="Overview"
-                iconPos="top"
-                as="router-link"
+            <UiAppNavigationButton
                 to="/"
-                :pt="buttonPassthrough"
-            >
-                <template #icon>
-                    <i class="material-symbols-outlined text-xl">dashboard</i>
-                </template>
-            </Button>
-            <Button
-                severity="secondary"
-                v-tooltip="'Item Sales'"
-                label="Items"
-                iconPos="top"
-                as="router-link"
+                icon="dashboard"
+                label="Overview"
+                tooltip="Sales Overview"
+            />
+            <UiAppNavigationButton
                 to="/items"
-                :pt="buttonPassthrough"
-            >
-                <template #icon>
-                    <span class="material-symbols-outlined text-xl">sell</span>
-                </template>
-            </Button>
-            <Button
-                severity="secondary"
-                v-tooltip="'Discounts'"
-                label="Discounts"
-                iconPos="top"
-                as="router-link"
+                icon="sell"
+                label="Items"
+                tooltip="Item Sales"
+            />
+            <UiAppNavigationButton
                 to="/discounts"
-                :pt="buttonPassthrough"
-            >
-                <template #icon>
-                    <span class="material-symbols-outlined text-xl"
-                        >percent</span
-                    >
-                </template>
-            </Button>
+                icon="percent"
+                label="Discounts"
+                tooltip="Discounts"
+            />
             <Tag
+                variant="text"
                 severity="secondary"
                 value="2XL"
                 class="hidden w-full text-center 2xl:block"
             />
             <Tag
+                variant="text"
                 severity="secondary"
                 value="XL"
                 class="hidden w-full text-center xl:max-2xl:block"
             />
             <Tag
+                variant="text"
                 severity="secondary"
                 value="LG"
                 class="hidden w-full text-center lg:max-xl:block"
             />
             <Tag
+                variant="text"
                 severity="secondary"
                 value="MD"
                 class="hidden w-full text-center md:max-lg:block"
@@ -102,10 +88,8 @@
     </aside>
 </template>
 
-<script setup>
-const buttonPassthrough = {
-    label: {
-        class: "md:hidden text-xs text-color font-semibold",
-    },
-};
-</script>
+<!-- <style scoped>
+.router-link-active {
+    background-color: theme("colors.primary");
+}
+</style> -->

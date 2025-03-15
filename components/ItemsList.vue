@@ -50,8 +50,11 @@ const onSortChange = (event) => {
 
 const dataviewPassthrough = {
     header: {
-        class: "border-none p-0 mb-6",
+        class: "border-none p-0 mb-6 bg-transparent",
     },
+    content: {
+        class: "bg-transparent"
+    }
 };
 </script>
 
@@ -79,11 +82,6 @@ const dataviewPassthrough = {
         </template>
         <template #list="slotProps">
             <div class="flex flex-col gap-6">
-                <!-- <ItemsListItem
-                    v-for="item in slotProps.items"
-                    :key="item.name"
-                    :item
-                /> -->
                 <UiAppCardItem
                     v-for="item in slotProps.items"
                     type="item"

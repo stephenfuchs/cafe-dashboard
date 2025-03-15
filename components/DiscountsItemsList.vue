@@ -44,44 +44,10 @@ const percentChange = computed(() => {
         <template #title> Discounted Items </template>
         <template #options>
             <div class="flex items-center gap-4">
-                <Tag
-                    :severity="
-                        trendQuantity > 0
-                            ? 'success'
-                            : trendQuantity < 0
-                              ? 'danger'
-                              : 'secondary'
-                    "
-                    :value="currentTotalQuantity"
-                />
-                <div
-                    class="flex w-1/2 gap-1 text-sm font-semibold"
-                    :class="{
-                        'text-green-500': percentChange >= 0,
-                        'text-orange-500': percentChange < 0,
-                        'text-muted-color': percentChange === 0,
-                    }"
-                >
-                    <div class="material-symbols-outlined flex-1 text-end">
-                        {{
-                            percentChange > 0
-                                ? "trending_up"
-                                : percentChange < 0
-                                  ? "trending_down"
-                                  : "trending_flat"
-                        }}
-                    </div>
-                    <div class="flex-1">
-                        {{
-                            (percentChange < 0
-                                ? Math.abs(percentChange)
-                                : percentChange
-                            ).toFixed(2)
-                        }}%
-                    </div>
-                </div>
+                <UiAppTrendIndicator :value="percentChange" percentage/>
+                <UiAppBadgeStatus :value="currentTotalQuantity" :trendValue="trendQuantity" />
             </div>
         </template>
-        <SalesList :source="topItems" type="item" />
+        <UiAppCardList :source="topItems" type="item" />
     </UiAppCard>
 </template>

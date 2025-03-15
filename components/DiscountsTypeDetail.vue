@@ -17,36 +17,22 @@ const props = defineProps<{
         <div
             v-for="item in [...items].sort((a, b) => b.count - a.count)"
             :key="item.name"
-            class="grid grid-cols-2 items-center gap-4 border-b border-surface-300 last:border-b-0 dark:border-surface-700"
+            class="flex items-center gap-4 group"
         >
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-center lg:w-16">
-                    <img
-                        :src="item.imgItem"
-                        :alt="item.imgItem"
-                        class="size-10 lg:size-12"
-                    />
-                </div>
-                <h3
-                    class="flex-1 truncate text-base font-semibold capitalize text-color"
+            <div class="flex flex-shrink-0 items-center py-2 group-first:pt-0 group-last:pb-0 md:w-16 justify-center">
+                <UiAppCardItemImage :src="item.imgItem" :alt="item.imgItem" />
+            </div>
+            <div class="grid grid-cols-7 md:grid-cols-12 items-center self-stretch border-b border-surface-200 group-last:border-b-0 dark:border-surface-700 w-full py-2 group-first:pt-0 group-last:pb-0 gap-4 text-base font-semibold text-color">
+                <div
+                    class="col-span-3 md:col-span-4 xl:col-span-5 truncate capitalize"
                 >
                     {{ item?.name }}
-                </h3>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="flex-1">
-                    <div class="flex items-center gap-4">
-                        <div class="text-base font-semibold text-color">
-                            {{ item?.count }}
-                        </div>
-                    </div>
                 </div>
-                <div class="flex-1">
-                    <div class="flex items-center gap-4">
-                        <div class="text-base font-semibold text-color">
-                            {{ formatCurrency(item?.value) }}
-                        </div>
-                    </div>
+                <div class="col-span-2 md:col-span-3">
+                    {{ item?.count }}
+                </div>
+                <div class="col-span-2 md:col-span-4 xl:col-span-3">
+                    {{ formatCurrency(item?.value) }}
                 </div>
             </div>
         </div>

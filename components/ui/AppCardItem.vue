@@ -60,6 +60,127 @@ const hasModifiers = computed(() => {
 <template>
     <UiAppCard noTitle>
         <div
+            class="flex items-center gap-4"
+        >
+            <div class="flex flex-shrink-0 items-center justify-center max-md:hidden">
+                <UiAppCardItemImage v-if="type === 'item'" large :src="item?.imgItem" :alt="item?.name" />
+                <UiAppCardItemImage v-if="type === 'discount'" :icon="item?.imgDiscount" />
+            </div>
+            <div
+            class="grid grid-cols-6 md:grid-cols-12 items-center self-stretch gap-4 w-full"
+            >
+                <div class="col-span-5 md:max-xl:col-span-4 truncate text-lg font-bold uppercase text-color order-1 flex gap-4 items-center">
+                    <div class="md:hidden">
+                        <UiAppCardItemImage v-if="type === 'item'" large :src="item?.imgItem" :alt="item?.name" />
+                        <UiAppCardItemImage v-if="type === 'discount'" :icon="item?.imgDiscount" />
+                    </div>
+                    <div class="flex flex-col">
+
+                        <span
+                            class="block text-xs font-medium text-muted-color"
+                            >{{
+                                type === "item" ? item?.category : "Discount"
+                            }}
+                        </span>
+                        {{ item?.name }}
+    
+                        <span
+                            v-if="type === 'item'"
+                            class="block text-xs font-light text-muted-color"
+                            ><span
+                                class="material-symbols-outlined font-bold"
+                                :class="{
+                                    'text-green-500':
+                                        item?.previousSortOrder === 0 ||
+                                        item?.previousSortOrder === null ||
+                                        item?.currentSortOrder <
+                                            item?.previousSortOrder,
+                                    'text-red-500':
+                                        item?.currentSortOrder >
+                                        (item?.previousSortOrder || Infinity),
+                                    'text-muted-color':
+                                        item?.currentSortOrder ===
+                                        item?.previousSortOrder,
+                                }"
+                                >{{
+                                    item?.currentSortOrder <
+                                        item?.previousSortOrder ||
+                                    item?.previousSortOrder === null ||
+                                    item?.previousSortOrder === 0
+                                        ? "arrow_upward"
+                                        : item?.currentSortOrder >
+                                            item?.previousSortOrder
+                                        ? "arrow_downward"
+                                        : "horizontal_rule"
+                                }}</span
+                            >
+                            {{ item?.currentSortOrder }} current |
+                            {{
+                                item?.previousSortOrder !== 0
+                                    ? item?.previousSortOrder
+                                    : "--"
+                            }}
+                            previous</span
+                        >
+                    </div>
+                </div>
+                <div class="max-md:ps-2 col-span-3 order-3 md:order-2">
+                    <span
+                        class="text-xs font-medium uppercase text-muted-color"
+                        >{{ type === "item" ? "Quantity" : "Claims" }}</span
+                    >
+                    <div class="flex items-center gap-4">
+                        <div class="text-lg font-bold uppercase text-color">
+                            {{ item?.quantity }}
+                        </div>
+                        <UiAppTrendIndicator :value="item?.trendQuantity" />
+                    </div>
+                </div>
+                <div class="max-md:pe-2 flex col-span-3 md:max-xl:col-span-4 justify-between gap-4 order-4 md:order-3">
+                    <div>
+                        <span
+                            class="text-xs font-medium uppercase text-muted-color"
+                            >{{
+                                type === "item" ? "Gross Sales" : "Value"
+                            }}</span
+                        >
+                        <div class="flex items-center gap-4">
+                            <div class="text-lg font-bold uppercase text-color">
+                                {{ formatCurrency(item?.value) }}
+                            </div>
+                            <UiAppTrendIndicator :value="item?.trendValue" money />
+                        </div>
+                    </div>
+                </div>
+                <Button
+                    severity="secondary"
+                    size="small"
+                    @click="toggleVisibility"
+                    class="self-center place-self-end col-span-1 order-2 md:order-4"
+                    :class="{ invisible: type === 'item' && !hasModifiers }"
+                >
+                    <template #icon>
+                        <i class="material-symbols-outlined text-xl"
+                            >style</i
+                        >
+                    </template>
+                </Button>
+            </div>
+        </div>
+        <ItemsListDetail
+            v-if="type === 'item'"
+            :item="item"
+            :visible="isVisible"
+            @update:visible="isVisible = $event"
+        />
+        <DiscountsTypeDetail
+            v-if="type === 'discount'"
+            v-show="isVisible"
+            :items="item?.items"
+        />
+    </UiAppCard>
+    <!-- <UiAppCard noTitle>
+        <div
             class="grid grid-rows-2 items-center gap-4 md:grid-cols-2 md:grid-rows-1"
         >
             <div class="flex items-center gap-4">
@@ -102,7 +223,7 @@ const hasModifiers = computed(() => {
                                         item?.previousSortOrder === null ||
                                         item?.currentSortOrder <
                                             item?.previousSortOrder,
-                                    'text-orange-500':
+                                    'text-red-500':
                                         item?.currentSortOrder >
                                         (item?.previousSortOrder || Infinity),
                                     'text-muted-color':
@@ -161,33 +282,7 @@ const hasModifiers = computed(() => {
                         <div class="text-lg font-bold uppercase text-color">
                             {{ item?.quantity }}
                         </div>
-                        <div
-                            class="flex gap-1 text-base font-semibold"
-                            :class="{
-                                'text-green-500': item?.trendQuantity >= 0,
-                                'text-orange-500': item?.trendQuantity < 0,
-                                'text-muted-color': item?.trendQuantity === 0,
-                            }"
-                        >
-                            <div
-                                class="material-symbols-outlined flex-1 text-end"
-                            >
-                                {{
-                                    item?.trendQuantity > 0
-                                        ? "trending_up"
-                                        : item?.trendQuantity < 0
-                                          ? "trending_down"
-                                          : "trending_flat"
-                                }}
-                            </div>
-                            <div class="flex-1">
-                                {{
-                                    item?.trendQuantity < 0
-                                        ? Math.abs(item?.trendQuantity)
-                                        : item?.trendQuantity
-                                }}
-                            </div>
-                        </div>
+                        <UiAppTrendIndicator :value="item?.trendQuantity" />
                     </div>
                 </div>
                 <div class="flex flex-1 justify-between gap-4 max-md:w-1/2">
@@ -202,35 +297,7 @@ const hasModifiers = computed(() => {
                             <div class="text-lg font-bold uppercase text-color">
                                 {{ formatCurrency(item?.value) }}
                             </div>
-                            <div
-                                class="flex gap-1 text-base font-semibold"
-                                :class="{
-                                    'text-green-500': item?.trendValue >= 0,
-                                    'text-orange-500': item?.trendValue < 0,
-                                    'text-muted-color': item?.trendValue === 0,
-                                }"
-                            >
-                                <div
-                                    class="material-symbols-outlined flex-1 text-end"
-                                >
-                                    {{
-                                        item?.trendValue > 0
-                                            ? "trending_up"
-                                            : item?.trendValue < 0
-                                              ? "trending_down"
-                                              : "trending_flat"
-                                    }}
-                                </div>
-                                <div class="flex-1">
-                                    {{
-                                        item?.trendValue < 0
-                                            ? formatCurrency(
-                                                  Math.abs(item?.trendValue),
-                                              )
-                                            : formatCurrency(item?.trendValue)
-                                    }}
-                                </div>
-                            </div>
+                            <UiAppTrendIndicator :value="item?.trendValue" money />
                         </div>
                     </div>
                     <Button
@@ -260,5 +327,5 @@ const hasModifiers = computed(() => {
             v-show="isVisible"
             :items="item?.items"
         />
-    </UiAppCard>
+    </UiAppCard> -->
 </template>

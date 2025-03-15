@@ -21,7 +21,7 @@ const props = defineProps({
     <div
         :class="
             twMerge([
-                'rounded-md bg-surface-50 p-4 dark:bg-surface-800',
+                'rounded-lg bg-surface-0 p-4 dark:bg-surface-800',
                 full && 'h-full',
             ])
         "

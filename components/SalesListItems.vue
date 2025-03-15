@@ -58,10 +58,10 @@ const topCategories = computed(() => {
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
         <div v-if="selected === 'Items'">
-            <SalesList :source="topItems" type="item" />
+            <UiAppCardList :source="topItems" type="item" />
         </div>
         <div v-else-if="selected === 'Categories'">
-            <SalesList :source="topCategories" type="category" money />
+            <UiAppCardList :source="topCategories" type="category" money />
         </div>
     </UiAppCard>
 </template>

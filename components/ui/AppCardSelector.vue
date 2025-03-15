@@ -43,7 +43,7 @@ const selectOption = (option) => {
                     :key="option"
                     class="flex cursor-pointer items-center p-2 text-sm capitalize hover:bg-emphasis"
                     :class="{
-                        'font-bold text-primary-400': selected === option,
+                        'font-bold text-primary-500': selected === option,
                         'font-semibold text-muted-color': selected !== option,
                     }"
                     @click="selectOption(option)"

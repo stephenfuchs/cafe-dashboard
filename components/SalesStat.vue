@@ -15,32 +15,16 @@ const { compareValue } = useComparison();
             {{ title }}
         </template>
         <div
-            class="flex flex-col flex-wrap justify-between max-xl:gap-5 xl:flex-row xl:items-center"
+            class="flex flex-row sm:max-2xl:flex-col flex-wrap justify-between max-2xl:gap-3 2xl:items-center"
         >
             <div class="text-4xl font-bold text-color">
                 {{ value }}
-            </div>
-            <div
-                :class="
-                    percent < 0
-                        ? `bg-orange-100 text-orange-700`
-                        : `bg-green-100 text-green-700`
-                "
-                class="flex items-center gap-1 self-start rounded px-2 py-1 text-sm font-bold"
-            >
-                <div class="material-symbols-outlined">
-                    {{ percent < 0 ? "trending_down" : "trending_up" }}
-                </div>
-                <div>
-                    {{
-                        (percent < 0 ? Math.abs(percent) : percent).toFixed(2)
-                    }}%
+                <div class="text-sm font-normal">
+                    vs last {{ compareValue }}:
+                    <span class="font-semibold">{{ vsValue }}</span>
                 </div>
             </div>
-        </div>
-        <div class="mt-1 text-sm font-normal">
-            vs last {{ compareValue }}:
-            <span class="font-semibold">{{ vsValue }}</span>
+            <UiAppBadgeStatus icon :value="percent" :trendValue="percent" percentage class="sm:max-2xl:self-start self-center"/>
         </div>
     </UiAppCard>
 </template>
