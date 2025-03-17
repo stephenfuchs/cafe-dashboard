@@ -426,6 +426,7 @@ const isPresetRange = (dateRange: [TZDate, TZDate]): boolean => {
             isEqual(end, endOfWeek(start))) ||
         (isEqual(start, startOfMonth(start)) &&
             isEqual(end, endOfMonth(start))) ||
+        (isEqual(start, startOfYear(start)) && isEqual(end, end)) ||
         (isEqual(start, startOfYear(start)) && isEqual(end, endOfYear(start)))
     );
 };
