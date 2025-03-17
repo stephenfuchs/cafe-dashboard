@@ -1,7 +1,126 @@
-import { parseISO, isValid } from "date-fns";
+import { parseISO, isValid, format } from "date-fns";
 import { squareClient } from "../utils/square";
 import { gql } from "../../src/gql/gql";
 import { ApolloError } from "@apollo/client/core";
+import { excludeDate, excludeItem } from "../utils/excludes";
+import { TZDate } from "@date-fns/tz";
+
+interface Order {
+    id: string;
+    closedAt: string;
+    lineItems: LineItem[];
+    discounts: Discount[];
+    returns: Return[];
+    refunds: Refund[];
+    tenders: Tender[];
+    totalDiscountMoney: Money;
+    totalMoney: Money;
+}
+
+interface LineItem {
+    uid: string;
+    name: string;
+    quantity: string;
+    itemVariation: ItemVariation;
+    modifiers: Modifier[];
+    appliedDiscounts: AppliedDiscount[];
+    grossSalesMoney: Money;
+    totalDiscountMoney: Money;
+    totalMoney: Money;
+}
+
+interface ItemVariation {
+    item: Item;
+}
+
+interface Item {
+    id: string;
+    images: Image[];
+    categories: Category[];
+    modifierListInfos: ModifierListInfo[];
+}
+
+interface Image {
+    url: string;
+}
+
+interface Category {
+    category: {
+        id: string;
+        name: string;
+        images: Image[];
+    };
+}
+
+interface ModifierListInfo {
+    modifierList: ModifierList;
+}
+
+interface ModifierList {
+    ordinal: number;
+    id: string;
+    name: string;
+    modifiers: Modifier[];
+}
+
+interface Modifier {
+    ordinal: number;
+    id: string;
+    name: string;
+    modifierList: ModifierList;
+}
+
+interface AppliedDiscount {
+    uid: string;
+    discountUid: string;
+    appliedMoney: Money;
+}
+
+interface Money {
+    amount: number;
+}
+
+interface Discount {
+    uid: string;
+    name: string;
+}
+
+interface Return {
+    lineItems: LineItem[];
+}
+
+interface Refund {
+    id: string;
+    transactionId: string;
+    reason: string;
+    processingFeeMoney: Money;
+    amountMoney: Money;
+}
+
+interface Tender {
+    id: string;
+    type: string;
+    amountMoney: Money;
+    payment: Payment;
+}
+
+interface Payment {
+    processingFees: ProcessingFee[];
+}
+
+interface ProcessingFee {
+    amountMoney: Money;
+}
+
+interface OrdersQueryResult {
+    orders: {
+        nodes: Order[];
+        pageInfo: {
+            hasNextPage: boolean;
+            endCursor: string | null;
+        };
+    };
+}
 
 //@ts-ignore
 BigInt.prototype.toJSON = function () {
@@ -9,46 +128,42 @@ BigInt.prototype.toJSON = function () {
     return int ?? this.toString();
 };
 
-const getOrders = async (
-    start: string,
-    end: string,
-) => {
+const getOrders = async (start: string, end: string) => {
     const runtimeConfig = useRuntimeConfig();
     const locationID = runtimeConfig.squareLocationSecret;
     const merchantID = runtimeConfig.squareMerchantSecret;
 
     try {
         let cursor: string | null = null;
-        const orders: any[] = [];
-        console.log("Cursor before: ", cursor, 'orders is:', orders);
+        const orders: Order[] = [];
+        console.log("Cursor before: ", cursor, "orders is:", orders);
         do {
-
             let maybeCursor;
             if (cursor) {
                 maybeCursor = cursor;
-            }
-            else {
+            } else {
                 maybeCursor = undefined;
             }
 
-            const result = await squareClient.query({
-                variables: {
-                    startDate: start,
-                    endDate: end,
-                    locationID,
-                    merchantID,
-                    // There seems to be an issue when we pass through `null` for
-                    // the value for `cursor`. This might be an issue with ApolloClient
-                    // because the Sqaure GraphQL playground successfully accepts `null`.
-                    // The error the Square API returns is: "An internal error has
-                    // occurred, and the API was unable to service your request." and 
-                    // error code is "INTERNAL_SERVER_ERROR".
-                    //
-                    // Therefore, only include the cursor variable when it has a value
-                    // (like in our request for the first page):
-                    ...(cursor ? {cursor} : {})
-                },
-                query: gql(`
+            const result: { data: OrdersQueryResult } =
+                await squareClient.query<OrdersQueryResult>({
+                    variables: {
+                        startDate: start,
+                        endDate: end,
+                        locationID,
+                        merchantID,
+                        // There seems to be an issue when we pass through `null` for
+                        // the value for `cursor`. This might be an issue with ApolloClient
+                        // because the Sqaure GraphQL playground successfully accepts `null`.
+                        // The error the Square API returns is: "An internal error has
+                        // occurred, and the API was unable to service your request." and
+                        // error code is "INTERNAL_SERVER_ERROR".
+                        //
+                        // Therefore, only include the cursor variable when it has a value
+                        // (like in our request for the first page):
+                        ...(cursor ? { cursor } : {}),
+                    },
+                    query: gql(`
                 query Orders($startDate: DateTime!, $endDate: DateTime!, $locationID: ID!, $merchantID: ID!, $cursor: Cursor) {
                     orders(
                         filter: {
@@ -186,65 +301,62 @@ const getOrders = async (
                     }
                 }
             `),
-            });
+                });
 
             // cursor = result.data.orders?.pageInfo.endCursor;
             cursor = result.data.orders?.pageInfo.endCursor;
-            console.log("CURSOR: ", cursor)
+            console.log("CURSOR: ", cursor);
 
-            orders.push(...result.data.orders?.nodes || [])
+            orders.push(...(result.data.orders?.nodes || []));
+            // console.log("UNFILTERED ORDERS: ", orders);
+        } while (cursor);
 
-        } while (cursor)
+        const convertedDates = orders.map((order) => ({
+            ...order,
+            closedAt: order.closedAt
+                ? format(
+                      new TZDate(parseISO(order.closedAt), "America/Chicago"),
+                      "MM-dd-yyyy hh:mm aaa",
+                  )
+                : null,
+        }));
 
-        // let cursor: SearchOrdersResponse["cursor"];
-        // do {
-        //     const response = await ordersApi.searchOrders({
-        //         locationIds: [runtimeConfig.squareLocationSecret],
-        //         query: {
-        //             filter: {
-        //                 stateFilter: {
-        //                     states: ["COMPLETED"],
-        //                 },
-        //                 dateTimeFilter: {
-        //                     closedAt: {
-        //                         startAt: start,
-        //                         endAt: end,
-        //                     },
-        //                 },
-        //             },
-        //             sort: {
-        //                 sortField: "CLOSED_AT",
-        //                 sortOrder: "ASC",
-        //             },
-        //         },
-        //         limit: 1000,
-        //         returnEntries: false,
-        //         cursor,
-        //     });
-
-        //     cursor = response.result.cursor;
-
-        //     orders.push(...(response.result.orders || []));
-        // } while (cursor);
+        // console.log("CONVERTED ORDERS: ", convertedDates);
 
         // Filter the orders based on tenders type (CASH or CARD)
-        const filteredOrders = orders.filter(
-            (order) =>
+        const filteredOrders = convertedDates.filter((order) => {
+            if (!order.closedAt) return false;
+
+            const orderDate = order.closedAt.split(" ")[0];
+            if (excludeDate.has(orderDate)) return false;
+
+            const hasExcludedItems =
+                Array.isArray(order.lineItems) &&
+                order.lineItems.some((item) => excludeItem.has(item.name));
+            if (hasExcludedItems) return false;
+
+            return (
                 Array.isArray(order.tenders) && // Ensure tenders is an array
                 order.tenders.some(
                     (tender) =>
                         tender?.type === "CASH" || tender?.type === "CARD",
-                ),
-        );
+                )
+            );
+        });
+
+        // console.log("FILTERED ORDERS: ", filteredOrders);
 
         return filteredOrders;
         // return result.data.orders?.nodes;
     } catch (error) {
-        console.error('error:', error);
+        console.error("error:", error);
         if (error instanceof ApolloError) {
             console.error("Apollo GraphQL Errors:", error.graphQLErrors);
-            if (error.networkError) {
-                console.error("Network Error:", error.networkError?.result);
+            if (error.networkError && "result" in error.networkError) {
+                console.error(
+                    "Network Error:",
+                    (error.networkError as any).result,
+                );
             }
         } else {
             console.error("Unexpected Error:", error);
@@ -277,8 +389,8 @@ export default defineEventHandler(async (event) => {
 
         return orders;
     } catch (e) {
-        console.log("ERrOr eQuaLs: ", JSON.parse(JSON.stringify(e)));
-        console.log("Cause: ", e?.cause?.result?.errors);
+        console.log("Error Equals: ", JSON.parse(JSON.stringify(e)));
+        console.log("Cause: ", (e as any).cause?.result?.errors);
         throw e;
     }
 });

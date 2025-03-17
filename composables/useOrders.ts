@@ -1,35 +1,7 @@
 import { TZDate } from "@date-fns/tz";
-import { formatISO, parseISO, format } from "date-fns";
-import type { Order, OrdersQuery, OrderConnection } from "../src/gql/graphql";
-import { excludeDate, excludeItem } from "../server/utils/excludes";
+import { formatISO } from "date-fns";
+import type { Order } from "../src/gql/graphql";
 import { useMemoize } from "@vueuse/core";
-
-// Define type aliases for data structures
-// type Money = number;
-// type Tender = {
-//     type: string;
-//     amountMoney: Money;
-// };
-// type Refund = { amountMoney: Money };
-// type LineItem = {
-//     uid: string;
-//     name: string;
-//     quantity: number;
-//     grossSalesMoney: Money;
-// };
-// type Payment = {
-//     id: string;
-//     processingFee: number;
-// };
-// type Order = {
-//     tenders: Tender[];
-//     id: string;
-//     closedAt: string;
-//     totalMoney: Money;
-//     totalDiscountMoney: Money;
-//     refunds: Refund[];
-//     lineItems: LineItem[];
-// };
 
 export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
     const dateKey = computed(
@@ -48,40 +20,14 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
         }
 
         try {
-            const response = await $fetch("/api/orders", {
+            const response: Order[] = await $fetch("/api/orders", {
                 params: {
                     startDate: formatISO(start.value),
                     endDate: formatISO(end.value),
                 },
             });
 
-            orders.value = response
-                .map((order) => ({
-                    ...order,
-                    // Convert closedAt to our local timezone
-                    closedAt: order.closedAt
-                        ? format(
-                              new TZDate(
-                                  parseISO(order.closedAt),
-                                  "America/Chicago",
-                              ),
-                              "MM-dd-yyyy hh:mm aaa",
-                          )
-                        : null,
-                }))
-                .filter((order) => {
-                    if (!order.closedAt) return false;
-
-                    const orderDate = order?.closedAt?.split(" ")[0];
-                    if (excludeDate.has(orderDate)) return false;
-
-                    const hasExcludedItems = order.lineItems?.some((item) =>
-                        excludeItem.has(item.name),
-                    );
-                    if (hasExcludedItems) return false;
-
-                    return true;
-                });
+            orders.value = response;
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
@@ -92,39 +38,45 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
         callback: (item: T) => number,
     ): number => (array ?? []).reduce((sum, item) => sum + callback(item), 0);
 
-    //// computed
-
     const refunds = computed(() =>
-        calcTotal(orders.value, (order) =>
-            calcTotal(order.refunds, (refund) => refund.amountMoney.amount),
+        calcTotal(orders.value, (order: Order) =>
+            calcTotal(
+                order.refunds ?? [],
+                (refund) => refund?.amountMoney?.amount ?? 0,
+            ),
         ),
     );
 
     const discounts = computed(() =>
         calcTotal(
             orders.value,
-            (order) => order.totalDiscountMoney.amount || 0,
+            (order: Order) => order?.totalDiscountMoney?.amount || 0,
         ),
     );
 
     const grossSales = computed(() =>
-        calcTotal(orders.value, (order) =>
-            calcTotal(order.lineItems, (item) => item.grossSalesMoney.amount),
+        calcTotal(orders.value, (order: Order) =>
+            calcTotal(
+                order.lineItems ?? [],
+                (item) => item?.grossSalesMoney?.amount,
+            ),
         ),
     );
 
     const netSales = computed(
         () =>
-            calcTotal(orders.value, (order) => order.totalMoney.amount) -
-            refunds.value,
+            calcTotal(
+                orders.value,
+                (order: Order) => order?.totalMoney?.amount,
+            ) - refunds.value,
     );
 
     const fees = computed(() =>
-        calcTotal(orders.value, (order) =>
+        calcTotal(orders.value, (order: Order) =>
             calcTotal(
-                order.tenders,
+                order.tenders ?? [],
                 (tender) =>
-                    tender.payment?.processingFees?.reduce(
+                    tender?.payment?.processingFees?.reduce(
                         (feeTotal, fee) =>
                             feeTotal + (fee.amountMoney?.amount || 0),
                         0,
@@ -136,7 +88,9 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
     const netTotal = computed(() => netSales.value - fees.value);
 
     const transactions = computed(() =>
-        calcTotal(orders.value, (order) => (order.refunds?.length ? 0 : 1)),
+        calcTotal(orders.value, (order: Order) =>
+            order.refunds?.length ? 0 : 1,
+        ),
     );
 
     const avgTransaction = computed(() =>
@@ -145,10 +99,10 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
 
     const tenderTotal = (tenderType: string) =>
         computed(() =>
-            calcTotal(orders.value, (order) =>
-                calcTotal(order.tenders, (tender) =>
-                    tender.type === tenderType
-                        ? tender.amountMoney.amount || 0
+            calcTotal(orders.value, (order: Order) =>
+                calcTotal(order.tenders ?? [], (tender) =>
+                    tender?.type === tenderType
+                        ? tender?.amountMoney?.amount || 0
                         : 0,
                 ),
             ),
