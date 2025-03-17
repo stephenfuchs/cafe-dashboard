@@ -462,7 +462,7 @@ const setLastMonth = () => {
 // Set the current year range
 const setThisYear = () => {
     const now = TZDate.tz(timezone);
-    selectedDateRange.value = [startOfYear(now), endOfYear(now)];
+    selectedDateRange.value = [startOfYear(now), now];
 };
 
 // Set the last year range
