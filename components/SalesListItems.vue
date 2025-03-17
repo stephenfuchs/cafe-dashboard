@@ -36,7 +36,7 @@ const topCategories = computed(() => {
         const existingCategory = acc.find(c => c.category === item.category);
         if (existingCategory) {
             // If the category already exists, sum the grossSales
-            existingCategory.grossSales += item.grossSales;
+            existingCategory.value += item.value;
         } else {
             // If the category doesn't exist, add a new entry
             acc.push({ ...item });
@@ -46,7 +46,7 @@ const topCategories = computed(() => {
 
     // Sort the unique categories by grossSales
     return uniqueCategories
-        .sort((a, b) => b.grossSales - a.grossSales)
+        .sort((a, b) => b.value - a.value)
         .slice(0, 5);
 });
 </script>
