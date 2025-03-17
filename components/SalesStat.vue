@@ -20,11 +20,17 @@ const { compareValue } = useComparison();
             <div class="text-4xl font-bold text-color">
                 {{ value }}
                 <div class="text-sm font-normal">
-                    vs last {{ compareValue }}:
+                    vs prior {{ compareValue }}:
                     <span class="font-semibold">{{ vsValue }}</span>
                 </div>
             </div>
-            <UiAppBadgeStatus icon :value="percent" :trendValue="percent" percentage class="sm:max-2xl:self-start self-center"/>
+            <UiAppBadgeStatus
+                icon
+                :value="percent"
+                :trendValue="percent"
+                percentage
+                class="sm:max-2xl:self-start self-center"
+            />
         </div>
     </UiAppCard>
 </template>
