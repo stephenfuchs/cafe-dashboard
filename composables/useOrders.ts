@@ -1,9 +1,8 @@
 import { TZDate } from "@date-fns/tz";
 import { formatISO, parseISO, format } from "date-fns";
 import type { Order, OrdersQuery, OrderConnection } from "../src/gql/graphql";
-import {
-    excludeDate, excludeItem
-} from "../server/utils/excludes";
+import { excludeDate, excludeItem } from "../server/utils/excludes";
+import { useMemoize } from "@vueuse/core";
 
 // Define type aliases for data structures
 // type Money = number;
@@ -32,7 +31,7 @@ import {
 //     lineItems: LineItem[];
 // };
 
-export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
+export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
     const dateKey = computed(
         () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
     );
@@ -56,23 +55,34 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
                 },
             });
 
-            orders.value = response.map(order => ({
-            ...order,
-            closedAt: order.closedAt
-                ? format(new TZDate(parseISO(order.closedAt), "America/Chicago"), "MM-dd-yyyy hh:mm aaa")
-                : null
-        })).filter(order => {
-            if (!order.closedAt) return false;
+            console.log("curt test:", TZDate);
+            orders.value = response
+                .map((order) => ({
+                    ...order,
+                    // Convert closedAt to our local timezone
+                    closedAt: order.closedAt
+                        ? format(
+                              new TZDate(
+                                  parseISO(order.closedAt),
+                                  "America/Chicago",
+                              ),
+                              "MM-dd-yyyy hh:mm aaa",
+                          )
+                        : null,
+                }))
+                .filter((order) => {
+                    if (!order.closedAt) return false;
 
-            const orderDate = order?.closedAt?.split(" ")[0];
-            if (excludeDate.has(orderDate)) return false;
+                    const orderDate = order?.closedAt?.split(" ")[0];
+                    if (excludeDate.has(orderDate)) return false;
 
-            const hasExcludedItems = order.lineItems?.some(item => excludeItem.has(item.name));
-            if (hasExcludedItems) return false
+                    const hasExcludedItems = order.lineItems?.some((item) =>
+                        excludeItem.has(item.name),
+                    );
+                    if (hasExcludedItems) return false;
 
-            return true
-
-        });
+                    return true;
+                });
         } catch (error) {
             console.error("Error fetching orders:", error);
         }
@@ -160,4 +170,4 @@ export const useOrders = (start: Ref<TZDate>, end: Ref<TZDate>) => {
         fees,
         netTotal,
     };
-};
+});

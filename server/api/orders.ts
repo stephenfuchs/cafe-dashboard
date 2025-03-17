@@ -57,7 +57,7 @@ const getOrders = async (
                             state: { equalToAnyOf: [COMPLETED] }
                             closedAt: { startAt: $startDate, endAt: $endDate }
                         }
-                        first: 10
+                        first: 200
                         after: $cursor
                     ) {
                         nodes {
