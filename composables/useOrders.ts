@@ -55,7 +55,6 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
                 },
             });
 
-            console.log("curt test:", TZDate);
             orders.value = response
                 .map((order) => ({
                     ...order,
