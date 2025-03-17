@@ -163,7 +163,7 @@ export default defineNuxtConfig({
                     },
                     pcToggleButton: {
                         root: {
-                            class: "capitalize flex-auto border-0 bg-surface-400/15 dark:bg-surface-900 text-sm text-muted-color font-medium data-[p-checked=true]:text-color data-[p-checked=true]:font-semibold",
+                            class: "capitalize flex-auto border-0 bg-surface-400/15 dark:bg-surface-900 text-muted-color font-medium data-[p-checked=true]:text-color data-[p-checked=true]:font-semibold p-px text-sm",
                         },
                     },
                 },
