@@ -419,15 +419,14 @@ watch(selectedRangeOption, (newValue) => {
 
 // Helper function to check if the date range matches a predefined range
 const isPresetRange = (dateRange: [TZDate, TZDate]): boolean => {
-    const start = dateRange[0];
-    const end = dateRange[1];
+    const [start, end] = dateRange;
     return (
         (isEqual(start, startOfWeek(start)) &&
             isEqual(end, endOfWeek(start))) ||
         (isEqual(start, startOfMonth(start)) &&
-            isEqual(end, endOfMonth(start))) ||
-        (isEqual(start, startOfYear(start)) && isEqual(end, end)) ||
-        (isEqual(start, startOfYear(start)) && isEqual(end, endOfYear(start)))
+            (isEqual(end, end) || isEqual(end, endOfMonth(start)))) ||
+        (isEqual(start, startOfYear(start)) &&
+            (isEqual(end, end) || isEqual(end, endOfYear(start))))
     );
 };
 
@@ -451,7 +450,7 @@ const setLastWeek = () => {
 // Set the current month range
 const setThisMonth = () => {
     const now = TZDate.tz(timezone);
-    selectedDateRange.value = [startOfMonth(now), endOfMonth(now)];
+    selectedDateRange.value = [startOfMonth(now), now];
 };
 
 // Set the last month range
