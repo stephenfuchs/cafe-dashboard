@@ -1,7 +1,5 @@
 <script setup>
-import {
-    excludeDonations,
-} from "../server/utils/excludes";
+import { excludeDonations } from "../server/utils/excludes";
 const filters = useFilters();
 
 const { orders } = useOrders(filters.startDate, filters.endDate);
@@ -20,7 +18,7 @@ const trendingModifiers = computed(() => {
                 trending.push({
                     imgItem: item.imgItem,
                     category,
-                    name: mod.selection + " " + item.name,
+                    name: item.name + ": " + mod.selection,
                     quantity: mod.count,
                     trendQuantity: mod.count - mod.previousCount,
                 });
