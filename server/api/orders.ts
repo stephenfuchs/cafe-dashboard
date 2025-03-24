@@ -136,7 +136,6 @@ const getOrders = async (start: string, end: string) => {
     try {
         let cursor: string | null = null;
         const orders: Order[] = [];
-        console.log("Cursor before: ", cursor, "orders is:", orders);
         do {
             let maybeCursor;
             if (cursor) {
