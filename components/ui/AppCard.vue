@@ -6,6 +6,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    chart: {
+        type: Boolean,
+        default: false,
+    },
     noTitle: {
         type: Boolean,
         default: false,
@@ -31,12 +35,19 @@ const props = defineProps({
             :class="
                 twMerge([
                     'mb-2',
-                    !stat && 'mb-4 flex h-9 items-center justify-between',
+                    !stat && 'mb-4 flex h-9 items-center justify-between gap-4',
                 ])
             "
         >
-            <div class="text-sm font-bold uppercase text-color">
+            <div class="text-sm font-bold uppercase text-color flex-shrink-0">
                 <slot name="title"></slot>
+            </div>
+            <div
+                v-if="chart"
+                class="flex-1 overflow-x-auto whitespace-nowrap"
+                id="legend-container"
+            >
+                <slot name="legend"></slot>
             </div>
             <slot name="options"></slot>
         </div>
