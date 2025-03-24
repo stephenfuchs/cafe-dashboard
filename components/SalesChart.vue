@@ -1,11 +1,6 @@
 <template>
-    <UiAppCard full>
-        <template #title>
-            <div class="flex items-center gap-4">
-                {{ selected }} Summary
-                <div id="legend-container"></div>
-            </div>
-        </template>
+    <UiAppCard full chart>
+        <template #title> {{ selected }} Chart </template>
         <template #options>
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
@@ -20,20 +15,45 @@
 </template>
 
 <script setup>
-const selected = ref("Yearly");
-const options = ref(["Yearly", "Monthly", "Daily"]);
+import { eachMonthOfInterval, startOfMonth, endOfMonth } from "date-fns";
+import { TZDate } from "@date-fns/tz";
+import { $dt } from "@primeuix/themes";
+
+const chartColors = ref([
+    $dt("primary.500"),
+    $dt("blue.500"),
+    $dt("cyan.500"),
+    $dt("teal.500"),
+    $dt("amber.500"),
+    $dt("orange.500"),
+    $dt("red.500"),
+    $dt("lime.500"),
+    $dt("emerald.500"),
+    $dt("rose.500"),
+    $dt("pink.500"),
+    $dt("fuchsia.500"),
+]);
+
+// Extract the actual color values
+const colorValues = chartColors.value.map((color) => color.value);
+
+const selected = ref("Gross Sales");
+const options = ref(["Gross Sales", "Net Total", "Transactions"]);
+
+const datasetVisibility = reactive({});
+
+const currentYear = new Date().getFullYear();
+// Define an array of years
+const years = Array.from(
+    { length: currentYear - 2017 + 1 },
+    (_, i) => currentYear - i,
+);
 
 onMounted(() => {
-    salesData.value = setSalesData();
     salesOptions.value = setSalesOptions();
 });
 
-const salesData = ref();
-const salesOptions = ref();
-
-const setSalesData = () => {
-    const documentStyle = getComputedStyle(document.documentElement);
-
+const salesData = computed(() => {
     return {
         labels: [
             "Jan",
@@ -49,27 +69,71 @@ const setSalesData = () => {
             "Nov",
             "Dec",
         ],
-        datasets: [
-            {
-                label: "2024",
-                data: [
-                    1012.98, 1103.68, 1602.06, 1206.1, 1387.42, 1391.41,
-                    1099.37, 1367.95, 1824.0, 1124.89, 1387.4, 511.17,
-                ], // Sales data for this year
-                backgroundColor:
-                    documentStyle.getPropertyValue("--p-primary-500"),
-            },
-            {
-                label: "2023",
-                data: [
-                    847.57, 965.84, 945.35, 1333.25, 816.37, 853.49, 987.66,
-                    909.85, 795.82, 1119.57, 1134.88, 1497.3,
-                ], // Sales data for last year
-                backgroundColor: documentStyle.getPropertyValue("--p-blue-500"),
-            },
-        ],
+        datasets: years.map((year, index) => {
+            const yearData = Object.keys(ordersByMonth)
+                .filter((yyyymm) => yyyymm.startsWith(year.toString()))
+                .map((yyyymm) => {
+                    const grossSalesData =
+                        ordersByMonth[yyyymm].grossSales / 100;
+                    const netTotalData = ordersByMonth[yyyymm].netTotal / 100;
+                    const transactionsData = ordersByMonth[yyyymm].transactions;
+                    return selected.value === "Gross Sales"
+                        ? grossSalesData
+                        : selected.value === "Net Total"
+                          ? netTotalData
+                          : transactionsData;
+                });
+
+            return {
+                label: year.toString(),
+                data: yearData,
+                backgroundColor: colorValues[index % colorValues.length],
+                hidden: datasetVisibility[year] ?? index >= 2, // Use stored visibility state
+            };
+        }),
     };
+});
+
+// Preserve dataset visibility state when toggling legend
+const updateDatasetVisibility = (chart) => {
+    chart.data.datasets.forEach((dataset) => {
+        datasetVisibility[dataset.label] = dataset.hidden;
+    });
 };
+
+const salesOptions = ref();
+
+// An array of the selected years. Years can be unselected
+// by clicking them in the legend.
+const selectedYears = ref([]);
+
+// Keys will be in the format 'YYYY-MM'; values will be an array of orders ref
+const ordersByMonth = reactive({});
+
+watch(selectedYears, () => {
+    selectedYears.value.forEach((selectedYear) => {
+        const months = eachMonthOfInterval({
+            start: new Date(`${selectedYear}-01-01T00:00:00`),
+            end: new Date(`${selectedYear}-12-31T23:59:59`),
+        });
+
+        months.forEach((monthDate) => {
+            const monthKey = monthDate.toISOString().slice(0, 7); // Format as 'YYYY-MM'
+
+            if (ordersByMonth[monthKey]) {
+                // Already set up for this month
+                return;
+            }
+
+            // Find start and end date of the month
+            const startDate = new TZDate(startOfMonth(monthDate));
+            const endDate = new TZDate(endOfMonth(monthDate));
+
+            // Call useOrders() for the month and save it in ordersByMonth
+            ordersByMonth[monthKey] = useOrders(ref(startDate), ref(endDate));
+        });
+    });
+});
 
 const setSalesOptions = () => {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -104,7 +168,7 @@ const setSalesOptions = () => {
                     label: function (tooltipItem) {
                         const legend = tooltipItem.dataset.label || "";
                         const value = tooltipItem.raw; // Get the raw data value
-                        return `${legend}: $${value.toLocaleString()}`; // Format the value
+                        return `${legend}: ${selected.value === "Transactions" ? value : "$" + value.toLocaleString()}`; // Format the value
                     },
                 },
             },
@@ -132,7 +196,7 @@ const setSalesOptions = () => {
             y: {
                 ticks: {
                     callback: function (value) {
-                        return `$${value.toLocaleString()}`; // Format as dollar amount
+                        return `${selected.value === "Transactions" ? value : "$" + value.toLocaleString()}`; // Format as dollar amount
                     },
                     color: textColorSecondary,
                 },
@@ -152,7 +216,7 @@ const getOrCreateLegendList = (chart, id) => {
 
     if (!listContainer) {
         listContainer = document.createElement("ul");
-        listContainer.className = "flex gap-4";
+        listContainer.className = "flex-1 flex gap-4";
 
         legendContainer.appendChild(listContainer);
     }
@@ -178,15 +242,9 @@ const htmlLegendPlugin = {
             li.className = "flex items-center cursor-pointer";
 
             li.onclick = () => {
-                const { type } = chart.config;
-                if (type === "pie" || type === "doughnut") {
-                    chart.toggleDataVisibility(item.index);
-                } else {
-                    chart.setDatasetVisibility(
-                        item.datasetIndex,
-                        !chart.isDatasetVisible(item.datasetIndex),
-                    );
-                }
+                const dataset = chart.data.datasets[item.datasetIndex];
+                dataset.hidden = !dataset.hidden;
+                updateDatasetVisibility(chart); // Persist visibility state
                 chart.update();
             };
 
@@ -211,6 +269,10 @@ const htmlLegendPlugin = {
             li.appendChild(textContainer);
             ul.appendChild(li);
         });
+
+        selectedYears.value = items
+            .filter((item) => !item.hidden)
+            .map((item) => item.text);
     },
 };
 </script>
