@@ -47,14 +47,13 @@ const currentTotalValue = computed(() =>
     ),
 );
 
-
 const dataviewPassthrough = {
     header: {
         class: "border-none p-0 mb-6 bg-transparent",
     },
     content: {
-        class: "bg-transparent"
-    }
+        class: "bg-transparent",
+    },
 };
 </script>
 
@@ -75,8 +74,13 @@ const dataviewPassthrough = {
                     @change="onSortChange($event)"
                 />
                 <div class="flex items-center gap-4">
-                    <UiAppTrendIndicator :value="trendValue" money/>
-                    <UiAppBadgeStatus icon :value="currentTotalValue" :trendValue="trendValue" money />
+                    <UiAppTrendIndicator :value="trendValue" money />
+                    <UiAppBadgeStatus
+                        icon
+                        :value="currentTotalValue"
+                        :trendValue="trendValue"
+                        money
+                    />
                 </div>
             </UiAppCard>
         </template>

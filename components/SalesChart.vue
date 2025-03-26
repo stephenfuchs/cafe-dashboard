@@ -1,19 +1,3 @@
-<template>
-    <UiAppCard full chart>
-        <template #title> {{ selected }} Chart </template>
-        <template #options>
-            <UiAppCardSelector :options="options" v-model:selected="selected" />
-        </template>
-        <Chart
-            type="bar"
-            :data="salesData"
-            :options="salesOptions"
-            class="h-52"
-            :plugins="[htmlLegendPlugin]"
-        />
-    </UiAppCard>
-</template>
-
 <script setup>
 import { eachMonthOfInterval, startOfMonth, endOfMonth } from "date-fns";
 import { TZDate } from "@date-fns/tz";
@@ -216,7 +200,7 @@ const getOrCreateLegendList = (chart, id) => {
 
     if (!listContainer) {
         listContainer = document.createElement("ul");
-        listContainer.className = "flex-1 flex gap-4";
+        listContainer.className = "flex gap-4";
 
         legendContainer.appendChild(listContainer);
     }
@@ -276,3 +260,19 @@ const htmlLegendPlugin = {
     },
 };
 </script>
+
+<template>
+    <UiAppCard full chart>
+        <template #title> {{ selected }} Chart </template>
+        <template #options>
+            <UiAppCardSelector :options="options" v-model:selected="selected" />
+        </template>
+        <Chart
+            type="bar"
+            :data="salesData"
+            :options="salesOptions"
+            class="h-52"
+            :plugins="[htmlLegendPlugin]"
+        />
+    </UiAppCard>
+</template>

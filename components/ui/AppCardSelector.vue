@@ -1,19 +1,21 @@
-<script setup>
+<script setup lang="ts">
 defineProps({
     options: {
-        type: Array,
+        type: Array as PropType<string[]>,
         required: true,
     },
 });
-defineEmits(["update:selected"]);
-const popoverRef = ref();
-const selected = defineModel("selected");
 
-const togglePopover = (event) => {
+defineEmits(["update:selected"]);
+
+const popoverRef = ref();
+const selected = defineModel<string>("selected");
+
+const togglePopover = (event: Event) => {
     popoverRef.value.toggle(event);
 };
 
-const selectOption = (option) => {
+const selectOption = (option: string) => {
     selected.value = option;
     popoverRef.value.hide();
 };
@@ -37,7 +39,11 @@ const selectOption = (option) => {
     </Button>
     <Popover ref="popoverRef">
         <div class="flex flex-col">
-            <ul class="m-0 flex list-none flex-col p-0">
+            <ul
+                class="m-0 flex list-none flex-col p-0"
+                role="listbox"
+                aria-labelledby="popover-title"
+            >
                 <li
                     v-for="option in options"
                     :key="option"
@@ -47,6 +53,8 @@ const selectOption = (option) => {
                         'font-semibold text-muted-color': selected !== option,
                     }"
                     @click="selectOption(option)"
+                    role="option"
+                    :aria-selected="selected === option ? 'true' : 'false'"
                 >
                     {{ option }}
                 </li>

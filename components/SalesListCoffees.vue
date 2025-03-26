@@ -1,5 +1,4 @@
 <script setup type="ts">
-import { formatCurrency } from "~/server/utils/formatCurrency";
 const filters = useFilters();
 const { orders } = useOrders(filters.startDate, filters.endDate);
 const { orders: previousOrders } = useOrders(
@@ -38,7 +37,13 @@ const coffeeDonations = computed(() => {
     <UiAppCard full>
         <template #title> Brewed Coffees </template>
         <template #options>
-            <UiAppBadgeStatus v-if="coffeeDonations" icon :value="coffeeDonations.value" :trendValue="coffeeDonations.trendValue" money />
+            <UiAppBadgeStatus
+                v-if="coffeeDonations"
+                icon
+                :value="coffeeDonations.value"
+                :trendValue="coffeeDonations.trendValue"
+                money
+            />
         </template>
         <UiAppCardList :source="coffees" type="coffee" />
     </UiAppCard>

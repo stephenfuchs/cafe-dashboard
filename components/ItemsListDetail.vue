@@ -18,7 +18,7 @@ interface Item {
     trendQuantity: number;
     trendValue: number;
     modifiers: Record<string, Modifier[]>;
-    modifierSets: { modifiers: Modifier[]; count: number }[];
+    modifierSets: Array<{ modifiers: Modifier[]; count: number }>;
 }
 
 const props = defineProps<{
@@ -29,7 +29,7 @@ const props = defineProps<{
 const emit = defineEmits(["update:visible"]);
 
 const modifierSetCount = computed(() => {
-    return props.item?.modifierSets.length;
+    return props.item?.modifierSets.length ?? 0;
 });
 
 const topModifiersByCategory = computed(() => {
@@ -61,14 +61,12 @@ const drawerPassthrough = {
     },
 };
 
-
-const getValue = (modifier: Modifier) => {
-    return modifier.count - modifier.previousCount
-}
-const getTrendValue = (modifier: Modifier) => {
-    return calcChange(modifier.previousCount, modifier.count)
-}
-
+const getValue = (modifier: Modifier): number => {
+    return modifier.count - modifier.previousCount;
+};
+const getTrendValue = (modifier: Modifier): number => {
+    return calcChange(modifier.previousCount, modifier.count);
+};
 </script>
 
 <template>
@@ -195,8 +193,12 @@ const getTrendValue = (modifier: Modifier) => {
                                     :key="modifier.selection"
                                     class="flex items-center gap-4 group"
                                 >
-                                    <div class="flex flex-shrink-0 items-center py-2 group-first:pt-0 group-last:pb-0">
-                                        <div class="min-w-12 content-center rounded bg-primary-100 px-2 text-center text-base font-bold text-color dark:bg-primary-600 h-7">
+                                    <div
+                                        class="flex flex-shrink-0 items-center py-2 group-first:pt-0 group-last:pb-0"
+                                    >
+                                        <div
+                                            class="min-w-12 content-center rounded bg-primary-100 px-2 text-center text-base font-bold text-color dark:bg-primary-600 h-7"
+                                        >
                                             {{ modifier.count }}
                                         </div>
                                     </div>
@@ -206,7 +208,14 @@ const getTrendValue = (modifier: Modifier) => {
                                         <div class="truncate capitalize">
                                             {{ modifier.selection }}
                                         </div>
-                                        <UiAppBadgeStatus icon trend :value="getValue(modifier)" :trendValue="getTrendValue(modifier)" />
+                                        <UiAppBadgeStatus
+                                            icon
+                                            trend
+                                            :value="getValue(modifier)"
+                                            :trendValue="
+                                                getTrendValue(modifier)
+                                            "
+                                        />
                                     </div>
                                 </div>
                             </UiAppCard>

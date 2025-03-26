@@ -1,22 +1,10 @@
 <script setup lang="ts">
-const props = defineProps({
-    to: {
-        type: String,
-        required: true,
-    },
-    tooltip: {
-        type: String,
-        required: true,
-    },
-    label: {
-        type: String,
-        required: true,
-    },
-    icon: {
-        type: String,
-        required: true,
-    },
-});
+const props = defineProps<{
+    to: string;
+    tooltip: string;
+    label: string;
+    icon: string;
+}>();
 
 const buttonPassthrough = {
     root: {

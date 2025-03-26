@@ -1,10 +1,10 @@
-<script setup>
-const props = defineProps({
-    title: String,
-    value: Number | String,
-    percent: Number,
-    vsValue: Number | String,
-});
+<script setup lang="ts">
+const props = defineProps<{
+    title: string;
+    value: number | string;
+    percent: number;
+    vsValue: number | string;
+}>();
 
 const { compareValue } = useComparison();
 </script>

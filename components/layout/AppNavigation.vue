@@ -1,4 +1,4 @@
-<script setup></script>
+<script setup lang="ts"></script>
 
 <template>
     <aside
@@ -87,9 +87,3 @@
         </nav>
     </aside>
 </template>
-
-<!-- <style scoped>
-.router-link-active {
-    background-color: theme("colors.primary");
-}
-</style> -->

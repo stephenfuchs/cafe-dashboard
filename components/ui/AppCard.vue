@@ -1,24 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { twMerge } from "tailwind-merge";
 
-const props = defineProps({
-    stat: {
-        type: Boolean,
-        default: false,
+const props = withDefaults(
+    defineProps<{
+        stat?: boolean;
+        chart?: boolean;
+        noTitle?: boolean;
+        full?: boolean;
+    }>(),
+    {
+        stat: false,
+        chart: false,
+        noTitle: false,
+        full: false,
     },
-    chart: {
-        type: Boolean,
-        default: false,
-    },
-    noTitle: {
-        type: Boolean,
-        default: false,
-    },
-    full: {
-        type: Boolean,
-        default: false,
-    },
-});
+);
 </script>
 
 <template>

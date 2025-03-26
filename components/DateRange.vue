@@ -1,56 +1,3 @@
-<template>
-    <DatePicker
-        v-model="selectedDateRange"
-        :selection-mode="'range'"
-        showIcon
-        iconDisplay="input"
-        dateFormat="mm/dd/y"
-    >
-        <template #inputicon="slotProps">
-            <i
-                class="material-symbols-outlined text-lg leading-none"
-                @click="slotProps.clickCallback"
-                >date_range</i
-            >
-        </template>
-        <template #footer>
-            <!-- SelectButton Component for preset date ranges -->
-            <div
-                class="mt-2 flex flex-col gap-2 border-t border-surface-200 pt-2"
-            >
-                <SelectButton
-                    v-model="selectedRangeOption"
-                    :options="optionsWeek"
-                    option-label="label"
-                    option-value="value"
-                    v-bind="selectButtonPassthrough"
-                />
-                <SelectButton
-                    v-model="selectedRangeOption"
-                    :options="optionsMonth"
-                    option-label="label"
-                    option-value="value"
-                    v-bind="selectButtonPassthrough"
-                />
-                <SelectButton
-                    v-model="selectedRangeOption"
-                    :options="optionsYear"
-                    option-label="label"
-                    option-value="value"
-                    v-bind="selectButtonPassthrough"
-                />
-            </div>
-        </template>
-    </DatePicker>
-    <SelectButton
-        v-model="compareValue"
-        :options="compareOptions"
-        option-label="label"
-        option-value="value"
-        :allow-empty="false"
-    />
-</template>
-
 <script setup lang="ts">
 import { TZDate } from "@date-fns/tz";
 import {
@@ -90,7 +37,7 @@ const selectButtonPassthrough = {
 
 const timezone = "America/Chicago";
 // Ref for holding selected date range
-const selectedDateRange = ref<[TZDate, TZDate] | null>();
+const selectedDateRange = ref<[TZDate, TZDate] | null>(null);
 
 // Ref for holding the selected range option from SelectButton
 let selectedRangeOption = ref<string | null>("this-week");
@@ -277,7 +224,7 @@ function getYearPriorRange({
     const calcDifferenceInDays = differenceInDays(endDate, startDate);
     console.log(calcDifferenceInDays);
 
-    const { startPrior, endPrior } = getPriorDateRange({
+    const { startPrior } = getPriorDateRange({
         startDate,
         endDate,
         range: "year",
@@ -471,3 +418,56 @@ const setLastYear = () => {
     selectedDateRange.value = [startOfYear(lastYear), endOfYear(lastYear)];
 };
 </script>
+
+<template>
+    <DatePicker
+        v-model="selectedDateRange"
+        :selection-mode="'range'"
+        showIcon
+        iconDisplay="input"
+        dateFormat="mm/dd/y"
+    >
+        <template #inputicon="slotProps">
+            <i
+                class="material-symbols-outlined text-lg leading-none"
+                @click="slotProps.clickCallback"
+                >date_range</i
+            >
+        </template>
+        <template #footer>
+            <!-- SelectButton Component for preset date ranges -->
+            <div
+                class="mt-2 flex flex-col gap-2 border-t border-surface-200 pt-2"
+            >
+                <SelectButton
+                    v-model="selectedRangeOption"
+                    :options="optionsWeek"
+                    option-label="label"
+                    option-value="value"
+                    v-bind="selectButtonPassthrough"
+                />
+                <SelectButton
+                    v-model="selectedRangeOption"
+                    :options="optionsMonth"
+                    option-label="label"
+                    option-value="value"
+                    v-bind="selectButtonPassthrough"
+                />
+                <SelectButton
+                    v-model="selectedRangeOption"
+                    :options="optionsYear"
+                    option-label="label"
+                    option-value="value"
+                    v-bind="selectButtonPassthrough"
+                />
+            </div>
+        </template>
+    </DatePicker>
+    <SelectButton
+        v-model="compareValue"
+        :options="compareOptions"
+        option-label="label"
+        option-value="value"
+        :allow-empty="false"
+    />
+</template>

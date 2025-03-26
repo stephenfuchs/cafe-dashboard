@@ -44,8 +44,11 @@ const percentChange = computed(() => {
         <template #title> Discounted Items </template>
         <template #options>
             <div class="flex items-center gap-4">
-                <UiAppTrendIndicator :value="percentChange" percentage/>
-                <UiAppBadgeStatus :value="currentTotalQuantity" :trendValue="trendQuantity" />
+                <UiAppTrendIndicator :value="percentChange" percentage />
+                <UiAppBadgeStatus
+                    :value="currentTotalQuantity"
+                    :trendValue="trendQuantity"
+                />
             </div>
         </template>
         <UiAppCardList :source="topItems" type="item" />
