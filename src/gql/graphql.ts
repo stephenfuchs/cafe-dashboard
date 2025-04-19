@@ -136,7 +136,7 @@ export type Address = {
 /**
  * Input type used to specify filters on `Address` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type AddressFilterInput = {
   /**
@@ -149,7 +149,7 @@ export type AddressFilterInput = {
    * > provide less specific details like city, state/province, or country (these
    * > details are provided in other fields).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   addressLine1?: InputMaybe<StringFilterInput>;
   /**
@@ -157,7 +157,7 @@ export type AddressFilterInput = {
    *
    * > The second line of the address, if any.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   addressLine2?: InputMaybe<StringFilterInput>;
   /**
@@ -165,7 +165,7 @@ export type AddressFilterInput = {
    *
    * > The third line of the address, if any.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   addressLine3?: InputMaybe<StringFilterInput>;
   /**
@@ -174,7 +174,7 @@ export type AddressFilterInput = {
    * > A civil entity within the address's country. In the US, this is the state.
    * > For a full list of field meanings by country, see [Working with Addresses](https://developer.squareup.com/docs/build-basics/working-with-addresses).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   administrativeDistrictLevel1?: InputMaybe<StringFilterInput>;
   /**
@@ -182,7 +182,7 @@ export type AddressFilterInput = {
    *
    * > A civil entity within the address's `administrativeDistrictLevel1`.  In the US, this is the county.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   administrativeDistrictLevel2?: InputMaybe<StringFilterInput>;
   /**
@@ -190,15 +190,15 @@ export type AddressFilterInput = {
    *
    * > A civil entity within the address's `administrativeDistrictLevel2`, if any.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   administrativeDistrictLevel3?: InputMaybe<StringFilterInput>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<AddressFilterInput>>;
   /**
@@ -206,7 +206,7 @@ export type AddressFilterInput = {
    *
    * > The address's country, in the two-letter format of ISO 3166. For example, `US` or `FR`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   country?: InputMaybe<CountryFilterInput>;
   /**
@@ -214,7 +214,7 @@ export type AddressFilterInput = {
    *
    * > Optional first name when it's representing recipient.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   firstName?: InputMaybe<StringFilterInput>;
   /**
@@ -222,7 +222,7 @@ export type AddressFilterInput = {
    *
    * > Optional last name when it's representing recipient.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   lastName?: InputMaybe<StringFilterInput>;
   /**
@@ -231,14 +231,14 @@ export type AddressFilterInput = {
    * > The city or town of the address. For a full list of field meanings by
    * country, see [Working with Addresses](https://developer.squareup.com/docs/build-basics/working-with-addresses).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   locality?: InputMaybe<StringFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<AddressFilterInput>;
   /**
@@ -246,7 +246,7 @@ export type AddressFilterInput = {
    *
    * > Optional organization name when it's representing recipient.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   organization?: InputMaybe<StringFilterInput>;
   /**
@@ -254,7 +254,7 @@ export type AddressFilterInput = {
    *
    * > The address's postal code. For a full list of field meanings by country, see [Working with Addresses](https://developer.squareup.com/docs/build-basics/working-with-addresses).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   postalCode?: InputMaybe<StringFilterInput>;
   /**
@@ -262,7 +262,7 @@ export type AddressFilterInput = {
    *
    * > A civil region within the address's `locality`, if any.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   sublocality?: InputMaybe<StringFilterInput>;
   /**
@@ -270,7 +270,7 @@ export type AddressFilterInput = {
    *
    * > A civil region within the address's `sublocality`, if any.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   sublocality2?: InputMaybe<StringFilterInput>;
   /**
@@ -278,7 +278,7 @@ export type AddressFilterInput = {
    *
    * > A civil region within the address's `sublocality2`, if any.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   sublocality3?: InputMaybe<StringFilterInput>;
 };
@@ -297,7 +297,7 @@ export type AfterpayPaymentDetails = {
 /**
  * Input type used to specify filters on `AfterpayPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type AfterpayPaymentDetailsFilterInput = {
   /**
@@ -305,7 +305,7 @@ export type AfterpayPaymentDetailsFilterInput = {
    *
    * > Email address on the buyer's Afterpay account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   emailAddress?: InputMaybe<EmailAddressFilterInput>;
 };
@@ -622,31 +622,42 @@ export enum BankAccountPaymentAccountOwnershipType {
 /**
  * Input type used to specify filters on `BankAccountPaymentAccountOwnershipType` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BankAccountPaymentAccountOwnershipTypeFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `BankAccountPaymentAccountOwnershipTypeFilterInput`
+   * input because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<BankAccountPaymentAccountOwnershipTypeFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<BankAccountPaymentAccountOwnershipTypeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BankAccountPaymentAccountOwnershipTypeInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<BankAccountPaymentAccountOwnershipTypeFilterInput>;
 };
@@ -676,7 +687,7 @@ export type BankAccountPaymentAchDetails = {
 /**
  * Input type used to specify filters on `BankAccountPaymentAchDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BankAccountPaymentAchDetailsFilterInput = {
   /**
@@ -684,7 +695,7 @@ export type BankAccountPaymentAchDetailsFilterInput = {
    *
    * > The last few digits of the bank account number.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   accountNumberSuffix?: InputMaybe<StringFilterInput>;
   /**
@@ -692,22 +703,33 @@ export type BankAccountPaymentAchDetailsFilterInput = {
    *
    * > The type of the bank account performing the transfer. The account type can be `CHECKING`, `SAVINGS`, or `UNKNOWN`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   accountType?: InputMaybe<BankAccountTypeFilterInput>;
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `BankAccountPaymentAchDetailsFilterInput` input
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<BankAccountPaymentAchDetailsFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<BankAccountPaymentAchDetailsFilterInput>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<BankAccountPaymentAchDetailsFilterInput>;
   /**
@@ -715,7 +737,7 @@ export type BankAccountPaymentAchDetailsFilterInput = {
    *
    * > The routing number for the bank account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   routingNumber?: InputMaybe<StringFilterInput>;
 };
@@ -751,7 +773,7 @@ export type BankAccountPaymentDetails = {
 /**
  * Input type used to specify filters on `BankAccountPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BankAccountPaymentDetailsFilterInput = {
   /**
@@ -759,7 +781,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    *
    * > The ownership type of the bank account performing the transfer.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   accountOwnershipType?: InputMaybe<BankAccountPaymentAccountOwnershipTypeFilterInput>;
   /**
@@ -767,7 +789,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    *
    * > ACH-specific information about the transfer. The information is only populated if the `transferType` is `ACH`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   achDetails?: InputMaybe<BankAccountPaymentAchDetailsFilterInput>;
   /**
@@ -775,7 +797,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    *
    * > The name of the bank associated with the bank account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   bankName?: InputMaybe<StringFilterInput>;
   /**
@@ -783,7 +805,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    *
    * > The two-letter ISO code representing the country the bank account is located in.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   country?: InputMaybe<CountryFilterInput>;
   /**
@@ -791,7 +813,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    *
    * > Information about errors encountered during the request.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   errors?: InputMaybe<ErrorFieldsListFilterInput>;
   /**
@@ -800,7 +822,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    * > Uniquely identifies the bank account for this seller and can be used to
    * determine if payments are from the same bank account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   fingerprint?: InputMaybe<IdFilterInput>;
   /**
@@ -808,7 +830,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    *
    * > The statement description as sent to the bank.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   statementDescription?: InputMaybe<StringFilterInput>;
   /**
@@ -816,7 +838,7 @@ export type BankAccountPaymentDetailsFilterInput = {
    *
    * > The type of the bank transfer.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   transferType?: InputMaybe<BankAccountPaymentTransferTypeFilterInput>;
 };
@@ -831,31 +853,42 @@ export enum BankAccountPaymentTransferType {
 /**
  * Input type used to specify filters on `BankAccountPaymentTransferType` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BankAccountPaymentTransferTypeFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `BankAccountPaymentTransferTypeFilterInput` input
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<BankAccountPaymentTransferTypeFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<BankAccountPaymentTransferTypeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BankAccountPaymentTransferTypeInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<BankAccountPaymentTransferTypeFilterInput>;
 };
@@ -901,31 +934,42 @@ export enum BankAccountType {
 /**
  * Input type used to specify filters on `BankAccountType` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BankAccountTypeFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `BankAccountTypeFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<BankAccountTypeFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<BankAccountTypeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BankAccountTypeInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<BankAccountTypeFilterInput>;
 };
@@ -1281,24 +1325,24 @@ export enum BookingStatus {
 /**
  * Input type used to specify filters on `Boolean` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BooleanFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<BooleanFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Boolean']['input']>>>;
   /**
@@ -1616,31 +1660,42 @@ export enum BuyNowPayLaterPaymentBrand {
 /**
  * Input type used to specify filters on `BuyNowPayLaterPaymentBrand` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BuyNowPayLaterPaymentBrandFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `BuyNowPayLaterPaymentBrandFilterInput` input because
+   * of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<BuyNowPayLaterPaymentBrandFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<BuyNowPayLaterPaymentBrandFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<BuyNowPayLaterPaymentBrandInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<BuyNowPayLaterPaymentBrandFilterInput>;
 };
@@ -1670,7 +1725,7 @@ export type BuyNowPayLaterPaymentDetails = {
 /**
  * Input type used to specify filters on `BuyNowPayLaterPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BuyNowPayLaterPaymentDetailsFilterInput = {
   /**
@@ -1678,7 +1733,7 @@ export type BuyNowPayLaterPaymentDetailsFilterInput = {
    *
    * > Details about an Afterpay payment. These details are only populated if the `brand` is `AFTERPAY`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   afterpayDetails?: InputMaybe<AfterpayPaymentDetailsFilterInput>;
   /**
@@ -1686,7 +1741,7 @@ export type BuyNowPayLaterPaymentDetailsFilterInput = {
    *
    * > The brand used for the Buy Now Pay Later payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   brand?: InputMaybe<BuyNowPayLaterPaymentBrandFilterInput>;
   /**
@@ -1694,7 +1749,7 @@ export type BuyNowPayLaterPaymentDetailsFilterInput = {
    *
    * > Details about a Clearpay payment. These details are only populated if the `brand` is `CLEARPAY`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   clearpayDetails?: InputMaybe<ClearpayPaymentDetailsFilterInput>;
 };
@@ -1960,31 +2015,31 @@ export enum CardBrand {
 /**
  * Input type used to specify filters on `CardBrand` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardBrandFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardBrandFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardBrandInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardBrandFilterInput>;
 };
@@ -2202,24 +2257,35 @@ export enum CardBrandInput {
 /**
  * Input type used to specify filters on elements of a `[CardBrand]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardBrandListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardBrandListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardBrandListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardBrandListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<CardBrandInput>>;
 };
@@ -2227,7 +2293,7 @@ export type CardBrandListElementFilterInput = {
 /**
  * Input type used to specify filters on `[CardBrand]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardBrandListFilterInput = {
   /**
@@ -2235,31 +2301,31 @@ export type CardBrandListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `CardBrandListFilterInput` input because of collisions
-   * between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<CardBrandListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardBrandListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<CardBrandListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardBrandListFilterInput>;
 };
@@ -2274,31 +2340,42 @@ export enum CardCoBrand {
 /**
  * Input type used to specify filters on `CardCoBrand` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardCoBrandFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardCoBrandFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardCoBrandFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardCoBrandFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardCoBrandInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardCoBrandFilterInput>;
 };
@@ -2313,7 +2390,7 @@ export enum CardCoBrandInput {
 /**
  * Input type used to specify filters on `Card` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardFilterInput = {
   /**
@@ -2321,7 +2398,7 @@ export type CardFilterInput = {
    *
    * > The card's brand.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   cardBrand?: InputMaybe<CardBrandFilterInput>;
   /**
@@ -2330,7 +2407,7 @@ export type CardFilterInput = {
    * > The type of the card.
    * > The Card object includes this field only in response to Payments API calls.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   cardType?: InputMaybe<CardTypeFilterInput>;
   /**
@@ -2338,7 +2415,7 @@ export type CardFilterInput = {
    *
    * > The name of the cardholder.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   cardholderName?: InputMaybe<StringFilterInput>;
   /**
@@ -2346,7 +2423,7 @@ export type CardFilterInput = {
    *
    * > The last 4 digits of the card number.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   last4?: InputMaybe<StringFilterInput>;
 };
@@ -2501,31 +2578,42 @@ export enum CardPaymentDetailsAvsStatus {
 /**
  * Input type used to specify filters on `CardPaymentDetailsAvsStatus` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentDetailsAvsStatusFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardPaymentDetailsAvsStatusFilterInput` input because
+   * of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardPaymentDetailsAvsStatusFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardPaymentDetailsAvsStatusFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsAvsStatusInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardPaymentDetailsAvsStatusFilterInput>;
 };
@@ -2547,31 +2635,42 @@ export enum CardPaymentDetailsCvvStatus {
 /**
  * Input type used to specify filters on `CardPaymentDetailsCvvStatus` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentDetailsCvvStatusFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardPaymentDetailsCvvStatusFilterInput` input because
+   * of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardPaymentDetailsCvvStatusFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardPaymentDetailsCvvStatusFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsCvvStatusInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardPaymentDetailsCvvStatusFilterInput>;
 };
@@ -2600,31 +2699,42 @@ export enum CardPaymentDetailsEntryMethod {
 /**
  * Input type used to specify filters on `CardPaymentDetailsEntryMethod` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentDetailsEntryMethodFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardPaymentDetailsEntryMethodFilterInput` input
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardPaymentDetailsEntryMethodFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardPaymentDetailsEntryMethodFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsEntryMethodInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardPaymentDetailsEntryMethodFilterInput>;
 };
@@ -2646,7 +2756,7 @@ export enum CardPaymentDetailsEntryMethodInput {
 /**
  * Input type used to specify filters on `CardPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentDetailsFilterInput = {
   /**
@@ -2654,7 +2764,7 @@ export type CardPaymentDetailsFilterInput = {
    *
    * > The credit card's non-confidential details.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   card?: InputMaybe<CardFilterInput>;
 };
@@ -2670,31 +2780,42 @@ export enum CardPaymentDetailsStatus {
 /**
  * Input type used to specify filters on `CardPaymentDetailsStatus` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentDetailsStatusFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardPaymentDetailsStatusFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardPaymentDetailsStatusFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardPaymentDetailsStatusFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsStatusInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardPaymentDetailsStatusFilterInput>;
 };
@@ -2719,31 +2840,42 @@ export enum CardPaymentDetailsVerificationMethod {
 /**
  * Input type used to specify filters on `CardPaymentDetailsVerificationMethod` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentDetailsVerificationMethodFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardPaymentDetailsVerificationMethodFilterInput`
+   * input because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardPaymentDetailsVerificationMethodFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardPaymentDetailsVerificationMethodFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsVerificationMethodInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardPaymentDetailsVerificationMethodFilterInput>;
 };
@@ -2767,31 +2899,42 @@ export enum CardPaymentDetailsVerificationResult {
 /**
  * Input type used to specify filters on `CardPaymentDetailsVerificationResult` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentDetailsVerificationResultFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardPaymentDetailsVerificationResultFilterInput`
+   * input because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardPaymentDetailsVerificationResultFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardPaymentDetailsVerificationResultFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPaymentDetailsVerificationResultInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardPaymentDetailsVerificationResultFilterInput>;
 };
@@ -2821,7 +2964,7 @@ export type CardPaymentTimeline = {
 /**
  * Input type used to specify filters on `CardPaymentTimeline` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPaymentTimelineFilterInput = {
   /**
@@ -2829,7 +2972,7 @@ export type CardPaymentTimelineFilterInput = {
    *
    * > The timestamp when the payment was authorized, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   authorizedAt?: InputMaybe<DateTimeFilter>;
   /**
@@ -2837,7 +2980,7 @@ export type CardPaymentTimelineFilterInput = {
    *
    * > The timestamp when the payment was captured, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   capturedAt?: InputMaybe<DateTimeFilter>;
   /**
@@ -2845,7 +2988,7 @@ export type CardPaymentTimelineFilterInput = {
    *
    * > The timestamp when the payment was voided, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   voidedAt?: InputMaybe<DateTimeFilter>;
 };
@@ -2860,31 +3003,42 @@ export enum CardPrepaidType {
 /**
  * Input type used to specify filters on `CardPrepaidType` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardPrepaidTypeFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardPrepaidTypeFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardPrepaidTypeFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardPrepaidTypeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardPrepaidTypeInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardPrepaidTypeFilterInput>;
 };
@@ -2906,31 +3060,31 @@ export enum CardType {
 /**
  * Input type used to specify filters on `CardType` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardTypeFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CardTypeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CardTypeInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CardTypeFilterInput>;
 };
@@ -2960,7 +3114,7 @@ export type CashAppPaymentDetails = {
 /**
  * Input type used to specify filters on `CashAppPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CashAppPaymentDetailsFilterInput = {
   /**
@@ -2968,7 +3122,7 @@ export type CashAppPaymentDetailsFilterInput = {
    *
    * > $Cashtag of the Cash App account holder.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   buyerCashtag?: InputMaybe<StringFilterInput>;
   /**
@@ -2976,7 +3130,7 @@ export type CashAppPaymentDetailsFilterInput = {
    *
    * > The country of the Cash App account holder.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   buyerCountryCode?: InputMaybe<CountryFilterInput>;
   /**
@@ -2984,7 +3138,7 @@ export type CashAppPaymentDetailsFilterInput = {
    *
    * > The name of the Cash App account holder.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   buyerFullName?: InputMaybe<StringFilterInput>;
 };
@@ -3257,7 +3411,7 @@ export type CashPaymentDetails = {
 /**
  * Input type used to specify filters on `CashPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CashPaymentDetailsFilterInput = {
   /**
@@ -3265,7 +3419,7 @@ export type CashPaymentDetailsFilterInput = {
    *
    * > The amount and currency of the money supplied by the buyer.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   buyerSuppliedMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -3274,7 +3428,7 @@ export type CashPaymentDetailsFilterInput = {
    * > The amount of change due back to the buyer.
    * > This read-only field is calculated from the `amountMoney` and `buyerSuppliedMoney` fields.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   changeBackMoney?: InputMaybe<MoneyFilterInput>;
 };
@@ -5509,7 +5663,7 @@ export type ClearpayPaymentDetails = {
 /**
  * Input type used to specify filters on `ClearpayPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ClearpayPaymentDetailsFilterInput = {
   /**
@@ -5517,7 +5671,7 @@ export type ClearpayPaymentDetailsFilterInput = {
    *
    * > Email address on the buyer's Clearpay account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   emailAddress?: InputMaybe<EmailAddressFilterInput>;
 };
@@ -6541,31 +6695,31 @@ export enum CountryCode {
 /**
  * Input type used to specify filters on `CountryCode` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CountryCodeFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CountryCodeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CountryCodeInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CountryCodeFilterInput>;
 };
@@ -7082,31 +7236,31 @@ export enum CountryCodeInput {
 /**
  * Input type used to specify filters on `Country` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CountryFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CountryFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CountryInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CountryFilterInput>;
 };
@@ -7621,24 +7775,35 @@ export enum CountryInput {
 /**
  * Input type used to specify filters on elements of a `[Country]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CountryListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CountryListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CountryListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CountryListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<CountryInput>>;
 };
@@ -7646,7 +7811,7 @@ export type CountryListElementFilterInput = {
 /**
  * Input type used to specify filters on `[Country]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CountryListFilterInput = {
   /**
@@ -7654,31 +7819,31 @@ export type CountryListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `CountryListFilterInput` input because of collisions
-   * between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<CountryListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CountryListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<CountryListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CountryListFilterInput>;
 };
@@ -8426,31 +8591,31 @@ export enum CurrencyCode {
 /**
  * Input type used to specify filters on `CurrencyCode` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CurrencyCodeFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CurrencyCodeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<CurrencyCodeInput>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CurrencyCodeFilterInput>;
 };
@@ -8827,24 +8992,35 @@ export enum CurrencyCodeInput {
 /**
  * Input type used to specify filters on elements of a `[CurrencyCode]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CurrencyCodeListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CurrencyCodeListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CurrencyCodeListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CurrencyCodeListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<CurrencyCodeInput>>;
 };
@@ -8852,7 +9028,7 @@ export type CurrencyCodeListElementFilterInput = {
 /**
  * Input type used to specify filters on `[CurrencyCode]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CurrencyCodeListFilterInput = {
   /**
@@ -8860,31 +9036,31 @@ export type CurrencyCodeListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `CurrencyCodeListFilterInput` input because of
-   * collisions between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<CurrencyCodeListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CurrencyCodeListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<CurrencyCodeListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CurrencyCodeListFilterInput>;
 };
@@ -9296,24 +9472,35 @@ export enum CurrencyInput {
 /**
  * Input type used to specify filters on elements of a `[Currency]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CurrencyListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CurrencyListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CurrencyListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CurrencyListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<Currency>>;
 };
@@ -9321,7 +9508,7 @@ export type CurrencyListElementFilterInput = {
 /**
  * Input type used to specify filters on `[Currency]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CurrencyListFilterInput = {
   /**
@@ -9329,31 +9516,31 @@ export type CurrencyListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `CurrencyListFilterInput` input because of collisions
-   * between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<CurrencyListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CurrencyListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<CurrencyListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CurrencyListFilterInput>;
 };
@@ -10218,54 +10405,65 @@ export enum DateTimeGroupingTruncationUnitInput {
 /**
  * Input type used to specify filters on elements of a `[DateTime]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DateTimeListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DateTimeListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DateTimeListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DateTimeListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<Scalars['DateTime']['input']>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records based on the time-of-day of the `DateTime` values.
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` is passed, matches all documents.
    */
   timeOfDay?: InputMaybe<DateTimeTimeOfDayFilter>;
 };
@@ -10273,7 +10471,7 @@ export type DateTimeListElementFilterInput = {
 /**
  * Input type used to specify filters on `[DateTime]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DateTimeListFilterInput = {
   /**
@@ -10281,31 +10479,31 @@ export type DateTimeListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `DateTimeListFilterInput` input because of collisions
-   * between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<DateTimeListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DateTimeListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<DateTimeListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<DateTimeListFilterInput>;
 };
@@ -10556,31 +10754,42 @@ export enum DigitalWalletPaymentBrand {
 /**
  * Input type used to specify filters on `DigitalWalletPaymentBrand` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DigitalWalletPaymentBrandFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DigitalWalletPaymentBrandFilterInput` input because
+   * of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DigitalWalletPaymentBrandFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DigitalWalletPaymentBrandFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<DigitalWalletPaymentBrandInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<DigitalWalletPaymentBrandFilterInput>;
 };
@@ -10616,7 +10825,7 @@ export type DigitalWalletPaymentDetails = {
 /**
  * Input type used to specify filters on `DigitalWalletPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DigitalWalletPaymentDetailsFilterInput = {
   /**
@@ -10624,7 +10833,7 @@ export type DigitalWalletPaymentDetailsFilterInput = {
    *
    * > The brand used for the `WALLET` payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   brand?: InputMaybe<DigitalWalletPaymentBrandFilterInput>;
   /**
@@ -10632,7 +10841,7 @@ export type DigitalWalletPaymentDetailsFilterInput = {
    *
    * > Brand-specific details for payments with the `brand` of `CASH_APP`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   cashAppDetails?: InputMaybe<CashAppPaymentDetailsFilterInput>;
   /**
@@ -10640,7 +10849,7 @@ export type DigitalWalletPaymentDetailsFilterInput = {
    *
    * > The status of the `WALLET` payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   status?: InputMaybe<DigitalWalletPaymentStatusFilterInput>;
 };
@@ -10656,31 +10865,42 @@ export enum DigitalWalletPaymentStatus {
 /**
  * Input type used to specify filters on `DigitalWalletPaymentStatus` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DigitalWalletPaymentStatusFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DigitalWalletPaymentStatusFilterInput` input because
+   * of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DigitalWalletPaymentStatusFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DigitalWalletPaymentStatusFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<DigitalWalletPaymentStatusInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<DigitalWalletPaymentStatusFilterInput>;
 };
@@ -10760,31 +10980,42 @@ export enum DistanceUnitInput {
 /**
  * Input type used to specify filters on `Duration` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DurationFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DurationFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DurationFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DurationFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Duration']['input']>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<DurationFilterInput>;
 };
@@ -10792,31 +11023,31 @@ export type DurationFilterInput = {
 /**
  * Input type used to specify filters on `EmailAddress` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type EmailAddressFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<EmailAddressFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['EmailAddress']['input']>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<EmailAddressFilterInput>;
 };
@@ -10924,24 +11155,35 @@ export enum ErrorCategoryInput {
 /**
  * Input type used to specify filters on elements of a `[ErrorCategory]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ErrorCategoryListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `ErrorCategoryListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<ErrorCategoryListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<ErrorCategoryListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<ErrorCategoryInput>>;
 };
@@ -10949,7 +11191,7 @@ export type ErrorCategoryListElementFilterInput = {
 /**
  * Input type used to specify filters on `[ErrorCategory]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ErrorCategoryListFilterInput = {
   /**
@@ -10957,31 +11199,31 @@ export type ErrorCategoryListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `ErrorCategoryListFilterInput` input because of
-   * collisions between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<ErrorCategoryListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<ErrorCategoryListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<ErrorCategoryListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<ErrorCategoryListFilterInput>;
 };
@@ -11335,6 +11577,8 @@ export enum ErrorCode {
   OrderUnpaidNotReturnable = 'ORDER_UNPAID_NOT_RETURNABLE',
   /** The specified card number is invalid. For example, it is of incorrect length or is incorrectly formatted. */
   PanFailure = 'PAN_FAILURE',
+  /** Delay capture of a partial payment is not supported. */
+  PartialPaymentDelayCaptureNotSupported = 'PARTIAL_PAYMENT_DELAY_CAPTURE_NOT_SUPPORTED',
   /**
    * The payment was declined because there was a payment amount mismatch.  The
    * money amount Square was expecting does not match the amount provided.
@@ -11824,6 +12068,8 @@ export enum ErrorCodeInput {
   OrderUnpaidNotReturnable = 'ORDER_UNPAID_NOT_RETURNABLE',
   /** The specified card number is invalid. For example, it is of incorrect length or is incorrectly formatted. */
   PanFailure = 'PAN_FAILURE',
+  /** Delay capture of a partial payment is not supported. */
+  PartialPaymentDelayCaptureNotSupported = 'PARTIAL_PAYMENT_DELAY_CAPTURE_NOT_SUPPORTED',
   /**
    * The payment was declined because there was a payment amount mismatch.  The
    * money amount Square was expecting does not match the amount provided.
@@ -11967,24 +12213,35 @@ export enum ErrorCodeInput {
 /**
  * Input type used to specify filters on elements of a `[ErrorCode]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ErrorCodeListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `ErrorCodeListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<ErrorCodeListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<ErrorCodeListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<ErrorCodeInput>>;
 };
@@ -11992,7 +12249,7 @@ export type ErrorCodeListElementFilterInput = {
 /**
  * Input type used to specify filters on `[ErrorCode]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ErrorCodeListFilterInput = {
   /**
@@ -12000,31 +12257,31 @@ export type ErrorCodeListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `ErrorCodeListFilterInput` input because of collisions
-   * between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<ErrorCodeListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<ErrorCodeListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<ErrorCodeListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<ErrorCodeListFilterInput>;
 };
@@ -12034,15 +12291,26 @@ export type ErrorCodeListFilterInput = {
  * or transitively from a list field that has been configured to index each leaf field as
  * its own flattened list of values.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ErrorFieldsListFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `ErrorFieldsListFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<ErrorFieldsListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<ErrorFieldsListFilterInput>>;
   /**
@@ -12050,7 +12318,7 @@ export type ErrorFieldsListFilterInput = {
    *
    * > The high-level category for the error.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   category?: InputMaybe<ErrorCategoryListFilterInput>;
   /**
@@ -12058,13 +12326,13 @@ export type ErrorFieldsListFilterInput = {
    *
    * > The specific code of the error.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   code?: InputMaybe<ErrorCodeListFilterInput>;
   /**
    * Used to filter on the number of non-null elements in this list field.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   count?: InputMaybe<IntFilterInput>;
   /**
@@ -12072,7 +12340,7 @@ export type ErrorFieldsListFilterInput = {
    *
    * > A human-readable description of the error for debugging purposes.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   detail?: InputMaybe<StringListFilterInput>;
   /**
@@ -12080,14 +12348,14 @@ export type ErrorFieldsListFilterInput = {
    *
    * > The name of the field provided in the original request (if any) that the error pertains to.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   field?: InputMaybe<StringListFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<ErrorFieldsListFilterInput>;
 };
@@ -12137,7 +12405,7 @@ export type ExternalPaymentDetails = {
 /**
  * Input type used to specify filters on `ExternalPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ExternalPaymentDetailsFilterInput = {
   /**
@@ -12145,7 +12413,7 @@ export type ExternalPaymentDetailsFilterInput = {
    *
    * > A description of the external payment source. For example, "Food Delivery Service".
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   source?: InputMaybe<StringFilterInput>;
   /**
@@ -12153,7 +12421,7 @@ export type ExternalPaymentDetailsFilterInput = {
    *
    * > The fees paid to the source. The `amountMoney` minus this field is the net amount seller receives.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   sourceFeeMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -12161,7 +12429,7 @@ export type ExternalPaymentDetailsFilterInput = {
    *
    * > An ID to associate the payment to its originating source.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   sourceId?: InputMaybe<IdFilterInput>;
   /**
@@ -12169,7 +12437,7 @@ export type ExternalPaymentDetailsFilterInput = {
    *
    * > The type of external payment the seller received.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   type?: InputMaybe<ExternalPaymentTypeFilterInput>;
 };
@@ -12205,31 +12473,31 @@ export enum ExternalPaymentType {
 /**
  * Input type used to specify filters on `ExternalPaymentType` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ExternalPaymentTypeFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<ExternalPaymentTypeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<ExternalPaymentTypeInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<ExternalPaymentTypeFilterInput>;
 };
@@ -12371,29 +12639,29 @@ export type GeoLocationDistanceFilterInput = {
 /**
  * Input type used to specify filters on `GeoLocation` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type GeoLocationFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<GeoLocationFilterInput>>;
   /**
    * Matches records where the field's geographic location is within a specified distance from the
    * location identified by `latitude` and `longitude`.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   near?: InputMaybe<GeoLocationDistanceFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<GeoLocationFilterInput>;
 };
@@ -13396,24 +13664,24 @@ export type IdFilterInput = {
 /**
  * Input type used to specify filters on elements of a `[ID]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type IdListElementFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<IdListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
@@ -13421,7 +13689,7 @@ export type IdListElementFilterInput = {
 /**
  * Input type used to specify filters on `[ID]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type IdListFilterInput = {
   /**
@@ -13439,21 +13707,21 @@ export type IdListFilterInput = {
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<IdListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<IdListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<IdListFilterInput>;
 };
@@ -14015,55 +14283,55 @@ export type InventoryTransfer = InventoryChange & {
 /**
  * Input type used to specify filters on `JsonSafeLong` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type JsonSafeLongFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<JsonSafeLongFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['JsonSafeLong']['input']>>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['JsonSafeLong']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['JsonSafeLong']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['JsonSafeLong']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['JsonSafeLong']['input']>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<JsonSafeLongFilterInput>;
 };
@@ -14071,48 +14339,59 @@ export type JsonSafeLongFilterInput = {
 /**
  * Input type used to specify filters on elements of a `[JsonSafeLong]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type JsonSafeLongListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `JsonSafeLongListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<JsonSafeLongListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<JsonSafeLongListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<Scalars['JsonSafeLong']['input']>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['JsonSafeLong']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['JsonSafeLong']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['JsonSafeLong']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['JsonSafeLong']['input']>;
 };
@@ -14120,7 +14399,7 @@ export type JsonSafeLongListElementFilterInput = {
 /**
  * Input type used to specify filters on `[JsonSafeLong]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type JsonSafeLongListFilterInput = {
   /**
@@ -14128,31 +14407,31 @@ export type JsonSafeLongListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `JsonSafeLongListFilterInput` input because of
-   * collisions between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<JsonSafeLongListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<JsonSafeLongListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<JsonSafeLongListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<JsonSafeLongListFilterInput>;
 };
@@ -16003,7 +16282,7 @@ export type Money = {
  * or transitively from a list field that has been configured to index each leaf field as
  * its own flattened list of values.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type MoneyFieldsListFilterInput = {
   /**
@@ -16014,7 +16293,7 @@ export type MoneyFieldsListFilterInput = {
    * > in cents. Monetary amounts can be positive or negative. See the specific
    * > field description to determine the meaning of the sign in a particular case.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   amount?: InputMaybe<JsonSafeLongListFilterInput>;
   /**
@@ -16023,7 +16302,7 @@ export type MoneyFieldsListFilterInput = {
    * > The type of currency, in __ISO 4217 format__. For example, the currency
    * > code for US dollars is `USD`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   currency?: InputMaybe<CurrencyListFilterInput>;
 };
@@ -16031,7 +16310,7 @@ export type MoneyFieldsListFilterInput = {
 /**
  * Input type used to specify filters on `Money` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type MoneyFilterInput = {
   /**
@@ -16042,7 +16321,7 @@ export type MoneyFilterInput = {
    * > in cents. Monetary amounts can be positive or negative. See the specific
    * > field description to determine the meaning of the sign in a particular case.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   amount?: InputMaybe<JsonSafeLongFilterInput>;
   /**
@@ -16051,7 +16330,7 @@ export type MoneyFilterInput = {
    * > The type of currency, in __ISO 4217 format__. For example, the currency
    * > code for US dollars is `USD`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   currency?: InputMaybe<CurrencyFilter>;
 };
@@ -19321,29 +19600,40 @@ export type PaymentAppProcessingFee = {
  * or transitively from a list field that has been configured to index each leaf field as
  * its own flattened list of values.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentAppProcessingFeeFieldsListFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentAppProcessingFeeFieldsListFilterInput` input
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentAppProcessingFeeFieldsListFilterInput>>;
   /**
    * Used to filter on the `amountMoney` field:
    *
    * > The exact fee amount assessed based on the payment fee rate.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   amountMoney?: InputMaybe<MoneyFieldsListFilterInput>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentAppProcessingFeeFieldsListFilterInput>>;
   /**
    * Used to filter on the number of non-null elements in this list field.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   count?: InputMaybe<IntFilterInput>;
   /**
@@ -19351,14 +19641,14 @@ export type PaymentAppProcessingFeeFieldsListFilterInput = {
    *
    * > The timestamp of when the fee takes effect, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   effectiveAt?: InputMaybe<DateTimeListFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentAppProcessingFeeFieldsListFilterInput>;
   /**
@@ -19367,7 +19657,7 @@ export type PaymentAppProcessingFeeFieldsListFilterInput = {
    * > The platform account token for this payment fee.
    * > For a capture, this is the recipient of funds. For a refund, this is the source of funds.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   partyAccountId?: InputMaybe<IdListFilterInput>;
   /**
@@ -19375,7 +19665,7 @@ export type PaymentAppProcessingFeeFieldsListFilterInput = {
    *
    * > The price selector IDs of the payment fee being applied.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   priceSelectors?: InputMaybe<IdListFilterInput>;
   /**
@@ -19383,7 +19673,7 @@ export type PaymentAppProcessingFeeFieldsListFilterInput = {
    *
    * > The type of payment fee being applied (for example, `THIRD_PARTY_PAYMENT_FEE` or `THIRD_PARTY_REFUND_FEE`).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   type?: InputMaybe<PaymentAppProcessingFeeTypeListFilterInput>;
 };
@@ -19403,24 +19693,35 @@ export enum PaymentAppProcessingFeeTypeInput {
 /**
  * Input type used to specify filters on elements of a `[PaymentAppProcessingFeeType]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentAppProcessingFeeTypeListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentAppProcessingFeeTypeListElementFilterInput`
+   * input because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentAppProcessingFeeTypeListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentAppProcessingFeeTypeListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<PaymentAppProcessingFeeTypeInput>>;
 };
@@ -19428,7 +19729,7 @@ export type PaymentAppProcessingFeeTypeListElementFilterInput = {
 /**
  * Input type used to specify filters on `[PaymentAppProcessingFeeType]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentAppProcessingFeeTypeListFilterInput = {
   /**
@@ -19436,31 +19737,31 @@ export type PaymentAppProcessingFeeTypeListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `PaymentAppProcessingFeeTypeListFilterInput` input
-   * because of collisions between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<PaymentAppProcessingFeeTypeListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentAppProcessingFeeTypeListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<PaymentAppProcessingFeeTypeListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentAppProcessingFeeTypeListFilterInput>;
 };
@@ -19503,31 +19804,43 @@ export enum PaymentApplicationDetailsExternalSquareProduct {
 /**
  * Input type used to specify filters on `PaymentApplicationDetailsExternalSquareProduct` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentApplicationDetailsExternalSquareProductFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single
+   * `PaymentApplicationDetailsExternalSquareProductFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentApplicationDetailsExternalSquareProductFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentApplicationDetailsExternalSquareProductFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentApplicationDetailsExternalSquareProductInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentApplicationDetailsExternalSquareProductFilterInput>;
 };
@@ -19549,7 +19862,7 @@ export enum PaymentApplicationDetailsExternalSquareProductInput {
 /**
  * Input type used to specify filters on `PaymentApplicationDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentApplicationDetailsFilterInput = {
   /**
@@ -19563,7 +19876,7 @@ export type PaymentApplicationDetailsFilterInput = {
    * > If a seller uses a [Square App Marketplace](https://developer.squareup.com/docs/app-marketplace)
    * > application to process payments, the field contains the corresponding application ID.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   applicationId?: InputMaybe<IdFilterInput>;
   /**
@@ -19571,7 +19884,7 @@ export type PaymentApplicationDetailsFilterInput = {
    *
    * > The Square product, such as Square Point of Sale (POS), Square Invoices, or Square Virtual Terminal.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   squareProduct?: InputMaybe<PaymentApplicationDetailsExternalSquareProductFilterInput>;
 };
@@ -19613,24 +19926,35 @@ export enum PaymentCapabilityInput {
 /**
  * Input type used to specify filters on elements of a `[PaymentCapability]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentCapabilityListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentCapabilityListElementFilterInput` input
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentCapabilityListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentCapabilityListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<PaymentCapabilityInput>>;
 };
@@ -19638,7 +19962,7 @@ export type PaymentCapabilityListElementFilterInput = {
 /**
  * Input type used to specify filters on `[PaymentCapability]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentCapabilityListFilterInput = {
   /**
@@ -19646,31 +19970,31 @@ export type PaymentCapabilityListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `PaymentCapabilityListFilterInput` input because of
-   * collisions between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<PaymentCapabilityListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentCapabilityListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<PaymentCapabilityListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentCapabilityListFilterInput>;
 };
@@ -19702,31 +20026,42 @@ export enum PaymentDelayAction {
 /**
  * Input type used to specify filters on `PaymentDelayAction` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentDelayActionFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentDelayActionFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentDelayActionFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentDelayActionFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentDelayActionInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentDelayActionFilterInput>;
 };
@@ -19755,7 +20090,7 @@ export type PaymentDeviceDetails = {
 /**
  * Input type used to specify filters on `PaymentDeviceDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentDeviceDetailsFilterInput = {
   /**
@@ -19763,7 +20098,7 @@ export type PaymentDeviceDetailsFilterInput = {
    *
    * > Square-issued ID of the device.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   deviceId?: InputMaybe<IdFilterInput>;
   /**
@@ -19771,7 +20106,7 @@ export type PaymentDeviceDetailsFilterInput = {
    *
    * > Square-issued installation ID for the device.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   deviceInstallationId?: InputMaybe<IdFilterInput>;
   /**
@@ -19779,7 +20114,7 @@ export type PaymentDeviceDetailsFilterInput = {
    *
    * > The name of the device set by the seller.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   deviceName?: InputMaybe<StringFilterInput>;
 };
@@ -19807,7 +20142,7 @@ export type PaymentEdge = {
 /**
  * Input type used to specify filters on `Payment` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentFilter = {
   /**
@@ -19819,7 +20154,7 @@ export type PaymentFilter = {
    * > US dollar amounts are specified in cents). For more information, see
    * > [Working with Monetary Amounts](https://developer.squareup.com/docs/build-basics/working-with-monetary-amounts).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   amountMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -19835,7 +20170,7 @@ export type PaymentFilter = {
    * > To set this field, `PAYMENTS_WRITE_ADDITIONAL_RECIPIENTS` OAuth permission is required.
    * > For more information, see [Permissions](https://developer.squareup.com/docs/payments-api/take-payments-and-collect-fees#permissions).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   appFeeMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -19843,7 +20178,7 @@ export type PaymentFilter = {
    *
    * > Details about the application that took the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   applicationDetails?: InputMaybe<PaymentApplicationDetailsFilterInput>;
   /**
@@ -19851,7 +20186,7 @@ export type PaymentFilter = {
    *
    * > The initial amount of money approved for this payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   approvedMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -19859,7 +20194,7 @@ export type PaymentFilter = {
    *
    * > Details about a bank account payment. These details are only populated if the `sourceType` is `BANK_ACCOUNT`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   bankAccountDetails?: InputMaybe<BankAccountPaymentDetailsFilterInput>;
   /**
@@ -19867,7 +20202,7 @@ export type PaymentFilter = {
    *
    * > The buyer's billing address.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   billingAddress?: InputMaybe<AddressFilterInput>;
   /**
@@ -19877,7 +20212,7 @@ export type PaymentFilter = {
    * > if the `source_type` is `BUY_NOW_PAY_LATER`. For more information, see
    * > [Afterpay Payments](https://developer.squareup.com/docs/payments-api/take-payments/afterpay-payments).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   buyNowPayLaterDetails?: InputMaybe<BuyNowPayLaterPaymentDetailsFilterInput>;
   /**
@@ -19885,7 +20220,7 @@ export type PaymentFilter = {
    *
    * > The buyer's email address.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   buyerEmailAddress?: InputMaybe<StringFilterInput>;
   /**
@@ -19893,7 +20228,7 @@ export type PaymentFilter = {
    *
    * > Actions that can be performed on this payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   capabilities?: InputMaybe<PaymentCapabilityListFilterInput>;
   /**
@@ -19901,7 +20236,7 @@ export type PaymentFilter = {
    *
    * > Details about a card payment. These details are only populated if the `sourceType` is CARD.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   cardDetails?: InputMaybe<CardPaymentDetailsFilterInput>;
   /**
@@ -19909,7 +20244,7 @@ export type PaymentFilter = {
    *
    * > Details about a cash payment. These details are only populated if the `sourceType` is `CASH`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   cashDetails?: InputMaybe<CashPaymentDetailsFilterInput>;
   /**
@@ -19917,7 +20252,7 @@ export type PaymentFilter = {
    *
    * > The timestamp of when the payment was created, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   createdAt?: InputMaybe<DateTimeFilter>;
   /**
@@ -19926,7 +20261,7 @@ export type PaymentFilter = {
    * > The [Customer](https://developer.squareup.com/reference/square/payments-api/list-payments#type-customer)
    * > ID of the customer associated with the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   customerId?: InputMaybe<IdFilterInput>;
   /**
@@ -19934,7 +20269,7 @@ export type PaymentFilter = {
    *
    * > The action to be applied to the payment when the `delay_duration` has elapsed.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   delayAction?: InputMaybe<PaymentDelayActionFilterInput>;
   /**
@@ -19955,7 +20290,7 @@ export type PaymentFilter = {
    * >   - Card Present payments: "PT36H" (36 hours) from the creation time.
    * >   - Card Not Present payments: "P7D" (7 days) from the creation time.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   delayDuration?: InputMaybe<DurationFilterInput>;
   /**
@@ -19968,7 +20303,7 @@ export type PaymentFilter = {
    * > fields. The `created_at` field is generated by Square and might not exactly match the
    * > time on your local machine.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   delayedUntil?: InputMaybe<DateTimeFilter>;
   /**
@@ -19976,7 +20311,7 @@ export type PaymentFilter = {
    *
    * > Details about the device that took the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   deviceDetails?: InputMaybe<PaymentDeviceDetailsFilterInput>;
   /**
@@ -19984,7 +20319,7 @@ export type PaymentFilter = {
    *
    * > Details about an external payment. The details are only populated if the `sourceType` is `EXTERNAL`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   externalDetails?: InputMaybe<ExternalPaymentDetailsFilterInput>;
   /**
@@ -19992,7 +20327,7 @@ export type PaymentFilter = {
    *
    * > Unique ID for the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   id?: InputMaybe<IdFilterInput>;
   /**
@@ -20000,7 +20335,7 @@ export type PaymentFilter = {
    *
    * > The ID of the location associated with the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   locationId?: InputMaybe<IdFilterInput>;
   /**
@@ -20008,7 +20343,7 @@ export type PaymentFilter = {
    *
    * > The ID of the merchant associated with the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   merchantId?: InputMaybe<IdFilterInput>;
   /**
@@ -20016,7 +20351,7 @@ export type PaymentFilter = {
    *
    * > An optional note to include when creating a payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   note?: InputMaybe<StringFilterInput>;
   /**
@@ -20024,7 +20359,7 @@ export type PaymentFilter = {
    *
    * > The ID of the order associated with the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   orderId?: InputMaybe<IdFilterInput>;
   /**
@@ -20032,7 +20367,7 @@ export type PaymentFilter = {
    *
    * > The processing fees and fee adjustments assessed by Square for this payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   processingFees?: InputMaybe<PaymentProcessingFeeFieldsListFilterInput>;
   /**
@@ -20041,7 +20376,7 @@ export type PaymentFilter = {
    * > The payment's receipt number.
    * > The field will be missing if a payment is canceled.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   receiptNumber?: InputMaybe<StringFilterInput>;
   /**
@@ -20050,7 +20385,7 @@ export type PaymentFilter = {
    * > The URL for the payment's receipt.
    * > The field is only populated for COMPLETED payments.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   receiptUrl?: InputMaybe<UrlFilterInput>;
   /**
@@ -20058,7 +20393,7 @@ export type PaymentFilter = {
    *
    * > An optional ID that associates this payment with an entity in another system.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   referenceId?: InputMaybe<IdFilterInput>;
   /**
@@ -20069,7 +20404,7 @@ export type PaymentFilter = {
    * > This amount is specified in the smallest denomination of the applicable currency (for example,
    * > US dollar amounts are specified in cents).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   refundedMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -20079,7 +20414,7 @@ export type PaymentFilter = {
    * > This field will be present for payments to sellers that have opted in to receive risk
    * > evaluations.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   riskEvaluation?: InputMaybe<PaymentRiskEvaluationFilterInput>;
   /**
@@ -20087,7 +20422,7 @@ export type PaymentFilter = {
    *
    * > The buyer's shipping address.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   shippingAddress?: InputMaybe<AddressFilterInput>;
   /**
@@ -20098,7 +20433,7 @@ export type PaymentFilter = {
    * > For information about these payment source types,
    * > see [Take Payments](https://developer.squareup.com/docs/payments-api/take-payments).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   sourceType?: InputMaybe<PaymentSourceTypeFilterInput>;
   /**
@@ -20111,7 +20446,7 @@ export type PaymentFilter = {
    * > to fit the required information including the Square identifier (SQ *) and name of the
    * > seller taking the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   statementDescriptionIdentifier?: InputMaybe<StringFilterInput>;
   /**
@@ -20119,7 +20454,7 @@ export type PaymentFilter = {
    *
    * > Indicates whether the payment is APPROVED, PENDING, COMPLETED, CANCELED, or FAILED.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   status?: InputMaybe<PaymentStatusFilter>;
   /**
@@ -20127,7 +20462,7 @@ export type PaymentFilter = {
    *
    * > An optional ID of the TeamMember associated with taking the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   teamMemberId?: InputMaybe<IdFilterInput>;
   /**
@@ -20139,7 +20474,7 @@ export type PaymentFilter = {
    * > US dollar amounts are specified in cents). For more information, see
    * > [Working with Monetary Amounts](https://developer.squareup.com/docs/build-basics/working-with-monetary-amounts).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   tipMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -20151,7 +20486,7 @@ export type PaymentFilter = {
    * > US dollar amounts are specified in cents). For more information, see
    * > [Working with Monetary Amounts](https://developer.squareup.com/docs/build-basics/working-with-monetary-amounts).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   totalMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -20159,7 +20494,7 @@ export type PaymentFilter = {
    *
    * > The timestamp of when the payment was last updated, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   updatedAt?: InputMaybe<DateTimeFilter>;
   /**
@@ -20167,7 +20502,7 @@ export type PaymentFilter = {
    *
    * > Details about an wallet payment. The details are only populated if the `sourceType` is `WALLET`.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   walletDetails?: InputMaybe<DigitalWalletPaymentDetailsFilterInput>;
 };
@@ -20196,7 +20531,7 @@ export type PaymentProcessingFee = {
  * or transitively from a list field that has been configured to index each leaf field as
  * its own flattened list of values.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentProcessingFeeFieldsListFilterInput = {
   /**
@@ -20206,7 +20541,7 @@ export type PaymentProcessingFeeFieldsListFilterInput = {
    * >
    * > Positive values represent funds being assessed, while negative values represent funds being returned.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   amountMoney?: InputMaybe<MoneyFieldsListFilterInput>;
   /**
@@ -20214,7 +20549,7 @@ export type PaymentProcessingFeeFieldsListFilterInput = {
    *
    * > The timestamp of when the fee takes effect, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   effectiveAt?: InputMaybe<StringListFilterInput>;
   /**
@@ -20222,7 +20557,7 @@ export type PaymentProcessingFeeFieldsListFilterInput = {
    *
    * > The type of fee assessed or adjusted.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   type?: InputMaybe<PaymentProcessingFeeTypeListFilterInput>;
 };
@@ -20246,24 +20581,35 @@ export enum PaymentProcessingFeeTypeInput {
 /**
  * Input type used to specify filters on elements of a `[PaymentProcessingFeeType]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentProcessingFeeTypeListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentProcessingFeeTypeListElementFilterInput` input
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentProcessingFeeTypeListElementFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentProcessingFeeTypeListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<PaymentProcessingFeeTypeInput>>;
 };
@@ -20271,7 +20617,7 @@ export type PaymentProcessingFeeTypeListElementFilterInput = {
 /**
  * Input type used to specify filters on `[PaymentProcessingFeeType]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentProcessingFeeTypeListFilterInput = {
   /**
@@ -20279,31 +20625,31 @@ export type PaymentProcessingFeeTypeListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `PaymentProcessingFeeTypeListFilterInput` input
-   * because of collisions between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<PaymentProcessingFeeTypeListFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentProcessingFeeTypeListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<PaymentProcessingFeeTypeListElementFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentProcessingFeeTypeListFilterInput>;
 };
@@ -20333,6 +20679,8 @@ export type PaymentRefund = {
   appFeeMoney?: Maybe<Money>;
   /** The timestamp of when the refund was created, in RFC 3339 format. */
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Information about errors encountered during the request. */
+  errors: Array<Error>;
   /** The unique ID for this refund, generated by Square. */
   id?: Maybe<Scalars['ID']['output']>;
   /** The location ID associated with the payment this refund is attached to. */
@@ -20398,7 +20746,7 @@ export type PaymentRefundEdge = {
 /**
  * Input type used to specify filters on `PaymentRefund` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentRefundFilter = {
   /**
@@ -20407,7 +20755,7 @@ export type PaymentRefundFilter = {
    * > The amount of money refunded. This amount is specified in the smallest denomination
    * > of the applicable currency (for example, US dollar amounts are specified in cents).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   amountMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -20418,7 +20766,7 @@ export type PaymentRefundFilter = {
    * > US dollar amounts are specified in cents). For more information, see
    * > [Working with Monetary Amounts](https://developer.squareup.com/docs/build-basics/working-with-monetary-amounts).
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   appFeeMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -20426,15 +20774,23 @@ export type PaymentRefundFilter = {
    *
    * > The timestamp of when the refund was created, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   createdAt?: InputMaybe<DateTimeFilter>;
+  /**
+   * Used to filter on the `errors` field:
+   *
+   * > Information about errors encountered during the request.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  errors?: InputMaybe<ErrorFieldsListFilterInput>;
   /**
    * Used to filter on the `id` field:
    *
    * > The unique ID for this refund, generated by Square.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   id?: InputMaybe<IdFilterInput>;
   /**
@@ -20442,7 +20798,7 @@ export type PaymentRefundFilter = {
    *
    * > The location ID associated with the payment this refund is attached to.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   locationId?: InputMaybe<IdFilterInput>;
   /**
@@ -20450,7 +20806,7 @@ export type PaymentRefundFilter = {
    *
    * > The merchant ID associated with the payment this refund is attached to.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   merchantId?: InputMaybe<IdFilterInput>;
   /**
@@ -20458,7 +20814,7 @@ export type PaymentRefundFilter = {
    *
    * > The ID of the order associated with the refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   orderId?: InputMaybe<IdFilterInput>;
   /**
@@ -20466,7 +20822,7 @@ export type PaymentRefundFilter = {
    *
    * > The ID of the payment associated with this refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
   /**
@@ -20474,7 +20830,7 @@ export type PaymentRefundFilter = {
    *
    * > Processing fees and fee adjustments assessed by Square for this refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   processingFees?: InputMaybe<PaymentProcessingFeeFieldsListFilterInput>;
   /**
@@ -20482,7 +20838,7 @@ export type PaymentRefundFilter = {
    *
    * > The reason for the refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   reason?: InputMaybe<StringFilterInput>;
   /**
@@ -20490,7 +20846,7 @@ export type PaymentRefundFilter = {
    *
    * > The refund's status.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   status?: InputMaybe<PaymentRefundStatusFilter>;
   /**
@@ -20498,7 +20854,7 @@ export type PaymentRefundFilter = {
    *
    * > An optional ID of the team member associated with taking the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   teamMemberId?: InputMaybe<IdFilterInput>;
   /**
@@ -20506,7 +20862,7 @@ export type PaymentRefundFilter = {
    *
    * > The timestamp of when the refund was last updated, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   updatedAt?: InputMaybe<DateTimeFilter>;
 };
@@ -20586,31 +20942,42 @@ export enum PaymentRefundStatus {
 /**
  * Input type used to specify filters on `PaymentRefundStatus` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentRefundStatusFilter = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentRefundStatusFilter` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentRefundStatusFilter>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentRefundStatusFilter>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentRefundStatus>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentRefundStatusFilter>;
 };
@@ -20636,7 +21003,7 @@ export type PaymentRiskEvaluation = {
 /**
  * Input type used to specify filters on `PaymentRiskEvaluation` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentRiskEvaluationFilterInput = {
   /**
@@ -20644,7 +21011,7 @@ export type PaymentRiskEvaluationFilterInput = {
    *
    * > The timestamp when payment risk was evaluated, in RFC3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   createdAt?: InputMaybe<DateTimeFilter>;
   /**
@@ -20652,7 +21019,7 @@ export type PaymentRiskEvaluationFilterInput = {
    *
    * > The risk level associated with the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   riskLevel?: InputMaybe<PaymentRiskEvaluationRiskLevelFilterInput>;
 };
@@ -20672,31 +21039,42 @@ export enum PaymentRiskEvaluationRiskLevel {
 /**
  * Input type used to specify filters on `PaymentRiskEvaluationRiskLevel` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentRiskEvaluationRiskLevelFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentRiskEvaluationRiskLevelFilterInput` input
+   * because of collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentRiskEvaluationRiskLevelFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentRiskEvaluationRiskLevelFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentRiskEvaluationRiskLevelInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentRiskEvaluationRiskLevelFilterInput>;
 };
@@ -21070,37 +21448,49 @@ export enum PaymentSourceType {
   Cash = 'CASH',
   External = 'EXTERNAL',
   SquareAccount = 'SQUARE_ACCOUNT',
+  TrustedPartner = 'TRUSTED_PARTNER',
   Wallet = 'WALLET'
 }
 
 /**
  * Input type used to specify filters on `PaymentSourceType` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentSourceTypeFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentSourceTypeFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentSourceTypeFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentSourceTypeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentSourceType>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentSourceTypeFilterInput>;
 };
@@ -21117,31 +21507,42 @@ export enum PaymentStatus {
 /**
  * Input type used to specify filters on `PaymentStatus` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PaymentStatusFilter = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PaymentStatusFilter` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PaymentStatusFilter>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PaymentStatusFilter>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<PaymentStatus>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PaymentStatusFilter>;
 };
@@ -23285,7 +23686,7 @@ export type SquareAccountPaymentDetails = {
 /**
  * Input type used to specify filters on `SquareAccountPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type SquareAccountPaymentDetailsFilterInput = {
   /**
@@ -23293,7 +23694,7 @@ export type SquareAccountPaymentDetailsFilterInput = {
    *
    * > Information about errors encountered during the request.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   errors?: InputMaybe<ErrorFieldsListFilterInput>;
   /**
@@ -23301,7 +23702,7 @@ export type SquareAccountPaymentDetailsFilterInput = {
    *
    * > Unique identifier for the payment source used for this payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentSourceToken?: InputMaybe<IdFilterInput>;
 };
@@ -23622,24 +24023,24 @@ export type StringFilterInput = {
 /**
  * Input type used to specify filters on elements of a `[String]` field.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type StringListElementFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<StringListElementFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<Scalars['String']['input']>>;
 };
@@ -23647,7 +24048,7 @@ export type StringListElementFilterInput = {
 /**
  * Input type used to specify filters on `[String]` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type StringListFilterInput = {
   /**
@@ -23665,21 +24066,21 @@ export type StringListFilterInput = {
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<StringListFilterInput>>;
   /**
    * Matches records where any of the list elements match the provided sub-filter.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<StringListElementFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<StringListFilterInput>;
 };
@@ -24262,31 +24663,31 @@ export type UndoProcessingFeeRefundDetailsFilterInput = {
 /**
  * Input type used to specify filters on `Url` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type UrlFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<UrlFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Url']['input']>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<UrlFilterInput>;
 };

@@ -1,0 +1,46 @@
+# Dependency folders
+node_modules
+.pnpm
+
+# Build output
+.output
+.nuxt
+dist
+
+# Logs
+pnpm-debug.log*
+*.log
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.swn
+
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Docker files (don't need Docker copying these in)
+Dockerfile
+.dockerignore
+
+# Environment & config
+.env
+.env.*         # Nuxt-style multi-env support
+*.local        # Local-only config/secrets
+
+# IDE/editor folders
+.vscode
+.idea
+
+# Test-related (optional if you include tests)
+tests
+test
+__tests__
+coverage
+
+# Markdown/docs if not needed inside image
+*.md
