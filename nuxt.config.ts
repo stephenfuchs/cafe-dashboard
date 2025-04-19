@@ -119,6 +119,10 @@ export default defineNuxtConfig({
     pages: true,
     devtools: { enabled: true },
 
+    build: {
+        transpile: ["@apollo/client"],
+    },
+
     compatibilityDate: "2024-12-03",
     modules: [
         "@nuxtjs/tailwindcss",
