@@ -311,6 +311,17 @@ export type AfterpayPaymentDetailsFilterInput = {
 };
 
 /**
+ * Structured data for an `AirPrint` interface, set for DeviceComponents of type `AIRPRINT_INTERFACE`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type AirPrintInterfaceComponentDetails = {
+  __typename?: 'AirPrintInterfaceComponentDetails';
+  /** The string representation of the AirPrint URL. */
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+/**
  * Permissions: PAYOUTS_READ
  *
  * Details of a refund for an application fee on a payment.
@@ -382,6 +393,29 @@ export type AppFeeRevenueDetailsFilterInput = {
    * Will be ignored if `null` or an empty object is passed.
    */
   paymentId?: InputMaybe<IdFilterInput>;
+};
+
+/**
+ * Structured data for an `Application`, set for DeviceComponents of type `APPLICATION`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type ApplicationComponentDetails = {
+  __typename?: 'ApplicationComponentDetails';
+  /** The current state of the application. */
+  applicationState?: Maybe<DeviceApplicationState>;
+  /** The type of application. */
+  applicationType?: Maybe<DeviceApplicationType>;
+  /** The version of the application. */
+  applicationVersion?: Maybe<Scalars['String']['output']>;
+  /** The device code most recently paired to this device on this application. */
+  deviceCode?: Maybe<DeviceCode>;
+  /** The device profile most recently associated with this device and application. */
+  deviceProfile?: Maybe<DeviceProfile>;
+  /** The location of the session for the application. */
+  sessionLocation?: Maybe<Location>;
+  /** The server generated RFC 3339-formatted value of the most recent update to this application. */
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /**
@@ -1005,6 +1039,37 @@ export enum BankAccountTypeInput {
   Unknown = 'UNKNOWN'
 }
 
+/**
+ * Structured data for `Barcode Scanner` peripheral device details, set for DeviceComponents of type `BARCODE_SCANNER`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type BarcodeScannerComponentDetails = {
+  __typename?: 'BarcodeScannerComponentDetails';
+  /**
+   * Indicates the capabilities of the barcode scanner.
+   * If true, the scanner supports both 1D and 2D codes. If false, the scanner supports only 1D codes.
+   */
+  supportsTwoDimensionalCodes?: Maybe<Scalars['Boolean']['output']>;
+};
+
+/**
+ * Input type used to specify filters on `BarcodeScannerComponentDetails` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type BarcodeScannerComponentDetailsFilterInput = {
+  /**
+   * Used to filter on the `supportsTwoDimensionalCodes` field:
+   *
+   * > Indicates the capabilities of the barcode scanner.
+   * > If true, the scanner supports both 1D and 2D codes. If false, the scanner supports only 1D codes.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  supportsTwoDimensionalCodes?: InputMaybe<BooleanFilterInput>;
+};
+
 /** Input type used to specify filters on `Boolean` fields. */
 export type BasicBooleanFilter = {
   /** Matches records where the the field value is equal to the provided value. */
@@ -1122,6 +1187,32 @@ export type BasicStringFilter = {
 export type BasicTextFilter = {
   /** Matches records that contain the specified value. */
   value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/**
+ * Structured data for a `Battery`, set for DeviceComponents of type `BATTERY`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type BatteryComponentDetails = {
+  __typename?: 'BatteryComponentDetails';
+  /** The status of external power. */
+  externalPower?: Maybe<DeviceExternalPower>;
+  /** The battery charge percentage as displayed on the device. */
+  visiblePercent?: Maybe<Scalars['Int']['output']>;
+};
+
+/**
+ * Structured data for a `Bluetooth` interface, set for DeviceComponents of type `BLUETOOTH_INTERFACE`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type BluetoothInterfaceComponentDetails = {
+  __typename?: 'BluetoothInterfaceComponentDetails';
+  /** A representation of signal strength of the Bluetooth connection. */
+  bluetoothSignalStrength?: Maybe<DeviceSignalStrengthMeasurement>;
+  /** The MAC address of the peripheral device. */
+  macAddress?: Maybe<Scalars['String']['output']>;
 };
 
 /**
@@ -1352,6 +1443,82 @@ export type BooleanFilterInput = {
    * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<BooleanFilterInput>;
+};
+
+/**
+ * Input type used to specify filters on elements of a `[Boolean]` field.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type BooleanListElementFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `BooleanListElementFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<BooleanListElementFilterInput>>;
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<BooleanListElementFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
+/**
+ * Input type used to specify filters on `[Boolean]` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type BooleanListFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `BooleanListFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<BooleanListFilterInput>>;
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<BooleanListFilterInput>>;
+  /**
+   * Matches records where any of the list elements match the provided sub-filter.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  anySatisfy?: InputMaybe<BooleanListElementFilterInput>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<BooleanListFilterInput>;
 };
 
 /**
@@ -2018,6 +2185,17 @@ export enum CardBrand {
  * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardBrandFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardBrandFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardBrandFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
@@ -3050,6 +3228,205 @@ export enum CardPrepaidTypeInput {
   UnknownPrepaidType = 'UNKNOWN_PREPAID_TYPE'
 }
 
+/**
+ * Structured data for a `CardReader`, set for DeviceComponents of type `CARD_READER`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type CardReaderComponentDetails = {
+  __typename?: 'CardReaderComponentDetails';
+  /** The current status of the internal card reader. */
+  cardReaderStatus?: Maybe<CardReaderStatus>;
+  /** The type of card reader. */
+  cardReaderType?: Maybe<CardReaderType>;
+  /** The version of the card reader. */
+  cardReaderVersion?: Maybe<Scalars['String']['output']>;
+};
+
+/** An enum for CardReaderStatus. */
+export enum CardReaderStatus {
+  CardReaderStatusUnknown = 'CARD_READER_STATUS_UNKNOWN',
+  /** Connected, but not ready for payments. */
+  Connected = 'CONNECTED',
+  /** Fully disconnected. */
+  Disconnected = 'DISCONNECTED',
+  /** Connected and ready for payments. */
+  Ready = 'READY',
+  /** Tampered with or otherwise damaged. */
+  Tampered = 'TAMPERED',
+  /** Undergoing a firmware update. */
+  Updating = 'UPDATING'
+}
+
+/**
+ * Input type used to specify filters on `CardReaderStatus` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type CardReaderStatusFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<CardReaderStatusFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<CardReaderStatusInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<CardReaderStatusFilterInput>;
+};
+
+/** An enum for CardReaderStatus. */
+export enum CardReaderStatusInput {
+  CardReaderStatusUnknown = 'CARD_READER_STATUS_UNKNOWN',
+  /** Connected, but not ready for payments. */
+  Connected = 'CONNECTED',
+  /** Fully disconnected. */
+  Disconnected = 'DISCONNECTED',
+  /** Connected and ready for payments. */
+  Ready = 'READY',
+  /** Tampered with or otherwise damaged. */
+  Tampered = 'TAMPERED',
+  /** Undergoing a firmware update. */
+  Updating = 'UPDATING'
+}
+
+/** An enum for CardReaderType. */
+export enum CardReaderType {
+  /** Chip reader. */
+  AudioDipGen1V1 = 'AUDIO_DIP_GEN1_V1',
+  /** Magstripe reader (audio jack). */
+  AudioSwipeGen1V1 = 'AUDIO_SWIPE_GEN1_V1',
+  CardReaderTypeUnknown = 'CARD_READER_TYPE_UNKNOWN',
+  /** Embedded card readers (ECR) in COTS devices. */
+  Embedded = 'EMBEDDED',
+  /** Magstripe reader (lightning). */
+  LightningSwipeGen1V1 = 'LIGHTNING_SWIPE_GEN1_V1',
+  /** Square Register (1st Gen, v1). */
+  RegisterGen1V1 = 'REGISTER_GEN1_V1',
+  /** Square Register (1st Gen, v2). */
+  RegisterGen1V2 = 'REGISTER_GEN1_V2',
+  /** Square Stand (1st Gen, v1). */
+  StandGen1V1 = 'STAND_GEN1_V1',
+  /** Square Stand (1st Gen, v2). */
+  StandGen1V2 = 'STAND_GEN1_V2',
+  /** Square Stand (1st Gen, v3). */
+  StandGen1V3 = 'STAND_GEN1_V3',
+  /** Square Stand (1st Gen, v4). */
+  StandGen1V4 = 'STAND_GEN1_V4',
+  /** Square Stand (1st Gen, v5). */
+  StandGen1V5 = 'STAND_GEN1_V5',
+  /** Square Stand (2nd Gen, v1). */
+  StandGen2V1 = 'STAND_GEN2_V1',
+  /** Square Stand (2nd Gen, v2). */
+  StandGen2V2 = 'STAND_GEN2_V2',
+  /** Square Reader (1st Gen, v1). */
+  TapdipGen1V1 = 'TAPDIP_GEN1_V1',
+  /** Square Reader (1st Gen, v2). */
+  TapdipGen1V2 = 'TAPDIP_GEN1_V2',
+  /** Square Reader (1st Gen, v3). */
+  TapdipGen1V3 = 'TAPDIP_GEN1_V3',
+  /** Square Reader (2nd Gen, v1). */
+  TapdipGen2V1 = 'TAPDIP_GEN2_V1',
+  /** Square Terminal (1st Gen, v1). */
+  TerminalGen1V1 = 'TERMINAL_GEN1_V1',
+  /** Square Terminal (1st Gen, v2). */
+  TerminalGen1V2 = 'TERMINAL_GEN1_V2',
+  /** Square Terminal T3 (2nd Gen, v1). */
+  TerminalGen2V1 = 'TERMINAL_GEN2_V1'
+}
+
+/**
+ * Input type used to specify filters on `CardReaderType` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type CardReaderTypeFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<CardReaderTypeFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<CardReaderTypeInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<CardReaderTypeFilterInput>;
+};
+
+/** An enum for CardReaderType. */
+export enum CardReaderTypeInput {
+  /** Chip reader. */
+  AudioDipGen1V1 = 'AUDIO_DIP_GEN1_V1',
+  /** Magstripe reader (audio jack). */
+  AudioSwipeGen1V1 = 'AUDIO_SWIPE_GEN1_V1',
+  CardReaderTypeUnknown = 'CARD_READER_TYPE_UNKNOWN',
+  /** Embedded card readers (ECR) in COTS devices. */
+  Embedded = 'EMBEDDED',
+  /** Magstripe reader (lightning). */
+  LightningSwipeGen1V1 = 'LIGHTNING_SWIPE_GEN1_V1',
+  /** Square Register (1st Gen, v1). */
+  RegisterGen1V1 = 'REGISTER_GEN1_V1',
+  /** Square Register (1st Gen, v2). */
+  RegisterGen1V2 = 'REGISTER_GEN1_V2',
+  /** Square Stand (1st Gen, v1). */
+  StandGen1V1 = 'STAND_GEN1_V1',
+  /** Square Stand (1st Gen, v2). */
+  StandGen1V2 = 'STAND_GEN1_V2',
+  /** Square Stand (1st Gen, v3). */
+  StandGen1V3 = 'STAND_GEN1_V3',
+  /** Square Stand (1st Gen, v4). */
+  StandGen1V4 = 'STAND_GEN1_V4',
+  /** Square Stand (1st Gen, v5). */
+  StandGen1V5 = 'STAND_GEN1_V5',
+  /** Square Stand (2nd Gen, v1). */
+  StandGen2V1 = 'STAND_GEN2_V1',
+  /** Square Stand (2nd Gen, v2). */
+  StandGen2V2 = 'STAND_GEN2_V2',
+  /** Square Reader (1st Gen, v1). */
+  TapdipGen1V1 = 'TAPDIP_GEN1_V1',
+  /** Square Reader (1st Gen, v2). */
+  TapdipGen1V2 = 'TAPDIP_GEN1_V2',
+  /** Square Reader (1st Gen, v3). */
+  TapdipGen1V3 = 'TAPDIP_GEN1_V3',
+  /** Square Reader (2nd Gen, v1). */
+  TapdipGen2V1 = 'TAPDIP_GEN2_V1',
+  /** Square Terminal (1st Gen, v1). */
+  TerminalGen1V1 = 'TERMINAL_GEN1_V1',
+  /** Square Terminal (1st Gen, v2). */
+  TerminalGen1V2 = 'TERMINAL_GEN1_V2',
+  /** Square Terminal T3 (2nd Gen, v1). */
+  TerminalGen2V1 = 'TERMINAL_GEN2_V1'
+}
+
 /** Indicates a card's type, such as `CREDIT` or `DEBIT`. */
 export enum CardType {
   Credit = 'CREDIT',
@@ -3063,6 +3440,17 @@ export enum CardType {
  * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CardTypeFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CardTypeFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CardTypeFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
@@ -5620,6 +6008,19 @@ export type CategoryPathToRootNode = {
   category?: Maybe<CatalogCategory>;
   /** The category's name. */
   categoryName?: Maybe<Scalars['String']['output']>;
+};
+
+/**
+ * Structured data for `CellularData`, set for DeviceComponents of type `CELLULAR_DATA`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type CellularDataComponentDetails = {
+  __typename?: 'CellularDataComponentDetails';
+  /** The type of the cellular connection. */
+  cellularConnectionType?: Maybe<DeviceCellularConnectionType>;
+  /** A representation of signal strength of the cellular data connection. */
+  cellularSignalStrength?: Maybe<DeviceSignalStrengthMeasurement>;
 };
 
 /**
@@ -10738,6 +11139,1738 @@ export type DestinationFilterInput = {
   type?: InputMaybe<StringFilterInput>;
 };
 
+/**
+ * A POS or peripheral device of a Square merchant.
+ *
+ * Permissions: DEVICES_READ.
+ *
+ *
+ * For more performant queries on this type, please filter on `merchant.id` if possible.
+ */
+export type Device = {
+  __typename?: 'Device';
+  /** A collection of DeviceAttributes representing the device. */
+  attributes?: Maybe<DeviceAttributes>;
+  /** A list of components applicable to the device. */
+  components: Array<DeviceComponent>;
+  /** The RFC 3339-formatted timestamp of when the device was created. */
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** The events associated with this device. */
+  events: Array<DeviceEvent>;
+  /** The device-merchant id. Unique identifier of the document since devices can be shared between merchants. */
+  id: Scalars['ID']['output'];
+  /** The merchant using the device. */
+  merchant?: Maybe<Merchant>;
+  /** The current status of the device. */
+  status?: Maybe<DeviceStatus>;
+  /**
+   * The RFC 3339-formatted value of the most recent update to the device information.
+   * (Could represent any field update on the device.).
+   */
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+/** An enum for DeviceApplicationState. */
+export enum DeviceApplicationState {
+  ApplicationStateUnknown = 'APPLICATION_STATE_UNKNOWN',
+  /** Application is in the background. */
+  Background = 'BACKGROUND',
+  /** Application is in the foreground. */
+  Foreground = 'FOREGROUND',
+  /** Special case of foreground updates that indicates peripheral connections may still be initializing. */
+  Initializing = 'INITIALIZING',
+  /** The update was sent from an application that is logging out. */
+  LoggedOut = 'LOGGED_OUT'
+}
+
+/**
+ * Input type used to specify filters on `DeviceApplicationState` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceApplicationStateFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceApplicationStateFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceApplicationStateInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceApplicationStateFilterInput>;
+};
+
+/** An enum for DeviceApplicationState. */
+export enum DeviceApplicationStateInput {
+  ApplicationStateUnknown = 'APPLICATION_STATE_UNKNOWN',
+  /** Application is in the background. */
+  Background = 'BACKGROUND',
+  /** Application is in the foreground. */
+  Foreground = 'FOREGROUND',
+  /** Special case of foreground updates that indicates peripheral connections may still be initializing. */
+  Initializing = 'INITIALIZING',
+  /** The update was sent from an application that is logging out. */
+  LoggedOut = 'LOGGED_OUT'
+}
+
+/** An enum for DeviceApplicationType. */
+export enum DeviceApplicationType {
+  ApplicationTypeUnknown = 'APPLICATION_TYPE_UNKNOWN',
+  Appointments = 'APPOINTMENTS',
+  FnbKiosk = 'FNB_KIOSK',
+  Invoices = 'INVOICES',
+  Kds = 'KDS',
+  ReaderSdk = 'READER_SDK',
+  Restaurant = 'RESTAURANT',
+  Retail = 'RETAIL',
+  SquarePos = 'SQUARE_POS',
+  TerminalApi = 'TERMINAL_API'
+}
+
+/**
+ * Input type used to specify filters on `DeviceApplicationType` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceApplicationTypeFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceApplicationTypeFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceApplicationTypeInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceApplicationTypeFilterInput>;
+};
+
+/** An enum for DeviceApplicationType. */
+export enum DeviceApplicationTypeInput {
+  ApplicationTypeUnknown = 'APPLICATION_TYPE_UNKNOWN',
+  Appointments = 'APPOINTMENTS',
+  FnbKiosk = 'FNB_KIOSK',
+  Invoices = 'INVOICES',
+  Kds = 'KDS',
+  ReaderSdk = 'READER_SDK',
+  Restaurant = 'RESTAURANT',
+  Retail = 'RETAIL',
+  SquarePos = 'SQUARE_POS',
+  TerminalApi = 'TERMINAL_API'
+}
+
+/**
+ * Represents the attributes of a device.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceAttributes = {
+  __typename?: 'DeviceAttributes';
+  /** The maker of the device. */
+  manufacturer?: Maybe<Scalars['String']['output']>;
+  /** The specific model of the device. */
+  model?: Maybe<Scalars['String']['output']>;
+  /** A seller-specified name for the device. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The Square Hardware type, if applicable to this device. */
+  squareHardwareType?: Maybe<SquareHardwareType>;
+  /** The device type. */
+  type?: Maybe<DeviceType>;
+  /** The current version of software installed on the device. */
+  version?: Maybe<Scalars['String']['output']>;
+};
+
+/**
+ * Input type used to specify filters on `DeviceAttributes` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceAttributesFilterInput = {
+  /**
+   * Used to filter on the `manufacturer` field:
+   *
+   * > The maker of the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  manufacturer?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `model` field:
+   *
+   * > The specific model of the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  model?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `name` field:
+   *
+   * > A seller-specified name for the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  name?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `squareHardwareType` field:
+   *
+   * > The Square Hardware type, if applicable to this device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  squareHardwareType?: InputMaybe<SquareHardwareTypeFilterInput>;
+  /**
+   * Used to filter on the `type` field:
+   *
+   * > The device type.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  type?: InputMaybe<DeviceTypeFilterInput>;
+  /**
+   * Used to filter on the `version` field:
+   *
+   * > The current version of software installed on the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  version?: InputMaybe<StringFilterInput>;
+};
+
+/** An enum for DeviceCellularConnectionType. */
+export enum DeviceCellularConnectionType {
+  CellularConnectionType_2G = 'CELLULAR_CONNECTION_TYPE_2G',
+  CellularConnectionType_3G = 'CELLULAR_CONNECTION_TYPE_3G',
+  CellularConnectionType_4G = 'CELLULAR_CONNECTION_TYPE_4G',
+  CellularConnectionType_5G = 'CELLULAR_CONNECTION_TYPE_5G',
+  CellularConnectionTypeEdge = 'CELLULAR_CONNECTION_TYPE_EDGE',
+  CellularConnectionTypeHspa = 'CELLULAR_CONNECTION_TYPE_HSPA',
+  CellularConnectionTypeUnknown = 'CELLULAR_CONNECTION_TYPE_UNKNOWN'
+}
+
+/**
+ * Input type used to specify filters on `DeviceCellularConnectionType` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceCellularConnectionTypeFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceCellularConnectionTypeFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceCellularConnectionTypeInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceCellularConnectionTypeFilterInput>;
+};
+
+/** An enum for DeviceCellularConnectionType. */
+export enum DeviceCellularConnectionTypeInput {
+  CellularConnectionType_2G = 'CELLULAR_CONNECTION_TYPE_2G',
+  CellularConnectionType_3G = 'CELLULAR_CONNECTION_TYPE_3G',
+  CellularConnectionType_4G = 'CELLULAR_CONNECTION_TYPE_4G',
+  CellularConnectionType_5G = 'CELLULAR_CONNECTION_TYPE_5G',
+  CellularConnectionTypeEdge = 'CELLULAR_CONNECTION_TYPE_EDGE',
+  CellularConnectionTypeHspa = 'CELLULAR_CONNECTION_TYPE_HSPA',
+  CellularConnectionTypeUnknown = 'CELLULAR_CONNECTION_TYPE_UNKNOWN'
+}
+
+/**
+ * A login token (alternative to username/password) associated with a device.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceCode = {
+  __typename?: 'DeviceCode';
+  /** The Square-issued ID of the device code. */
+  id: Scalars['ID']['output'];
+  /** The name of the device code. */
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+/**
+ * Input type used to specify filters on `DeviceCode` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceCodeFilterInput = {
+  /**
+   * Used to filter on the `id` field:
+   *
+   * > The Square-issued ID of the device code.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  id?: InputMaybe<IdFilterInput>;
+  /**
+   * Used to filter on the `name` field:
+   *
+   * > The name of the device code.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  name?: InputMaybe<StringFilterInput>;
+};
+
+/**
+ * The wrapper object for the component entries of a given component type.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceComponent = {
+  __typename?: 'DeviceComponent';
+  /** Structured data for the correseponding component type. */
+  componentDetails?: Maybe<DeviceComponentDetails>;
+  /**
+   * The type of this component. Each component type has expected properties
+   * expressed in a structured format within its corresponding DeviceComponentDetails.
+   */
+  type?: Maybe<DeviceComponentType>;
+};
+
+/** A union for DeviceComponentDetails. */
+export type DeviceComponentDetails = AirPrintInterfaceComponentDetails | ApplicationComponentDetails | BarcodeScannerComponentDetails | BatteryComponentDetails | BluetoothInterfaceComponentDetails | CardReaderComponentDetails | CellularDataComponentDetails | EthernetComponentDetails | NetworkInterfaceComponentDetails | PrinterComponentDetails | ScaleComponentDetails | ScannerScaleComponentDetails | StandComponentDetails | UsbInterfaceComponentDetails | WiFiComponentDetails;
+
+/**
+ * Input type used to specify filters on `DeviceComponentDetails` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceComponentDetailsFilterInput = {
+  /**
+   * Used to filter on the `applicationState` field:
+   *
+   * > The current state of the application.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  applicationState?: InputMaybe<DeviceApplicationStateFilterInput>;
+  /**
+   * Used to filter on the `applicationType` field:
+   *
+   * > The type of application.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  applicationType?: InputMaybe<DeviceApplicationTypeFilterInput>;
+  /**
+   * Used to filter on the `applicationVersion` field:
+   *
+   * > The version of the application.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  applicationVersion?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `bluetoothSignalStrength` field:
+   *
+   * > A representation of signal strength of the Bluetooth connection.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  bluetoothSignalStrength?: InputMaybe<DeviceSignalStrengthMeasurementFilterInput>;
+  /**
+   * Used to filter on the `cardReaderStatus` field:
+   *
+   * > The current status of the internal card reader.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  cardReaderStatus?: InputMaybe<CardReaderStatusFilterInput>;
+  /**
+   * Used to filter on the `cardReaderType` field:
+   *
+   * > The type of card reader.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  cardReaderType?: InputMaybe<CardReaderTypeFilterInput>;
+  /**
+   * Used to filter on the `cardReaderVersion` field:
+   *
+   * > The version of the card reader.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  cardReaderVersion?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `cellularConnectionType` field:
+   *
+   * > The type of the cellular connection.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  cellularConnectionType?: InputMaybe<DeviceCellularConnectionTypeFilterInput>;
+  /**
+   * Used to filter on the `cellularSignalStrength` field:
+   *
+   * > A representation of signal strength of the cellular data connection.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  cellularSignalStrength?: InputMaybe<DeviceSignalStrengthMeasurementFilterInput>;
+  /**
+   * Used to filter on the `deviceCode` field:
+   *
+   * > The device code most recently paired to this device on this application.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  deviceCode?: InputMaybe<DeviceCodeFilterInput>;
+  /**
+   * Used to filter on the `deviceProfile` field:
+   *
+   * > The device profile most recently associated with this device and application.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  deviceProfile?: InputMaybe<DeviceProfileFilterInput>;
+  /**
+   * Used to filter on the `ethernetActive` field:
+   *
+   * > A boolean to represent whether the Ethernet interface is currently active.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  ethernetActive?: InputMaybe<BooleanFilterInput>;
+  /**
+   * Used to filter on the `externalPower` field:
+   *
+   * > The status of external power.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  externalPower?: InputMaybe<DeviceExternalPowerFilterInput>;
+  /**
+   * Used to filter on the `ipAddressV4` field:
+   *
+   * > The string representation of the device's IPv4 address.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  ipAddressV4?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `isDefaultWidth` field:
+   *
+   * > Indicates whether the current paper width is the default width.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  isDefaultWidth?: InputMaybe<BooleanFilterInput>;
+  /**
+   * Used to filter on the `macAddress` field:
+   *
+   * > The MAC address of the peripheral device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  macAddress?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `paperWidth` field:
+   *
+   * > The paper width configuration on the printer.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  paperWidth?: InputMaybe<IntFilterInput>;
+  /**
+   * Used to filter on the `portNumber` field:
+   *
+   * > The port number being used to connect the peripheral device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  portNumber?: InputMaybe<IntFilterInput>;
+  /**
+   * Used to filter on the `printerType` field:
+   *
+   * > The type of the printer.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  printerType?: InputMaybe<PrinterTypeFilterInput>;
+  /**
+   * Used to filter on the `scaleDetails` field:
+   *
+   * > The Scale component details of the ScannerScale.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  scaleDetails?: InputMaybe<ScaleComponentDetailsFilterInput>;
+  /**
+   * Used to filter on the `scannerDetails` field:
+   *
+   * > The BarcodeScanner component details of the ScannerScale.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  scannerDetails?: InputMaybe<BarcodeScannerComponentDetailsFilterInput>;
+  /**
+   * Used to filter on the `secureConnection` field:
+   *
+   * > The security protocol for a secure connection (e.g. WPA2). None provided if the connection is unsecured.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  secureConnection?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `selectedWeightUnit` field:
+   *
+   * > Indicates the currently selected weight unit on the scale.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  selectedWeightUnit?: InputMaybe<DeviceWeightUnitFilterInput>;
+  /**
+   * Used to filter on the `sessionLocation` field:
+   *
+   * > The location of the session for the application.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  sessionLocation?: InputMaybe<LocationRefFilterInput>;
+  /**
+   * Used to filter on the `ssid` field:
+   *
+   * > The name of the connected WiFi network.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  ssid?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `standVersion` field:
+   *
+   * > The version of the stand.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  standVersion?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `supportsTwoDimensionalCodes` field:
+   *
+   * > Indicates the capabilities of the barcode scanner.
+   * > If true, the scanner supports both 1D and 2D codes. If false, the scanner supports only 1D codes.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  supportsTwoDimensionalCodes?: InputMaybe<BooleanFilterInput>;
+  /**
+   * Used to filter on the `updatedAt` field:
+   *
+   * > The server generated RFC 3339-formatted value of the most recent update to this application.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+  /**
+   * Used to filter on the `url` field:
+   *
+   * > The string representation of the AirPrint URL.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  url?: InputMaybe<StringFilterInput>;
+  /**
+   * Used to filter on the `visiblePercent` field:
+   *
+   * > The battery charge percentage as displayed on the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  visiblePercent?: InputMaybe<IntFilterInput>;
+  /**
+   * Used to filter on the `wifiActive` field:
+   *
+   * > A boolean to represent whether the WiFi interface is currently active.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  wifiActive?: InputMaybe<BooleanFilterInput>;
+  /**
+   * Used to filter on the `wifiSignalStrength` field:
+   *
+   * > A representation of signal strength of the WiFi network connection.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  wifiSignalStrength?: InputMaybe<DeviceSignalStrengthMeasurementFilterInput>;
+};
+
+/**
+ * Input type used to specify filters on `DeviceComponent` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceComponentFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceComponentFilterInput>>;
+  /**
+   * Used to filter on the `componentDetails` field:
+   *
+   * > Structured data for the correseponding component type.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  componentDetails?: InputMaybe<DeviceComponentDetailsFilterInput>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceComponentFilterInput>;
+  /**
+   * Used to filter on the `type` field:
+   *
+   * > The type of this component. Each component type has expected properties
+   * > expressed in a structured format within its corresponding DeviceComponentDetails.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  type?: InputMaybe<DeviceComponentTypeFilterInput>;
+};
+
+/**
+ * Input type used to specify filters on `[DeviceComponent]` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceComponentListFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DeviceComponentListFilterInput` input because of
+   * collisions between key names. For example, if you want to provide
+   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DeviceComponentListFilterInput>>;
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceComponentListFilterInput>>;
+  /**
+   * Matches records where any of the list elements match the provided sub-filter.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  anySatisfy?: InputMaybe<DeviceComponentFilterInput>;
+  /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceComponentListFilterInput>;
+};
+
+/** An enum for DeviceComponentType. */
+export enum DeviceComponentType {
+  AirprintInterface = 'AIRPRINT_INTERFACE',
+  Application = 'APPLICATION',
+  AudioInterface = 'AUDIO_INTERFACE',
+  BarcodeScanner = 'BARCODE_SCANNER',
+  Battery = 'BATTERY',
+  BluetoothInterface = 'BLUETOOTH_INTERFACE',
+  CardReader = 'CARD_READER',
+  CellularData = 'CELLULAR_DATA',
+  ComponentTypeUnknown = 'COMPONENT_TYPE_UNKNOWN',
+  Ethernet = 'ETHERNET',
+  InternalScanner = 'INTERNAL_SCANNER',
+  NetworkInterface = 'NETWORK_INTERFACE',
+  Printer = 'PRINTER',
+  Scale = 'SCALE',
+  ScannerScale = 'SCANNER_SCALE',
+  Stand = 'STAND',
+  UsbInterface = 'USB_INTERFACE',
+  Wifi = 'WIFI'
+}
+
+/**
+ * Input type used to specify filters on `DeviceComponentType` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceComponentTypeFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceComponentTypeFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceComponentTypeInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceComponentTypeFilterInput>;
+};
+
+/** An enum for DeviceComponentType. */
+export enum DeviceComponentTypeInput {
+  AirprintInterface = 'AIRPRINT_INTERFACE',
+  Application = 'APPLICATION',
+  AudioInterface = 'AUDIO_INTERFACE',
+  BarcodeScanner = 'BARCODE_SCANNER',
+  Battery = 'BATTERY',
+  BluetoothInterface = 'BLUETOOTH_INTERFACE',
+  CardReader = 'CARD_READER',
+  CellularData = 'CELLULAR_DATA',
+  ComponentTypeUnknown = 'COMPONENT_TYPE_UNKNOWN',
+  Ethernet = 'ETHERNET',
+  InternalScanner = 'INTERNAL_SCANNER',
+  NetworkInterface = 'NETWORK_INTERFACE',
+  Printer = 'PRINTER',
+  Scale = 'SCALE',
+  ScannerScale = 'SCANNER_SCALE',
+  Stand = 'STAND',
+  UsbInterface = 'USB_INTERFACE',
+  Wifi = 'WIFI'
+}
+
+/**
+ * Represents a paginated collection of `Device` results.
+ *
+ * See the [Relay GraphQL Cursor Connections
+ * Specification](https://relay.dev/graphql/connections.htm#sec-Connection-Types) for more info.
+ *
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceConnection = {
+  __typename?: 'DeviceConnection';
+  /** Wraps a specific `Device` to pair it with its pagination cursor. */
+  edges: Array<DeviceEdge>;
+  /** Provides pagination-related information. */
+  pageInfo: PageInfo;
+  /** The total number of edges available in this connection to paginate over. */
+  totalEdgeCount: Scalars['JsonSafeLong']['output'];
+};
+
+/**
+ * Represents a specific `Device` in the context of a `DeviceConnection`,
+ * providing access to both the `Device` and a pagination `Cursor`.
+ *
+ * See the [Relay GraphQL Cursor Connections
+ * Specification](https://relay.dev/graphql/connections.htm#sec-Edge-Types) for more info.
+ *
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceEdge = {
+  __typename?: 'DeviceEdge';
+  /**
+   * The `Cursor` of this `Device`. This can be passed in the next query as
+   * a `before` or `after` argument to continue paginating from this `Device`.
+   */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Device` of this edge. */
+  node?: Maybe<Device>;
+};
+
+/**
+ * An event that has occurred on the device.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceEvent = {
+  __typename?: 'DeviceEvent';
+  /** The Square-issued ID of the event. */
+  eventId?: Maybe<Scalars['ID']['output']>;
+  /** The priority of the event; how severe it is. */
+  eventPriority?: Maybe<DeviceEventPriority>;
+  /** The type of the event; how it impacts device function. */
+  eventType?: Maybe<DeviceEventType>;
+};
+
+/**
+ * Input type used to specify filters on a `DeviceEvent` object referenced directly
+ * or transitively from a list field that has been configured to index each leaf field as
+ * its own flattened list of values.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceEventFieldsListFilterInput = {
+  /**
+   * Used to filter on the `eventId` field:
+   *
+   * > The Square-issued ID of the event.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  eventId?: InputMaybe<IdListFilterInput>;
+  /**
+   * Used to filter on the `eventPriority` field:
+   *
+   * > The priority of the event; how severe it is.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  eventPriority?: InputMaybe<DeviceEventPriorityListFilterInput>;
+  /**
+   * Used to filter on the `eventType` field:
+   *
+   * > The type of the event; how it impacts device function.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  eventType?: InputMaybe<DeviceEventTypeListFilterInput>;
+};
+
+/** An enum for DeviceEventPriority. */
+export enum DeviceEventPriority {
+  DeviceCritical = 'DEVICE_CRITICAL',
+  DeviceEventPriorityUnknown = 'DEVICE_EVENT_PRIORITY_UNKNOWN',
+  DeviceReady = 'DEVICE_READY',
+  DeviceWarning = 'DEVICE_WARNING'
+}
+
+/** An enum for DeviceEventPriority. */
+export enum DeviceEventPriorityInput {
+  DeviceCritical = 'DEVICE_CRITICAL',
+  DeviceEventPriorityUnknown = 'DEVICE_EVENT_PRIORITY_UNKNOWN',
+  DeviceReady = 'DEVICE_READY',
+  DeviceWarning = 'DEVICE_WARNING'
+}
+
+/**
+ * Input type used to specify filters on elements of a `[DeviceEventPriority]` field.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceEventPriorityListElementFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceEventPriorityListElementFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<DeviceEventPriorityInput>>;
+};
+
+/**
+ * Input type used to specify filters on `[DeviceEventPriority]` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceEventPriorityListFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DeviceEventPriorityListFilterInput` input because of
+   * collisions between key names. For example, if you want to provide
+   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DeviceEventPriorityListFilterInput>>;
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceEventPriorityListFilterInput>>;
+  /**
+   * Matches records where any of the list elements match the provided sub-filter.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  anySatisfy?: InputMaybe<DeviceEventPriorityListElementFilterInput>;
+  /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceEventPriorityListFilterInput>;
+};
+
+/** An enum for DeviceEventType. */
+export enum DeviceEventType {
+  BlackMarkErrorEventType = 'BLACK_MARK_ERROR_EVENT_TYPE',
+  BusyEventType = 'BUSY_EVENT_TYPE',
+  CalibrationErrorEventType = 'CALIBRATION_ERROR_EVENT_TYPE',
+  CalibrationWarningEventType = 'CALIBRATION_WARNING_EVENT_TYPE',
+  ChargingPausedEventType = 'CHARGING_PAUSED_EVENT_TYPE',
+  ChargingSlowlyEventType = 'CHARGING_SLOWLY_EVENT_TYPE',
+  CheckingForUpdatesEventType = 'CHECKING_FOR_UPDATES_EVENT_TYPE',
+  ConnectingEventType = 'CONNECTING_EVENT_TYPE',
+  CoverOpenEventType = 'COVER_OPEN_EVENT_TYPE',
+  CutterErrorEventType = 'CUTTER_ERROR_EVENT_TYPE',
+  DeviceEventTypeUnknown = 'DEVICE_EVENT_TYPE_UNKNOWN',
+  DeviceSupportEndingOfferEventType = 'DEVICE_SUPPORT_ENDING_OFFER_EVENT_TYPE',
+  DisconnectedEventType = 'DISCONNECTED_EVENT_TYPE',
+  EstablishingSecureSessionEventType = 'ESTABLISHING_SECURE_SESSION_EVENT_TYPE',
+  FailedPrintJobEventType = 'FAILED_PRINT_JOB_EVENT_TYPE',
+  FailedToConnectEventType = 'FAILED_TO_CONNECT_EVENT_TYPE',
+  FatalErrorEventType = 'FATAL_ERROR_EVENT_TYPE',
+  FirmwareErrorEventType = 'FIRMWARE_ERROR_EVENT_TYPE',
+  FirmwareUpdateCompletedEventType = 'FIRMWARE_UPDATE_COMPLETED_EVENT_TYPE',
+  FirmwareUpdateFailedEventType = 'FIRMWARE_UPDATE_FAILED_EVENT_TYPE',
+  ForceOffinePaymentsDisabledEventType = 'FORCE_OFFINE_PAYMENTS_DISABLED_EVENT_TYPE',
+  ForceOffinePaymentsUnavailableEventType = 'FORCE_OFFINE_PAYMENTS_UNAVAILABLE_EVENT_TYPE',
+  ForceOfflinePaymentsEnabledEventType = 'FORCE_OFFLINE_PAYMENTS_ENABLED_EVENT_TYPE',
+  GenericErrorEventType = 'GENERIC_ERROR_EVENT_TYPE',
+  IncompatibleEventType = 'INCOMPATIBLE_EVENT_TYPE',
+  IncorrectPaperTypeEventType = 'INCORRECT_PAPER_TYPE_EVENT_TYPE',
+  InsufficientPowerEventType = 'INSUFFICIENT_POWER_EVENT_TYPE',
+  InterruptedEventType = 'INTERRUPTED_EVENT_TYPE',
+  LocalNetworkPermissionDeniedEventType = 'LOCAL_NETWORK_PERMISSION_DENIED_EVENT_TYPE',
+  LowBatteryEventType = 'LOW_BATTERY_EVENT_TYPE',
+  LowPaperEventType = 'LOW_PAPER_EVENT_TYPE',
+  LowSignalStrengthEventType = 'LOW_SIGNAL_STRENGTH_EVENT_TYPE',
+  MechanicalErrorEventType = 'MECHANICAL_ERROR_EVENT_TYPE',
+  MemoryErrorEventType = 'MEMORY_ERROR_EVENT_TYPE',
+  NetworkMistmatchErrorEventType = 'NETWORK_MISTMATCH_ERROR_EVENT_TYPE',
+  NotConfiguredEventType = 'NOT_CONFIGURED_EVENT_TYPE',
+  NotConnectedToNetworkErrorEventType = 'NOT_CONNECTED_TO_NETWORK_ERROR_EVENT_TYPE',
+  NotReadyEventType = 'NOT_READY_EVENT_TYPE',
+  OfflineEventType = 'OFFLINE_EVENT_TYPE',
+  OfflinePaymentsAvailableForSomeReadersEventType = 'OFFLINE_PAYMENTS_AVAILABLE_FOR_SOME_READERS_EVENT_TYPE',
+  OfflinePaymentsEnabledEventType = 'OFFLINE_PAYMENTS_ENABLED_EVENT_TYPE',
+  OfflinePaymentsErrorEventType = 'OFFLINE_PAYMENTS_ERROR_EVENT_TYPE',
+  OfflinePaymentsNotSupportedEventType = 'OFFLINE_PAYMENTS_NOT_SUPPORTED_EVENT_TYPE',
+  OfflinePaymentsUnavailableEventType = 'OFFLINE_PAYMENTS_UNAVAILABLE_EVENT_TYPE',
+  OfflinePaymentIssuesEventType = 'OFFLINE_PAYMENT_ISSUES_EVENT_TYPE',
+  OfflineSwipeOnlyEventType = 'OFFLINE_SWIPE_ONLY_EVENT_TYPE',
+  OperationUnsupportedEventType = 'OPERATION_UNSUPPORTED_EVENT_TYPE',
+  OutOfBatteryEventType = 'OUT_OF_BATTERY_EVENT_TYPE',
+  OutOfPaperEventType = 'OUT_OF_PAPER_EVENT_TYPE',
+  OverheatedEventType = 'OVERHEATED_EVENT_TYPE',
+  OverCapacityEventType = 'OVER_CAPACITY_EVENT_TYPE',
+  PaperJammedEventType = 'PAPER_JAMMED_EVENT_TYPE',
+  PaperPresentEventType = 'PAPER_PRESENT_EVENT_TYPE',
+  PausedEventType = 'PAUSED_EVENT_TYPE',
+  PrintHeadDirtyEventType = 'PRINT_HEAD_DIRTY_EVENT_TYPE',
+  PrintHeadEolEventType = 'PRINT_HEAD_EOL_EVENT_TYPE',
+  PrintHeadErrorEventType = 'PRINT_HEAD_ERROR_EVENT_TYPE',
+  ReadyEventType = 'READY_EVENT_TYPE',
+  RebootingEventType = 'REBOOTING_EVENT_TYPE',
+  RibbonOutEventType = 'RIBBON_OUT_EVENT_TYPE',
+  SecureSessionDenialEventType = 'SECURE_SESSION_DENIAL_EVENT_TYPE',
+  SecureSessionServerErrorEventType = 'SECURE_SESSION_SERVER_ERROR_EVENT_TYPE',
+  SecurityModeEventType = 'SECURITY_MODE_EVENT_TYPE',
+  SignedInEmployeeEventType = 'SIGNED_IN_EMPLOYEE_EVENT_TYPE',
+  SystemErrorEventType = 'SYSTEM_ERROR_EVENT_TYPE',
+  TamperedEventType = 'TAMPERED_EVENT_TYPE',
+  TestMerchantEventType = 'TEST_MERCHANT_EVENT_TYPE',
+  ThermometerDamagedEventType = 'THERMOMETER_DAMAGED_EVENT_TYPE',
+  TimedOutEventType = 'TIMED_OUT_EVENT_TYPE',
+  TooColdEventType = 'TOO_COLD_EVENT_TYPE',
+  TurnOnBluetoothEventType = 'TURN_ON_BLUETOOTH_EVENT_TYPE',
+  UnableToChargeEventType = 'UNABLE_TO_CHARGE_EVENT_TYPE',
+  UnderCapacityEventType = 'UNDER_CAPACITY_EVENT_TYPE',
+  UnexpectedResponseEventType = 'UNEXPECTED_RESPONSE_EVENT_TYPE',
+  UnknownDeviceEventType = 'UNKNOWN_DEVICE_EVENT_TYPE',
+  UnreachableEventType = 'UNREACHABLE_EVENT_TYPE',
+  UnrecoverableErrorEventType = 'UNRECOVERABLE_ERROR_EVENT_TYPE',
+  UpdateNeededEventType = 'UPDATE_NEEDED_EVENT_TYPE',
+  UpdatingEventType = 'UPDATING_EVENT_TYPE',
+  UsbPrinterUnpluggedErrorEventType = 'USB_PRINTER_UNPLUGGED_ERROR_EVENT_TYPE',
+  VeryLowBatteryEventType = 'VERY_LOW_BATTERY_EVENT_TYPE',
+  VoltageErrorEventType = 'VOLTAGE_ERROR_EVENT_TYPE'
+}
+
+/** An enum for DeviceEventType. */
+export enum DeviceEventTypeInput {
+  BlackMarkErrorEventType = 'BLACK_MARK_ERROR_EVENT_TYPE',
+  BusyEventType = 'BUSY_EVENT_TYPE',
+  CalibrationErrorEventType = 'CALIBRATION_ERROR_EVENT_TYPE',
+  CalibrationWarningEventType = 'CALIBRATION_WARNING_EVENT_TYPE',
+  ChargingPausedEventType = 'CHARGING_PAUSED_EVENT_TYPE',
+  ChargingSlowlyEventType = 'CHARGING_SLOWLY_EVENT_TYPE',
+  CheckingForUpdatesEventType = 'CHECKING_FOR_UPDATES_EVENT_TYPE',
+  ConnectingEventType = 'CONNECTING_EVENT_TYPE',
+  CoverOpenEventType = 'COVER_OPEN_EVENT_TYPE',
+  CutterErrorEventType = 'CUTTER_ERROR_EVENT_TYPE',
+  DeviceEventTypeUnknown = 'DEVICE_EVENT_TYPE_UNKNOWN',
+  DeviceSupportEndingOfferEventType = 'DEVICE_SUPPORT_ENDING_OFFER_EVENT_TYPE',
+  DisconnectedEventType = 'DISCONNECTED_EVENT_TYPE',
+  EstablishingSecureSessionEventType = 'ESTABLISHING_SECURE_SESSION_EVENT_TYPE',
+  FailedPrintJobEventType = 'FAILED_PRINT_JOB_EVENT_TYPE',
+  FailedToConnectEventType = 'FAILED_TO_CONNECT_EVENT_TYPE',
+  FatalErrorEventType = 'FATAL_ERROR_EVENT_TYPE',
+  FirmwareErrorEventType = 'FIRMWARE_ERROR_EVENT_TYPE',
+  FirmwareUpdateCompletedEventType = 'FIRMWARE_UPDATE_COMPLETED_EVENT_TYPE',
+  FirmwareUpdateFailedEventType = 'FIRMWARE_UPDATE_FAILED_EVENT_TYPE',
+  ForceOffinePaymentsDisabledEventType = 'FORCE_OFFINE_PAYMENTS_DISABLED_EVENT_TYPE',
+  ForceOffinePaymentsUnavailableEventType = 'FORCE_OFFINE_PAYMENTS_UNAVAILABLE_EVENT_TYPE',
+  ForceOfflinePaymentsEnabledEventType = 'FORCE_OFFLINE_PAYMENTS_ENABLED_EVENT_TYPE',
+  GenericErrorEventType = 'GENERIC_ERROR_EVENT_TYPE',
+  IncompatibleEventType = 'INCOMPATIBLE_EVENT_TYPE',
+  IncorrectPaperTypeEventType = 'INCORRECT_PAPER_TYPE_EVENT_TYPE',
+  InsufficientPowerEventType = 'INSUFFICIENT_POWER_EVENT_TYPE',
+  InterruptedEventType = 'INTERRUPTED_EVENT_TYPE',
+  LocalNetworkPermissionDeniedEventType = 'LOCAL_NETWORK_PERMISSION_DENIED_EVENT_TYPE',
+  LowBatteryEventType = 'LOW_BATTERY_EVENT_TYPE',
+  LowPaperEventType = 'LOW_PAPER_EVENT_TYPE',
+  LowSignalStrengthEventType = 'LOW_SIGNAL_STRENGTH_EVENT_TYPE',
+  MechanicalErrorEventType = 'MECHANICAL_ERROR_EVENT_TYPE',
+  MemoryErrorEventType = 'MEMORY_ERROR_EVENT_TYPE',
+  NetworkMistmatchErrorEventType = 'NETWORK_MISTMATCH_ERROR_EVENT_TYPE',
+  NotConfiguredEventType = 'NOT_CONFIGURED_EVENT_TYPE',
+  NotConnectedToNetworkErrorEventType = 'NOT_CONNECTED_TO_NETWORK_ERROR_EVENT_TYPE',
+  NotReadyEventType = 'NOT_READY_EVENT_TYPE',
+  OfflineEventType = 'OFFLINE_EVENT_TYPE',
+  OfflinePaymentsAvailableForSomeReadersEventType = 'OFFLINE_PAYMENTS_AVAILABLE_FOR_SOME_READERS_EVENT_TYPE',
+  OfflinePaymentsEnabledEventType = 'OFFLINE_PAYMENTS_ENABLED_EVENT_TYPE',
+  OfflinePaymentsErrorEventType = 'OFFLINE_PAYMENTS_ERROR_EVENT_TYPE',
+  OfflinePaymentsNotSupportedEventType = 'OFFLINE_PAYMENTS_NOT_SUPPORTED_EVENT_TYPE',
+  OfflinePaymentsUnavailableEventType = 'OFFLINE_PAYMENTS_UNAVAILABLE_EVENT_TYPE',
+  OfflinePaymentIssuesEventType = 'OFFLINE_PAYMENT_ISSUES_EVENT_TYPE',
+  OfflineSwipeOnlyEventType = 'OFFLINE_SWIPE_ONLY_EVENT_TYPE',
+  OperationUnsupportedEventType = 'OPERATION_UNSUPPORTED_EVENT_TYPE',
+  OutOfBatteryEventType = 'OUT_OF_BATTERY_EVENT_TYPE',
+  OutOfPaperEventType = 'OUT_OF_PAPER_EVENT_TYPE',
+  OverheatedEventType = 'OVERHEATED_EVENT_TYPE',
+  OverCapacityEventType = 'OVER_CAPACITY_EVENT_TYPE',
+  PaperJammedEventType = 'PAPER_JAMMED_EVENT_TYPE',
+  PaperPresentEventType = 'PAPER_PRESENT_EVENT_TYPE',
+  PausedEventType = 'PAUSED_EVENT_TYPE',
+  PrintHeadDirtyEventType = 'PRINT_HEAD_DIRTY_EVENT_TYPE',
+  PrintHeadEolEventType = 'PRINT_HEAD_EOL_EVENT_TYPE',
+  PrintHeadErrorEventType = 'PRINT_HEAD_ERROR_EVENT_TYPE',
+  ReadyEventType = 'READY_EVENT_TYPE',
+  RebootingEventType = 'REBOOTING_EVENT_TYPE',
+  RibbonOutEventType = 'RIBBON_OUT_EVENT_TYPE',
+  SecureSessionDenialEventType = 'SECURE_SESSION_DENIAL_EVENT_TYPE',
+  SecureSessionServerErrorEventType = 'SECURE_SESSION_SERVER_ERROR_EVENT_TYPE',
+  SecurityModeEventType = 'SECURITY_MODE_EVENT_TYPE',
+  SignedInEmployeeEventType = 'SIGNED_IN_EMPLOYEE_EVENT_TYPE',
+  SystemErrorEventType = 'SYSTEM_ERROR_EVENT_TYPE',
+  TamperedEventType = 'TAMPERED_EVENT_TYPE',
+  TestMerchantEventType = 'TEST_MERCHANT_EVENT_TYPE',
+  ThermometerDamagedEventType = 'THERMOMETER_DAMAGED_EVENT_TYPE',
+  TimedOutEventType = 'TIMED_OUT_EVENT_TYPE',
+  TooColdEventType = 'TOO_COLD_EVENT_TYPE',
+  TurnOnBluetoothEventType = 'TURN_ON_BLUETOOTH_EVENT_TYPE',
+  UnableToChargeEventType = 'UNABLE_TO_CHARGE_EVENT_TYPE',
+  UnderCapacityEventType = 'UNDER_CAPACITY_EVENT_TYPE',
+  UnexpectedResponseEventType = 'UNEXPECTED_RESPONSE_EVENT_TYPE',
+  UnknownDeviceEventType = 'UNKNOWN_DEVICE_EVENT_TYPE',
+  UnreachableEventType = 'UNREACHABLE_EVENT_TYPE',
+  UnrecoverableErrorEventType = 'UNRECOVERABLE_ERROR_EVENT_TYPE',
+  UpdateNeededEventType = 'UPDATE_NEEDED_EVENT_TYPE',
+  UpdatingEventType = 'UPDATING_EVENT_TYPE',
+  UsbPrinterUnpluggedErrorEventType = 'USB_PRINTER_UNPLUGGED_ERROR_EVENT_TYPE',
+  VeryLowBatteryEventType = 'VERY_LOW_BATTERY_EVENT_TYPE',
+  VoltageErrorEventType = 'VOLTAGE_ERROR_EVENT_TYPE'
+}
+
+/**
+ * Input type used to specify filters on elements of a `[DeviceEventType]` field.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceEventTypeListElementFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceEventTypeListElementFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<DeviceEventTypeInput>>;
+};
+
+/**
+ * Input type used to specify filters on `[DeviceEventType]` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceEventTypeListFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DeviceEventTypeListFilterInput` input because of
+   * collisions between key names. For example, if you want to provide
+   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DeviceEventTypeListFilterInput>>;
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceEventTypeListFilterInput>>;
+  /**
+   * Matches records where any of the list elements match the provided sub-filter.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  anySatisfy?: InputMaybe<DeviceEventTypeListElementFilterInput>;
+  /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceEventTypeListFilterInput>;
+};
+
+/** An enum for DeviceExternalPower. */
+export enum DeviceExternalPower {
+  /** Plugged in and charging. */
+  AvailableCharging = 'AVAILABLE_CHARGING',
+  /** Not providing enough power for the device. */
+  AvailableInsufficient = 'AVAILABLE_INSUFFICIENT',
+  /** Fully charged. */
+  AvailableNotInUse = 'AVAILABLE_NOT_IN_USE',
+  ExternalPowerUnknown = 'EXTERNAL_POWER_UNKNOWN',
+  /** On battery power. */
+  Unavailable = 'UNAVAILABLE'
+}
+
+/**
+ * Input type used to specify filters on `DeviceExternalPower` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceExternalPowerFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceExternalPowerFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceExternalPowerInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceExternalPowerFilterInput>;
+};
+
+/** An enum for DeviceExternalPower. */
+export enum DeviceExternalPowerInput {
+  /** Plugged in and charging. */
+  AvailableCharging = 'AVAILABLE_CHARGING',
+  /** Not providing enough power for the device. */
+  AvailableInsufficient = 'AVAILABLE_INSUFFICIENT',
+  /** Fully charged. */
+  AvailableNotInUse = 'AVAILABLE_NOT_IN_USE',
+  ExternalPowerUnknown = 'EXTERNAL_POWER_UNKNOWN',
+  /** On battery power. */
+  Unavailable = 'UNAVAILABLE'
+}
+
+/**
+ * Input type used to specify filters on `Device` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceFilterInput = {
+  /**
+   * Used to filter on the `attributes` field:
+   *
+   * > A collection of DeviceAttributes representing the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  attributes?: InputMaybe<DeviceAttributesFilterInput>;
+  /**
+   * Used to filter on the `components` field:
+   *
+   * > A list of components applicable to the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  components?: InputMaybe<DeviceComponentListFilterInput>;
+  /**
+   * Used to filter on the `createdAt` field:
+   *
+   * > The RFC 3339-formatted timestamp of when the device was created.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  /**
+   * Used to filter on the `events` field:
+   *
+   * > The events associated with this device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  events?: InputMaybe<DeviceEventFieldsListFilterInput>;
+  /**
+   * Used to filter on the `id` field:
+   *
+   * > The device-merchant id. Unique identifier of the document since devices can be shared between merchants.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  id?: InputMaybe<IdFilterInput>;
+  /**
+   * Used to filter on the `merchant` field:
+   *
+   * > The merchant using the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  merchant?: InputMaybe<MerchantRefFilterInput>;
+  /**
+   * Used to filter on the `status` field:
+   *
+   * > The current status of the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  status?: InputMaybe<DeviceStatusFilterInput>;
+  /**
+   * Used to filter on the `updatedAt` field:
+   *
+   * > The RFC 3339-formatted value of the most recent update to the device information.
+   * > (Could represent any field update on the device.).
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+/**
+ * A group of settings associated with a device and vertical.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceProfile = {
+  __typename?: 'DeviceProfile';
+  /** The Square-issued ID of the device profile. */
+  id: Scalars['ID']['output'];
+};
+
+/**
+ * Input type used to specify filters on `DeviceProfile` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceProfileFilterInput = {
+  /**
+   * Used to filter on the `id` field:
+   *
+   * > The Square-issued ID of the device profile.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  id?: InputMaybe<IdFilterInput>;
+};
+
+/**
+ * A value qualified by unit of measure.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceSignalStrengthMeasurement = {
+  __typename?: 'DeviceSignalStrengthMeasurement';
+  /** The unit of measure. */
+  unit?: Maybe<DeviceSignalStrengthUnit>;
+  /** The measurement value. */
+  value?: Maybe<Scalars['Int']['output']>;
+};
+
+/**
+ * Input type used to specify filters on `DeviceSignalStrengthMeasurement` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceSignalStrengthMeasurementFilterInput = {
+  /**
+   * Used to filter on the `unit` field:
+   *
+   * > The unit of measure.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  unit?: InputMaybe<DeviceSignalStrengthUnitFilterInput>;
+  /**
+   * Used to filter on the `value` field:
+   *
+   * > The measurement value.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  value?: InputMaybe<IntFilterInput>;
+};
+
+/** A enum for DeviceSignalStrengthUnit. */
+export enum DeviceSignalStrengthUnit {
+  /** Received Signal Strength Indicator. */
+  Rssi = 'RSSI',
+  /** Signal bars as displayed on the device. */
+  SignalBars = 'SIGNAL_BARS',
+  SignalStrengthUnitUnknown = 'SIGNAL_STRENGTH_UNIT_UNKNOWN'
+}
+
+/**
+ * Input type used to specify filters on `DeviceSignalStrengthUnit` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceSignalStrengthUnitFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceSignalStrengthUnitFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceSignalStrengthUnitInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceSignalStrengthUnitFilterInput>;
+};
+
+/** A enum for DeviceSignalStrengthUnit. */
+export enum DeviceSignalStrengthUnitInput {
+  /** Received Signal Strength Indicator. */
+  Rssi = 'RSSI',
+  /** Signal bars as displayed on the device. */
+  SignalBars = 'SIGNAL_BARS',
+  SignalStrengthUnitUnknown = 'SIGNAL_STRENGTH_UNIT_UNKNOWN'
+}
+
+/** Enumerates the ways `Device`s can be sorted. */
+export enum DeviceSortOrderInput {
+  /** Sorts ascending by the `attributes.manufacturer` field. */
+  AttributesManufacturerAsc = 'attributes_manufacturer_ASC',
+  /** Sorts descending by the `attributes.manufacturer` field. */
+  AttributesManufacturerDesc = 'attributes_manufacturer_DESC',
+  /** Sorts ascending by the `attributes.model` field. */
+  AttributesModelAsc = 'attributes_model_ASC',
+  /** Sorts descending by the `attributes.model` field. */
+  AttributesModelDesc = 'attributes_model_DESC',
+  /** Sorts ascending by the `attributes.name` field. */
+  AttributesNameAsc = 'attributes_name_ASC',
+  /** Sorts descending by the `attributes.name` field. */
+  AttributesNameDesc = 'attributes_name_DESC',
+  /** Sorts ascending by the `attributes.squareHardwareType` field. */
+  AttributesSquareHardwareTypeAsc = 'attributes_squareHardwareType_ASC',
+  /** Sorts descending by the `attributes.squareHardwareType` field. */
+  AttributesSquareHardwareTypeDesc = 'attributes_squareHardwareType_DESC',
+  /** Sorts ascending by the `attributes.type` field. */
+  AttributesTypeAsc = 'attributes_type_ASC',
+  /** Sorts descending by the `attributes.type` field. */
+  AttributesTypeDesc = 'attributes_type_DESC',
+  /** Sorts ascending by the `attributes.version` field. */
+  AttributesVersionAsc = 'attributes_version_ASC',
+  /** Sorts descending by the `attributes.version` field. */
+  AttributesVersionDesc = 'attributes_version_DESC',
+  /** Sorts ascending by the `createdAt` field. */
+  CreatedAtAsc = 'createdAt_ASC',
+  /** Sorts descending by the `createdAt` field. */
+  CreatedAtDesc = 'createdAt_DESC',
+  /** Sorts ascending by the `id` field. */
+  IdAsc = 'id_ASC',
+  /** Sorts descending by the `id` field. */
+  IdDesc = 'id_DESC',
+  /** Sorts ascending by the `merchant.id` field. */
+  MerchantIdAsc = 'merchant_id_ASC',
+  /** Sorts descending by the `merchant.id` field. */
+  MerchantIdDesc = 'merchant_id_DESC',
+  /** Sorts ascending by the `status.category` field. */
+  StatusCategoryAsc = 'status_category_ASC',
+  /** Sorts descending by the `status.category` field. */
+  StatusCategoryDesc = 'status_category_DESC',
+  /** Sorts ascending by the `status.detail` field. */
+  StatusDetailAsc = 'status_detail_ASC',
+  /** Sorts descending by the `status.detail` field. */
+  StatusDetailDesc = 'status_detail_DESC',
+  /** Sorts ascending by the `updatedAt` field. */
+  UpdatedAtAsc = 'updatedAt_ASC',
+  /** Sorts descending by the `updatedAt` field. */
+  UpdatedAtDesc = 'updatedAt_DESC'
+}
+
+/**
+ * Details about the current status of the device.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type DeviceStatus = {
+  __typename?: 'DeviceStatus';
+  /** The category of the device status; indicates availability of the device. */
+  category?: Maybe<DeviceStatusCategory>;
+  /** Details about the device status; indicates the mode in which the device is operating. */
+  detail?: Maybe<DeviceStatusDetail>;
+};
+
+/** An enum for DeviceStatusCategory. */
+export enum DeviceStatusCategory {
+  Available = 'AVAILABLE',
+  Critical = 'CRITICAL',
+  DeviceStatusCategoryUnknown = 'DEVICE_STATUS_CATEGORY_UNKNOWN',
+  NeedsAttention = 'NEEDS_ATTENTION',
+  Offline = 'OFFLINE'
+}
+
+/**
+ * Input type used to specify filters on `DeviceStatusCategory` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceStatusCategoryFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceStatusCategoryFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceStatusCategoryInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceStatusCategoryFilterInput>;
+};
+
+/** An enum for DeviceStatusCategory. */
+export enum DeviceStatusCategoryInput {
+  Available = 'AVAILABLE',
+  Critical = 'CRITICAL',
+  DeviceStatusCategoryUnknown = 'DEVICE_STATUS_CATEGORY_UNKNOWN',
+  NeedsAttention = 'NEEDS_ATTENTION',
+  Offline = 'OFFLINE'
+}
+
+/** An enum for DeviceStatusDetail. */
+export enum DeviceStatusDetail {
+  DeviceStatusDetailUnknown = 'DEVICE_STATUS_DETAIL_UNKNOWN',
+  LoggedOut = 'LOGGED_OUT',
+  Sleeping = 'SLEEPING'
+}
+
+/**
+ * Input type used to specify filters on `DeviceStatusDetail` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceStatusDetailFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceStatusDetailFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceStatusDetailInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceStatusDetailFilterInput>;
+};
+
+/** An enum for DeviceStatusDetail. */
+export enum DeviceStatusDetailInput {
+  DeviceStatusDetailUnknown = 'DEVICE_STATUS_DETAIL_UNKNOWN',
+  LoggedOut = 'LOGGED_OUT',
+  Sleeping = 'SLEEPING'
+}
+
+/**
+ * Input type used to specify filters on `DeviceStatus` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceStatusFilterInput = {
+  /**
+   * Used to filter on the `category` field:
+   *
+   * > The category of the device status; indicates availability of the device.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  category?: InputMaybe<DeviceStatusCategoryFilterInput>;
+  /**
+   * Used to filter on the `detail` field:
+   *
+   * > Details about the device status; indicates the mode in which the device is operating.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  detail?: InputMaybe<DeviceStatusDetailFilterInput>;
+};
+
+/** An enum for DeviceType. */
+export enum DeviceType {
+  Android = 'ANDROID',
+  BarcodeScanner = 'BARCODE_SCANNER',
+  CashDrawer = 'CASH_DRAWER',
+  DeviceTypeUnknown = 'DEVICE_TYPE_UNKNOWN',
+  InternalPrinter = 'INTERNAL_PRINTER',
+  InternalScanner = 'INTERNAL_SCANNER',
+  Ios = 'IOS',
+  Printer = 'PRINTER',
+  Reader = 'READER',
+  Register = 'REGISTER',
+  Scale = 'SCALE',
+  ScannerScale = 'SCANNER_SCALE',
+  Stand = 'STAND',
+  Terminal = 'TERMINAL'
+}
+
+/**
+ * Input type used to specify filters on `DeviceType` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceTypeFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceTypeFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceTypeInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceTypeFilterInput>;
+};
+
+/** An enum for DeviceType. */
+export enum DeviceTypeInput {
+  Android = 'ANDROID',
+  BarcodeScanner = 'BARCODE_SCANNER',
+  CashDrawer = 'CASH_DRAWER',
+  DeviceTypeUnknown = 'DEVICE_TYPE_UNKNOWN',
+  InternalPrinter = 'INTERNAL_PRINTER',
+  InternalScanner = 'INTERNAL_SCANNER',
+  Ios = 'IOS',
+  Printer = 'PRINTER',
+  Reader = 'READER',
+  Register = 'REGISTER',
+  Scale = 'SCALE',
+  ScannerScale = 'SCANNER_SCALE',
+  Stand = 'STAND',
+  Terminal = 'TERMINAL'
+}
+
+/** A enum for DeviceWeightUnit. */
+export enum DeviceWeightUnit {
+  Gram = 'GRAM',
+  Kilogram = 'KILOGRAM',
+  Milligram = 'MILLIGRAM',
+  Ounce = 'OUNCE',
+  Pound = 'POUND',
+  WeightUnitUnknown = 'WEIGHT_UNIT_UNKNOWN'
+}
+
+/**
+ * Input type used to specify filters on `DeviceWeightUnit` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type DeviceWeightUnitFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<DeviceWeightUnitFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<DeviceWeightUnitInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<DeviceWeightUnitFilterInput>;
+};
+
+/** A enum for DeviceWeightUnit. */
+export enum DeviceWeightUnitInput {
+  Gram = 'GRAM',
+  Kilogram = 'KILOGRAM',
+  Milligram = 'MILLIGRAM',
+  Ounce = 'OUNCE',
+  Pound = 'POUND',
+  WeightUnitUnknown = 'WEIGHT_UNIT_UNKNOWN'
+}
+
 /** The brand used for a `WALLET` payment. */
 export enum DigitalWalletPaymentBrand {
   Alipay = 'ALIPAY',
@@ -11274,7 +13407,7 @@ export enum ErrorCode {
   BadRequest = 'BAD_REQUEST',
   /** The card issuer declined the refund. */
   BlockedByBlocklist = 'BLOCKED_BY_BLOCKLIST',
-  /** The provided buyer id can't be found */
+  /** The provided buyer id can't be found. */
   BuyerNotFound = 'BUYER_NOT_FOUND',
   /** Bank account rejected or was not authorized for the payment. */
   BuyerRefusedPayment = 'BUYER_REFUSED_PAYMENT',
@@ -11390,9 +13523,9 @@ export enum ErrorCode {
   FulfillmentPreferencesAssignmentIsImmutable = 'FULFILLMENT_PREFERENCES_ASSIGNMENT_IS_IMMUTABLE',
   /** An assignment is required for this type of request. */
   FulfillmentPreferencesAssignmentRequired = 'FULFILLMENT_PREFERENCES_ASSIGNMENT_REQUIRED',
-  /** The provided preferences assignment types should be consistent within request */
+  /** The provided preferences assignment types should be consistent within request. */
   FulfillmentPreferencesConflictingAssignmentType = 'FULFILLMENT_PREFERENCES_CONFLICTING_ASSIGNMENT_TYPE',
-  /** Fulfillment Preferences with fulfillment schedules cannot be assigned to a CATALOG_ITEM */
+  /** Fulfillment Preferences with fulfillment schedules cannot be assigned to a CATALOG_ITEM. */
   FulfillmentPreferencesFulfillmentScheduleNotAllowed = 'FULFILLMENT_PREFERENCES_FULFILLMENT_SCHEDULE_NOT_ALLOWED',
   /** Parameters being used for FulfillmentAvailabilityWindow object are not valid. */
   FulfillmentPreferencesInvalidFulfillmentAvailabilityWindow = 'FULFILLMENT_PREFERENCES_INVALID_FULFILLMENT_AVAILABILITY_WINDOW',
@@ -11547,7 +13680,7 @@ export enum ErrorCode {
   MapKeyLengthTooLong = 'MAP_KEY_LENGTH_TOO_LONG',
   /** The length of one of the provided keys in the map is too short. */
   MapKeyLengthTooShort = 'MAP_KEY_LENGTH_TOO_SHORT',
-  /** A required subscription was not found for the merchant */
+  /** A required subscription was not found for the merchant. */
   MerchantSubscriptionNotFound = 'MERCHANT_SUBSCRIPTION_NOT_FOUND',
   /** Method Not Allowed - a general error occurred. */
   MethodNotAllowed = 'METHOD_NOT_ALLOWED',
@@ -11678,7 +13811,7 @@ export enum ErrorCode {
   UnsupportedCurrency = 'UNSUPPORTED_CURRENCY',
   /** The entry method for the credit card (swipe, dip, tap) is not supported. */
   UnsupportedEntryMethod = 'UNSUPPORTED_ENTRY_METHOD',
-  /** The API request references an unsupported instrument type/ */
+  /** The API request references an unsupported instrument type/. */
   UnsupportedInstrumentType = 'UNSUPPORTED_INSTRUMENT_TYPE',
   /**
    * The referenced loyalty program reward tier is not supported.  This could
@@ -11765,7 +13898,7 @@ export enum ErrorCodeInput {
   BadRequest = 'BAD_REQUEST',
   /** The card issuer declined the refund. */
   BlockedByBlocklist = 'BLOCKED_BY_BLOCKLIST',
-  /** The provided buyer id can't be found */
+  /** The provided buyer id can't be found. */
   BuyerNotFound = 'BUYER_NOT_FOUND',
   /** Bank account rejected or was not authorized for the payment. */
   BuyerRefusedPayment = 'BUYER_REFUSED_PAYMENT',
@@ -11881,9 +14014,9 @@ export enum ErrorCodeInput {
   FulfillmentPreferencesAssignmentIsImmutable = 'FULFILLMENT_PREFERENCES_ASSIGNMENT_IS_IMMUTABLE',
   /** An assignment is required for this type of request. */
   FulfillmentPreferencesAssignmentRequired = 'FULFILLMENT_PREFERENCES_ASSIGNMENT_REQUIRED',
-  /** The provided preferences assignment types should be consistent within request */
+  /** The provided preferences assignment types should be consistent within request. */
   FulfillmentPreferencesConflictingAssignmentType = 'FULFILLMENT_PREFERENCES_CONFLICTING_ASSIGNMENT_TYPE',
-  /** Fulfillment Preferences with fulfillment schedules cannot be assigned to a CATALOG_ITEM */
+  /** Fulfillment Preferences with fulfillment schedules cannot be assigned to a CATALOG_ITEM. */
   FulfillmentPreferencesFulfillmentScheduleNotAllowed = 'FULFILLMENT_PREFERENCES_FULFILLMENT_SCHEDULE_NOT_ALLOWED',
   /** Parameters being used for FulfillmentAvailabilityWindow object are not valid. */
   FulfillmentPreferencesInvalidFulfillmentAvailabilityWindow = 'FULFILLMENT_PREFERENCES_INVALID_FULFILLMENT_AVAILABILITY_WINDOW',
@@ -12038,7 +14171,7 @@ export enum ErrorCodeInput {
   MapKeyLengthTooLong = 'MAP_KEY_LENGTH_TOO_LONG',
   /** The length of one of the provided keys in the map is too short. */
   MapKeyLengthTooShort = 'MAP_KEY_LENGTH_TOO_SHORT',
-  /** A required subscription was not found for the merchant */
+  /** A required subscription was not found for the merchant. */
   MerchantSubscriptionNotFound = 'MERCHANT_SUBSCRIPTION_NOT_FOUND',
   /** Method Not Allowed - a general error occurred. */
   MethodNotAllowed = 'METHOD_NOT_ALLOWED',
@@ -12169,7 +14302,7 @@ export enum ErrorCodeInput {
   UnsupportedCurrency = 'UNSUPPORTED_CURRENCY',
   /** The entry method for the credit card (swipe, dip, tap) is not supported. */
   UnsupportedEntryMethod = 'UNSUPPORTED_ENTRY_METHOD',
-  /** The API request references an unsupported instrument type/ */
+  /** The API request references an unsupported instrument type/. */
   UnsupportedInstrumentType = 'UNSUPPORTED_INSTRUMENT_TYPE',
   /**
    * The referenced loyalty program reward tier is not supported.  This could
@@ -12361,6 +14494,19 @@ export type ErrorFieldsListFilterInput = {
 };
 
 /**
+ * Structured data for an `Ethernet` interface, set for DeviceComponents of type `ETHERNET`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type EthernetComponentDetails = {
+  __typename?: 'EthernetComponentDetails';
+  /** A boolean to represent whether the Ethernet interface is currently active. */
+  ethernetActive?: Maybe<Scalars['Boolean']['output']>;
+  /** The string representation of the device's IPv4 address. */
+  ipAddressV4?: Maybe<Scalars['String']['output']>;
+};
+
+/**
  * Indicates which products matched by a CatalogPricingRule
  * will be excluded if the pricing rule uses an exclude set.
  */
@@ -12476,6 +14622,17 @@ export enum ExternalPaymentType {
  * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ExternalPaymentTypeFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `ExternalPaymentTypeFilterInput` input because of
+   * collisions between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<ExternalPaymentTypeFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
@@ -14281,6 +16438,17 @@ export type InventoryTransfer = InventoryChange & {
 };
 
 /**
+ * A record representing an individual job for the business.
+ *
+ * Permissions:EMPLOYEES_READ
+ */
+export type Job = {
+  __typename?: 'Job';
+  /** The Square-issued ID of the job. */
+  id: Scalars['ID']['output'];
+};
+
+/**
  * Input type used to specify filters on `JsonSafeLong` fields.
  *
  * Will match all documents if passed as an empty object (or as `null`).
@@ -14652,6 +16820,24 @@ export type LocationConnection = {
   pageInfo: PageInfo;
   /** The total number of edges available in this connection to paginate over. */
   totalEdgeCount: Scalars['JsonSafeLong']['output'];
+};
+
+/**
+ * Input type used to specify filters on a `Location` object referenced directly
+ * or transitively from a list field that has been configured to index each leaf field as
+ * its own flattened list of values.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type LocationFieldsListFilterInput = {
+  /**
+   * Used to filter on the `id` field:
+   *
+   * > The Square-issued ID of the location.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  id?: InputMaybe<IdListFilterInput>;
 };
 
 /**
@@ -16333,6 +18519,19 @@ export type MoneyFilterInput = {
    * When `null` or an empty object is passed, matches all documents.
    */
   currency?: InputMaybe<CurrencyFilter>;
+};
+
+/**
+ * Structured data for a `Network` interface, set for DeviceComponents of type `NETWORK_INTERFACE`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type NetworkInterfaceComponentDetails = {
+  __typename?: 'NetworkInterfaceComponentDetails';
+  /** The string representation of the device's IPv4 address. */
+  ipAddressV4?: Maybe<Scalars['String']['output']>;
+  /** The MAC address of the device. */
+  macAddress?: Maybe<Scalars['String']['output']>;
 };
 
 /** A return type used from aggregations to provided aggregated values over non-numeric fields. */
@@ -19428,7 +21627,7 @@ export type Payment = {
   billingAddress?: Maybe<Address>;
   /**
    * Details about a Buy Now Pay Later payment. The details are only populated
-   * if the `source_type` is `BUY_NOW_PAY_LATER`. For more information, see
+   * if the `sourceType` is `BUY_NOW_PAY_LATER`. For more information, see
    * [Afterpay Payments](https://developer.squareup.com/docs/payments-api/take-payments/afterpay-payments).
    */
   buyNowPayLaterDetails?: Maybe<BuyNowPayLaterPaymentDetails>;
@@ -19447,7 +21646,7 @@ export type Payment = {
    * ID of the customer associated with the payment.
    */
   customerId?: Maybe<Scalars['ID']['output']>;
-  /** The action to be applied to the payment when the `delay_duration` has elapsed. */
+  /** The action to be applied to the payment when the `delayDuration` has elapsed. */
   delayAction?: Maybe<PaymentDelayAction>;
   /**
    * The duration of time after the payment's creation when Square automatically applies the
@@ -19467,11 +21666,11 @@ export type Payment = {
    */
   delayDuration?: Maybe<Scalars['Duration']['output']>;
   /**
-   * The read-only timestamp of when the `delay_action` is automatically applied,
+   * The read-only timestamp of when the `delayAction` is automatically applied,
    * in RFC 3339 format.
    *
-   * Note that this field is calculated by summing the payment's `delay_duration` and `created_at`
-   * fields. The `created_at` field is generated by Square and might not exactly match the
+   * Note that this field is calculated by summing the payment's `delayDuration` and `createdAt`
+   * fields. The `createdAt` field is generated by Square and might not exactly match the
    * time on your local machine.
    */
   delayedUntil?: Maybe<Scalars['DateTime']['output']>;
@@ -20209,7 +22408,7 @@ export type PaymentFilter = {
    * Used to filter on the `buyNowPayLaterDetails` field:
    *
    * > Details about a Buy Now Pay Later payment. The details are only populated
-   * > if the `source_type` is `BUY_NOW_PAY_LATER`. For more information, see
+   * > if the `sourceType` is `BUY_NOW_PAY_LATER`. For more information, see
    * > [Afterpay Payments](https://developer.squareup.com/docs/payments-api/take-payments/afterpay-payments).
    *
    * When `null` or an empty object is passed, matches all documents.
@@ -20267,7 +22466,7 @@ export type PaymentFilter = {
   /**
    * Used to filter on the `delayAction` field:
    *
-   * > The action to be applied to the payment when the `delay_duration` has elapsed.
+   * > The action to be applied to the payment when the `delayDuration` has elapsed.
    *
    * When `null` or an empty object is passed, matches all documents.
    */
@@ -20296,11 +22495,11 @@ export type PaymentFilter = {
   /**
    * Used to filter on the `delayedUntil` field:
    *
-   * > The read-only timestamp of when the `delay_action` is automatically applied,
+   * > The read-only timestamp of when the `delayAction` is automatically applied,
    * > in RFC 3339 format.
    * >
-   * > Note that this field is calculated by summing the payment's `delay_duration` and `created_at`
-   * > fields. The `created_at` field is generated by Square and might not exactly match the
+   * > Note that this field is calculated by summing the payment's `delayDuration` and `createdAt`
+   * > fields. The `createdAt` field is generated by Square and might not exactly match the
    * > time on your local machine.
    *
    * When `null` or an empty object is passed, matches all documents.
@@ -22715,6 +24914,69 @@ export type Phase = {
 };
 
 /**
+ * Structured data for a `Printer`, set for DeviceComponents of type `PRINTER`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type PrinterComponentDetails = {
+  __typename?: 'PrinterComponentDetails';
+  /** Indicates whether the current paper width is the default width. */
+  isDefaultWidth?: Maybe<Scalars['Boolean']['output']>;
+  /** The paper width configuration on the printer. */
+  paperWidth?: Maybe<Scalars['Int']['output']>;
+  /** The type of the printer. */
+  printerType?: Maybe<PrinterType>;
+};
+
+/** An enum for PrinterType. */
+export enum PrinterType {
+  KitchenPrinter = 'KITCHEN_PRINTER',
+  LabelPrinter = 'LABEL_PRINTER',
+  PrinterTypeUnknown = 'PRINTER_TYPE_UNKNOWN',
+  ReceiptPrinter = 'RECEIPT_PRINTER'
+}
+
+/**
+ * Input type used to specify filters on `PrinterType` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type PrinterTypeFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<PrinterTypeFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<PrinterTypeInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<PrinterTypeFilterInput>;
+};
+
+/** An enum for PrinterType. */
+export enum PrinterTypeInput {
+  KitchenPrinter = 'KITCHEN_PRINTER',
+  LabelPrinter = 'LABEL_PRINTER',
+  PrinterTypeUnknown = 'PRINTER_TYPE_UNKNOWN',
+  ReceiptPrinter = 'RECEIPT_PRINTER'
+}
+
+/**
  * Permissions: PAYOUTS_READ
  *
  * Details of the processing fee for a payment. If sellers opt for Gross
@@ -22857,6 +25119,8 @@ export type Query = {
    * Permissions:CUSTOMERS_READ
    */
   customers?: Maybe<CustomerConnection>;
+  /** Fetches `Device`s based on the provided arguments. */
+  devices?: Maybe<DeviceConnection>;
   /**
    * Returns Gift Card activities by the specified filter.
    * Permissions:GIFTCARDS_READ
@@ -22930,9 +25194,16 @@ export type Query = {
   /** Fetches `Payout`s based on the provided arguments. */
   payouts?: Maybe<PayoutConnection>;
   /**
+   * Returns Scheduled Shifts by its filter.
+   *
+   * Permissions:TIMECARDS_READ
+   */
+  scheduledShifts?: Maybe<ScheduledShiftConnection>;
+  /**
    * Returns Shifts by its filter.
    *
    * Permissions:TIMECARDS_READ
+   * @deprecated Use timecards query instead. Shifts are being replaced by Timecards.
    */
   shifts?: Maybe<ShiftConnection>;
   /**
@@ -22956,6 +25227,12 @@ export type Query = {
    * Permissions:EMPLOYEES_READ
    */
   teamMemberWages?: Maybe<TeamMemberWageConnection>;
+  /**
+   * Returns Scheduled Shifts by its filter.
+   *
+   * Permissions:TIMECARDS_READ
+   */
+  timecards?: Maybe<TimecardConnection>;
   /**
    * Returns WorkweekConfigs by its filter.
    *
@@ -23048,6 +25325,17 @@ export type QueryCustomersArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   filter: CustomerFilter;
   first?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The query entry point for the entire schema. */
+export type QueryDevicesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<DeviceFilterInput>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<DeviceSortOrderInput>>;
 };
 
 
@@ -23190,6 +25478,15 @@ export type QueryPayoutsArgs = {
 
 
 /** The query entry point for the entire schema. */
+export type QueryScheduledShiftsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<ScheduledShiftFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<InputMaybe<ScheduledShiftSort>>>;
+};
+
+
+/** The query entry point for the entire schema. */
 export type QueryShiftsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   filter?: InputMaybe<ShiftFilter>;
@@ -23227,6 +25524,15 @@ export type QueryTeamMemberWagesArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   filter?: InputMaybe<TeamMemberWageFilter>;
   first?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The query entry point for the entire schema. */
+export type QueryTimecardsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<TimecardFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<InputMaybe<TimecardSort>>>;
 };
 
 
@@ -23406,6 +25712,185 @@ export type RewardTier = {
   /** The Square-assigned ID of the reward tier. */
   id: Scalars['ID']['output'];
 };
+
+/**
+ * Structured data for `Scale` peripheral device details, set for DeviceComponents of type `SCALE`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type ScaleComponentDetails = {
+  __typename?: 'ScaleComponentDetails';
+  /** Indicates the currently selected weight unit on the scale. */
+  selectedWeightUnit?: Maybe<DeviceWeightUnit>;
+};
+
+/**
+ * Input type used to specify filters on `ScaleComponentDetails` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type ScaleComponentDetailsFilterInput = {
+  /**
+   * Used to filter on the `selectedWeightUnit` field:
+   *
+   * > Indicates the currently selected weight unit on the scale.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  selectedWeightUnit?: InputMaybe<DeviceWeightUnitFilterInput>;
+};
+
+/**
+ * Structured data for `ScannerScale` peripheral device details, set for DeviceComponents of type `SCANNER_SCALE`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type ScannerScaleComponentDetails = {
+  __typename?: 'ScannerScaleComponentDetails';
+  /** The Scale component details of the ScannerScale. */
+  scaleDetails?: Maybe<ScaleComponentDetails>;
+  /** The BarcodeScanner component details of the ScannerScale. */
+  scannerDetails?: Maybe<BarcodeScannerComponentDetails>;
+};
+
+/**
+ * A record of the hourly rate, start, and end times for a future scheduled shift
+ * for an employee.This might include a record of the start and end times for breaks
+ * taken during the shift.
+ * Permissions: TIMECARDS_READ
+ */
+export type ScheduledShift = {
+  __typename?: 'ScheduledShift';
+  /**
+   * A read-only timestamp in RFC 3339 format; presented in UTC.
+   *
+   * Examples for January 25th, 2020 6:25:34pm Pacific Standard Time:
+   *
+   * UTC:  2020-01-26T02:25:34Z
+   *
+   * Pacific Standard Time with UTC offset:  2020-01-25T18:25:34-08:00
+   */
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /**
+   * The read-only convenience value that is calculated from the location based
+   * on the `location_id`. Format: the IANA timezone database identifier for the
+   * location timezone.
+   */
+  draftShiftDetails?: Maybe<ScheduledShiftDetails>;
+  /** The UUID for this object. */
+  id: Scalars['ID']['output'];
+  /** The Square-issued ID of the merchant. */
+  merchantId: Scalars['ID']['output'];
+  /**
+   * Job and pay related information. If the wage is not set on create, it defaults to a wage
+   * of zero. If the title is not set on create, it defaults to the name of the role the employee
+   * is assigned to, if any.
+   */
+  publishedShiftDetails?: Maybe<ScheduledShiftDetails>;
+  /**
+   * A read-only timestamp in RFC 3339 format; presented in UTC.
+   *
+   * Examples for January 25th, 2020 6:25:34pm Pacific Standard Time:
+   *
+   * UTC:  2020-01-26T02:25:34Z
+   *
+   * Pacific Standard Time with UTC offset:  2020-01-25T18:25:34-08:00
+   */
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  /**
+   * Used for resolving concurrency issues. The request fails if the version
+   * provided does not match the server version at the time of the request. If not provided,
+   * Square executes a blind write; potentially overwriting data from another
+   * write.
+   */
+  version?: Maybe<Scalars['JsonSafeLong']['output']>;
+};
+
+/**
+ * A list of Scheduled Shifts.
+ *
+ * Permissions:TIMECARDS_READ
+ */
+export type ScheduledShiftConnection = {
+  __typename?: 'ScheduledShiftConnection';
+  /** List of scheduled shifts */
+  nodes: Array<ScheduledShift>;
+  /** Provides pagination-related information. */
+  pageInfo: PageInfo;
+};
+
+/**
+ * Details of the scheduled shift.
+ * Permissions: TIMECARDS_READ
+ */
+export type ScheduledShiftDetails = {
+  __typename?: 'ScheduledShiftDetails';
+  /**
+   * RFC 3339; shifted to the timezone + offset. Precision up to the minute is
+   * respected; seconds are truncated.
+   */
+  endAt?: Maybe<Scalars['DateTime']['output']>;
+  /**
+   * Whether the scheduled shift is deleted. If this is only on the staged version, then it will be deleted when published.
+   * If the staged version is deleted and it doesn’t have a published version or the published version is also deleted,
+   * then the entire shift schedule is considered deleted and won’t be retrieved by any endpoints.
+   */
+  isDeleted?: Maybe<Scalars['Boolean']['output']>;
+  /** The ID of the job this shift is scheduled for. */
+  job?: Maybe<Job>;
+  /** The ID of the location this shift is scheduled for. */
+  location?: Maybe<Location>;
+  /** Notes for the scheduled shift. */
+  notes?: Maybe<Scalars['String']['output']>;
+  /**
+   * RFC 3339; shifted to the location timezone + offset. Precision up to the
+   * minute is respected; seconds are truncated.
+   */
+  startAt?: Maybe<Scalars['DateTime']['output']>;
+  /** The ID of the team member scheduled for this shift. */
+  teamMember?: Maybe<TeamMember>;
+  /**
+   * The read-only convenience value that is calculated from the location based
+   * on the `location_id`. Format: the IANA timezone database identifier for the
+   * location timezone.
+   */
+  timezone?: Maybe<Scalars['String']['output']>;
+};
+
+/**
+ * Defines a filter used in a search for `ScheduledShift` records.`AND` logic is
+ * used by Square's servers to apply each filter property specified.
+ * Permissions: TIMECARDS_READ
+ */
+export type ScheduledShiftFilter = {
+  /** Fetch the `Shift` instances that end in the time range - Inclusive. */
+  endAt?: InputMaybe<TimeRangeFilter>;
+  /** Fetch shifts for the specified ids. */
+  id?: InputMaybe<BasicIdFilter>;
+  /** Fetch shifts for the specified location. */
+  locationId?: InputMaybe<BasicIdFilter>;
+  /** Fetch shifts for the specified merchant. */
+  merchantId: BasicIdFilter;
+  /** Fetch `Shift` instances that start in the time range - Inclusive. */
+  startAt?: InputMaybe<TimeRangeFilter>;
+  /** Fetch a `Shift` instance by `Shift.status`. */
+  status?: InputMaybe<ShiftStatusInput>;
+  /** Fetch shifts for the specified team members. Replaced `employee_ids` at version "2020-08-26". */
+  teamMemberId?: InputMaybe<BasicIdFilter>;
+  /** Fetch the `Shift` instances based on the workday date range. */
+  workday?: InputMaybe<ShiftWorkdayFilter>;
+};
+
+export enum ScheduledShiftSort {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  EndAtAsc = 'endAt_ASC',
+  EndAtDesc = 'endAt_DESC',
+  StartAtAsc = 'startAt_ASC',
+  StartAtDesc = 'startAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+}
 
 /** The query used to search for buyer-accessible availabilities of bookings. */
 export type SearchAvailabilityQuery = {
@@ -23814,6 +26299,72 @@ export type SquareGiftCardConnection = {
   pageInfo: PageInfo;
 };
 
+/** An enum for SquareHardwareType. Set only for Square Hardware devices. */
+export enum SquareHardwareType {
+  SquareHardwareTypeRegisterGen1V1 = 'SQUARE_HARDWARE_TYPE_REGISTER_GEN1_V1',
+  SquareHardwareTypeRegisterGen1V2 = 'SQUARE_HARDWARE_TYPE_REGISTER_GEN1_V2',
+  SquareHardwareTypeStandGen1V1 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V1',
+  SquareHardwareTypeStandGen1V2 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V2',
+  SquareHardwareTypeStandGen1V3 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V3',
+  SquareHardwareTypeStandGen1V4 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V4',
+  SquareHardwareTypeStandGen1V5 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V5',
+  SquareHardwareTypeStandGen2V1 = 'SQUARE_HARDWARE_TYPE_STAND_GEN2_V1',
+  SquareHardwareTypeStandGen2V2 = 'SQUARE_HARDWARE_TYPE_STAND_GEN2_V2',
+  SquareHardwareTypeTerminalGen1V1 = 'SQUARE_HARDWARE_TYPE_TERMINAL_GEN1_V1',
+  SquareHardwareTypeTerminalGen1V2 = 'SQUARE_HARDWARE_TYPE_TERMINAL_GEN1_V2',
+  SquareHardwareTypeTerminalGen2V1 = 'SQUARE_HARDWARE_TYPE_TERMINAL_GEN2_V1',
+  SquareHardwareTypeUnknown = 'SQUARE_HARDWARE_TYPE_UNKNOWN'
+}
+
+/**
+ * Input type used to specify filters on `SquareHardwareType` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type SquareHardwareTypeFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<SquareHardwareTypeFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<SquareHardwareTypeInput>>>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<SquareHardwareTypeFilterInput>;
+};
+
+/** An enum for SquareHardwareType. Set only for Square Hardware devices. */
+export enum SquareHardwareTypeInput {
+  SquareHardwareTypeRegisterGen1V1 = 'SQUARE_HARDWARE_TYPE_REGISTER_GEN1_V1',
+  SquareHardwareTypeRegisterGen1V2 = 'SQUARE_HARDWARE_TYPE_REGISTER_GEN1_V2',
+  SquareHardwareTypeStandGen1V1 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V1',
+  SquareHardwareTypeStandGen1V2 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V2',
+  SquareHardwareTypeStandGen1V3 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V3',
+  SquareHardwareTypeStandGen1V4 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V4',
+  SquareHardwareTypeStandGen1V5 = 'SQUARE_HARDWARE_TYPE_STAND_GEN1_V5',
+  SquareHardwareTypeStandGen2V1 = 'SQUARE_HARDWARE_TYPE_STAND_GEN2_V1',
+  SquareHardwareTypeStandGen2V2 = 'SQUARE_HARDWARE_TYPE_STAND_GEN2_V2',
+  SquareHardwareTypeTerminalGen1V1 = 'SQUARE_HARDWARE_TYPE_TERMINAL_GEN1_V1',
+  SquareHardwareTypeTerminalGen1V2 = 'SQUARE_HARDWARE_TYPE_TERMINAL_GEN1_V2',
+  SquareHardwareTypeTerminalGen2V1 = 'SQUARE_HARDWARE_TYPE_TERMINAL_GEN2_V1',
+  SquareHardwareTypeUnknown = 'SQUARE_HARDWARE_TYPE_UNKNOWN'
+}
+
 /**
  * Permissions: PAYOUTS_READ
  *
@@ -23986,6 +26537,17 @@ export type SquareSubscription = {
    * be rejected as conflicting.
    */
   version?: Maybe<Scalars['Int']['output']>;
+};
+
+/**
+ * Structured data for `Stand` peripheral device details, set for DeviceComponents of type `STAND`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type StandComponentDetails = {
+  __typename?: 'StandComponentDetails';
+  /** The version of the stand. */
+  standVersion?: Maybe<Scalars['String']['output']>;
 };
 
 /**
@@ -24570,6 +27132,148 @@ export type TimeRangeFilter = {
 };
 
 /**
+ * A record of the hourly rate, start, and end times for a timecard.
+ * This might include a record of the start and end times for breaks taken during the shift.
+ *
+ * Permissions: TIMECARDS_READ
+ */
+export type Timecard = {
+  __typename?: 'Timecard';
+  /** The breaks taken during this timecard. */
+  breaks?: Maybe<Array<Break>>;
+  /** A read-only timestamp in RFC 3339 format; presented in UTC. */
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /**
+   * RFC 3339; shifted to the timezone + offset. Precision up to the minute is
+   * respected; seconds are truncated.
+   */
+  endAt?: Maybe<Scalars['DateTime']['output']>;
+  /** The UUID for this object. */
+  id: Scalars['ID']['output'];
+  /** The ID of the job this timecard is for. */
+  job?: Maybe<Job>;
+  /** The ID of the location this timecard is for. */
+  location?: Maybe<Location>;
+  /** The Square-issued ID of the merchant. */
+  merchantId: Scalars['ID']['output'];
+  /**
+   * RFC 3339; shifted to the location timezone + offset. Precision up to the
+   * minute is respected; seconds are truncated.
+   */
+  startAt?: Maybe<Scalars['DateTime']['output']>;
+  /** The status of the timecard. */
+  status?: Maybe<TimecardStatus>;
+  /** The ID of the team member this timecard belongs to. */
+  teamMember?: Maybe<TeamMember>;
+  /**
+   * The read-only convenience value that is calculated from the location based
+   * on the `location_id`. Format: the IANA timezone database identifier for the
+   * location timezone.
+   */
+  timezone?: Maybe<Scalars['String']['output']>;
+  /** A read-only timestamp in RFC 3339 format; presented in UTC. */
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  /**
+   * Used for resolving concurrency issues. The request fails if the version
+   * provided does not match the server version at the time of the request.
+   */
+  version?: Maybe<Scalars['JsonSafeLong']['output']>;
+};
+
+/**
+ * A list of Timecards.
+ *
+ * Permissions:TIMECARDS_READ
+ */
+export type TimecardConnection = {
+  __typename?: 'TimecardConnection';
+  /** List of timecards */
+  nodes: Array<Timecard>;
+  /** Provides pagination-related information. */
+  pageInfo: PageInfo;
+};
+
+/**
+ * Defines a filter used in a search for `Timecard` records.`AND` logic is
+ * used by Square's servers to apply each filter property specified.
+ * Permissions: TIMECARDS_SETTINGS_READ
+ */
+export type TimecardFilter = {
+  /** Fetch the `Timecard` instances that end in the time range - Inclusive. */
+  endAt?: InputMaybe<TimeRangeFilter>;
+  /** Fetch timecards for the specified ids. */
+  id?: InputMaybe<BasicIdFilter>;
+  /** Fetch timecards for the specified location. */
+  locationId?: InputMaybe<BasicIdFilter>;
+  /** Fetch timecards for the specified merchant. */
+  merchantId: BasicIdFilter;
+  /** Fetch `Timecard` instances that start in the time range - Inclusive. */
+  startAt?: InputMaybe<TimeRangeFilter>;
+  /** Fetch a `Timecard` instance by `Timecard.status`. */
+  status?: InputMaybe<TimecardStatusInput>;
+  /** Fetch timecards for the specified team members. */
+  teamMemberId?: InputMaybe<BasicIdFilter>;
+  /** Fetch the `Timecard` instances based on the workday date range. */
+  workday?: InputMaybe<TimecardWorkdayFilter>;
+};
+
+export enum TimecardSort {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  EndAtAsc = 'endAt_ASC',
+  EndAtDesc = 'endAt_DESC',
+  StartAtAsc = 'startAt_ASC',
+  StartAtDesc = 'startAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+}
+
+/** Enumerates the possible status of a `Timecard`. */
+export enum TimecardStatus {
+  /** Employee started and ended a work timecard. */
+  Closed = 'CLOSED',
+  /** Employee started a work timecard and the timecard is not complete */
+  Open = 'OPEN'
+}
+
+/** Specifies the `status` of `Timecard` records to be returned. */
+export enum TimecardStatusInput {
+  /** Timecards that have been started and ended. */
+  Closed = 'CLOSED',
+  /** Timecards that have been started and not ended. */
+  Open = 'OPEN'
+}
+
+/**
+ * A `Timecard` search query filter parameter that sets a range of days that
+ * a `Timecard` must start or end in before passing the filter condition.
+ * Permissions: TIMECARDS_SETTINGS_READ
+ */
+export type TimecardWorkdayFilter = {
+  /** Dates for fetching the timecards. */
+  dateRange?: InputMaybe<DateRangeFilter>;
+  /**
+   * Location-specific timezones convert workdays to datetime filters.
+   * Every location included in the query must have a timezone or this field
+   * must be provided as a fallback. Format: the IANA timezone database
+   * identifier for the relevant timezone.
+   */
+  defaultTimezone?: InputMaybe<Scalars['TimeZone']['input']>;
+  /** The strategy on which the dates are applied. */
+  matchShiftsBy?: InputMaybe<TimecardWorkdayMatcherInput>;
+};
+
+/** Defines the logic used to apply a workday filter. */
+export enum TimecardWorkdayMatcherInput {
+  /** All timecards that end on or before the specified workday */
+  EndAt = 'END_AT',
+  /** All timecards that start between the start and end workdays (inclusive) */
+  Intersection = 'INTERSECTION',
+  /** All timecards that start on or after the specified workday */
+  StartAt = 'START_AT'
+}
+
+/**
  * Permissions: PAYOUTS_READ
  *
  * Details of a refund for an existing card payment.
@@ -24604,6 +27308,17 @@ export type TypeRefundDetailsFilterInput = {
    * Will be ignored if `null` or an empty object is passed.
    */
   refundId?: InputMaybe<IdFilterInput>;
+};
+
+/**
+ * Structured data for a `USB` interface, set for DeviceComponents of type `USB_INTERFACE`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type UsbInterfaceComponentDetails = {
+  __typename?: 'USBInterfaceComponentDetails';
+  /** The port number being used to connect the peripheral device. */
+  portNumber?: Maybe<Scalars['Int']['output']>;
 };
 
 /**
@@ -24711,6 +27426,25 @@ export enum Weekday {
 }
 
 /**
+ * Structured data for a `WiFi` interface, set for DeviceComponents of type `WIFI`.
+ *
+ * Permissions: DEVICES_READ.
+ */
+export type WiFiComponentDetails = {
+  __typename?: 'WiFiComponentDetails';
+  /** The string representation of the device's IPv4 address. */
+  ipAddressV4?: Maybe<Scalars['String']['output']>;
+  /** The security protocol for a secure connection (e.g. WPA2). None provided if the connection is unsecured. */
+  secureConnection?: Maybe<Scalars['String']['output']>;
+  /** The name of the connected WiFi network. */
+  ssid?: Maybe<Scalars['String']['output']>;
+  /** A boolean to represent whether the WiFi interface is currently active. */
+  wifiActive?: Maybe<Scalars['Boolean']['output']>;
+  /** A representation of signal strength of the WiFi network connection. */
+  wifiSignalStrength?: Maybe<DeviceSignalStrengthMeasurement>;
+};
+
+/**
  * Sets the day of the week and hour of the day that a business starts a
  * workweek.This is used to calculate overtime pay.
  * Permissions: TIMECARDS_SETTINGS_READ
@@ -24794,4 +27528,4 @@ export type OrdersQueryVariables = Exact<{
 export type OrdersQuery = { __typename?: 'Query', orders?: { __typename?: 'OrderConnection', nodes: Array<{ __typename?: 'Order', id?: string | null, closedAt?: any | null, lineItems?: Array<{ __typename?: 'OrderLineItem', uid?: any | null, name?: string | null, quantity?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null } | null } | null> | null, modifierListInfos?: Array<{ __typename?: 'CatalogItemModifierListInfo', modifierList?: { __typename?: 'CatalogModifierList', ordinal?: any | null, id: string, name?: string | null, modifiers?: Array<{ __typename?: 'CatalogModifier', ordinal?: any | null, id: string, name?: string | null, modifierList?: { __typename?: 'CatalogModifierList', id: string, name?: string | null } | null } | null> | null } | null } | null> | null } | null } | null, modifiers?: Array<{ __typename?: 'OrderLineItemModifier', uid?: any | null, name?: string | null } | null> | null, appliedDiscounts?: Array<{ __typename?: 'OrderLineItemAppliedDiscount', uid?: any | null, discountUid?: any | null, appliedMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, grossSalesMoney?: { __typename?: 'Money', amount: any } | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, discounts?: Array<{ __typename?: 'OrderLineItemDiscount', uid?: any | null, name?: string | null } | null> | null, returns?: Array<{ __typename?: 'OrderReturn', lineItems?: Array<{ __typename?: 'OrderReturnLineItem', name?: string | null, quantity?: any | null, sourceLineItemUid?: any | null, uid?: any | null, itemVariation?: { __typename?: 'CatalogItemVariation', item?: { __typename?: 'CatalogItem', id: string, images?: Array<{ __typename?: 'CatalogImage', url?: any | null } | null> | null, categories?: Array<{ __typename?: 'CatalogObjectCategory', category?: { __typename?: 'CatalogCategory', id: string, name?: string | null } | null } | null> | null } | null } | null } | null> | null } | null> | null, refunds?: Array<{ __typename?: 'Refund', id: string, transactionId?: string | null, reason?: string | null, processingFeeMoney?: { __typename?: 'Money', amount: any } | null, amountMoney?: { __typename?: 'Money', amount: any } | null } | null> | null, tenders?: Array<{ __typename?: 'OrderBankAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderBuyNowPayLaterTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCardTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderCashTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderOtherTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | { __typename?: 'OrderSquareAccountTender', id: string, type?: OrderTenderType | null, amountMoney?: { __typename?: 'Money', amount: any } | null, payment?: { __typename?: 'Payment', processingFees: Array<{ __typename?: 'PaymentProcessingFee', amountMoney?: { __typename?: 'Money', amount: any } | null }> } | null } | null> | null, totalDiscountMoney?: { __typename?: 'Money', amount: any } | null, totalMoney?: { __typename?: 'Money', amount: any } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null } } | null };
 
 
-export const OrdersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Orders"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"locationID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Cursor"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"merchantId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"location"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"locationID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"state"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"COMPLETED"}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"closedAt"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"endAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"200"}},{"kind":"Argument","name":{"kind":"Name","value":"after"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"closedAt"}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifierListInfos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"appliedDiscounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"discountUid"}},{"kind":"Field","name":{"kind":"Name","value":"appliedMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"grossSalesMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"returns"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"sourceLineItemUid"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"refunds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"processingFeeMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"tenders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"processingFees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]}}]}}]} as unknown as DocumentNode<OrdersQuery, OrdersQueryVariables>;
+export const OrdersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Orders"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DateTime"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"locationID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Cursor"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orders"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"merchantId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"merchantID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"location"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"Variable","name":{"kind":"Name","value":"locationID"}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"state"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"equalToAnyOf"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"COMPLETED"}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"closedAt"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"startAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"startDate"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"endAt"},"value":{"kind":"Variable","name":{"kind":"Name","value":"endDate"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"100"}},{"kind":"Argument","name":{"kind":"Name","value":"after"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cursor"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"closedAt"}},{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifierListInfos"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ordinal"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"modifierList"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"modifiers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"appliedDiscounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"discountUid"}},{"kind":"Field","name":{"kind":"Name","value":"appliedMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"grossSalesMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"discounts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"returns"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lineItems"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"quantity"}},{"kind":"Field","name":{"kind":"Name","value":"sourceLineItemUid"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"itemVariation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"images"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"refunds"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"transactionId"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"processingFeeMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"tenders"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"payment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"processingFees"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalDiscountMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMoney"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}}]}}]}}]}}]} as unknown as DocumentNode<OrdersQuery, OrdersQueryVariables>;

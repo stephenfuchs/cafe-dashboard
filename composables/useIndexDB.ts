@@ -1,4 +1,5 @@
 import { openDB } from "idb";
+import type { Order } from "~/src/gql/graphql";
 
 const DB_NAME = "ordersDB";
 const STORE_NAME = "ordersCache";
@@ -14,12 +15,14 @@ export async function getDB() {
 }
 
 // Save orders to IndexDB
-export async function saveOrdersToCache(dateKey: string, orders: object) {
+export async function saveOrdersToCache(dateKey: string, orders: Order[]) {
+    console.log("saveOrdersToCache: ", dateKey, orders);
     try {
         const db = await getDB();
         await db.put(STORE_NAME, orders, dateKey);
     } catch (error) {
         console.error("Failed to save orders:", error);
+        throw error;
     }
 }
 
@@ -27,10 +30,10 @@ export async function saveOrdersToCache(dateKey: string, orders: object) {
 export async function getOrdersFromCache(dateKey: string) {
     try {
         const db = await getDB();
-        return await db.get(STORE_NAME, dateKey);
+        return (await db.get(STORE_NAME, dateKey)) as Order[] | undefined;
     } catch (error) {
         console.error("Failed to fetch orders:", error);
-        return null;
+        throw error;
     }
 }
 
@@ -41,5 +44,6 @@ export async function clearOldOrders() {
         await db.clear(STORE_NAME);
     } catch (error) {
         console.error("Failed to clear orders:", error);
+        throw error;
     }
 }

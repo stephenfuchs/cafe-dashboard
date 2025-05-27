@@ -1,337 +1,236 @@
 import { TZDate } from "@date-fns/tz";
-import { formatISO } from "date-fns";
+import {
+    formatISO,
+    eachDayOfInterval,
+    format,
+    isToday,
+    isBefore,
+    startOfToday,
+} from "date-fns";
 import type { Order } from "../src/gql/graphql";
 import { useMemoize } from "@vueuse/core";
+import {
+    saveOrdersToCache,
+    getOrdersFromCache,
+} from "~/composables/useIndexDB";
 
-export const useOrders = useMemoize(
-    (start: Ref<TZDate | null>, end: Ref<TZDate | null>) => {
-        const dateKey = computed(() =>
-            start.value && end.value
-                ? `${formatISO(start.value)}_to_${formatISO(end.value)}`
-                : "",
-        );
+export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
+    // const dateKey = computed(
+    //     () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
+    // );
 
-        const allOrders = useState<Record<string, Order[]>>(
-            "orders",
-            () => ({}),
-        );
-        const orders = computed<Order[]>({
-            get: () => allOrders.value[dateKey.value] || [],
-            set: (newOrders) => (allOrders.value[dateKey.value] = newOrders),
-        });
+    const allOrders = useState<Record<string, Order[]>>("orders", () => ({}));
 
-        // const isLoading = ref(false);
+    // Array of strings like ["2025-05-18", "2025-05-19"...]
+    const dateKeys = computed(() =>
+        dateRange.value.map((date) => format(date, "yyyy-MM-dd")),
+    );
 
-        watch(
-            [start, end],
-            async () => {
-                if (!start.value || !end.value) {
-                    return;
-                }
+    const orders = computed<Order[]>(() =>
+        dateKeys.value.map((key) => allOrders.value[key] || []).flat(),
+    );
 
-                // isLoading.value = true;
-                // console.log("Loading orders...");
+    // Generate the array of dates in the range
+    const dateRange = computed(() =>
+        eachDayOfInterval({
+            start: start.value,
+            end: end.value,
+        }),
+    );
 
-                try {
-                    const response: Order[] = await $fetch("/api/orders", {
-                        params: {
-                            startDate: formatISO(start.value),
-                            endDate: formatISO(end.value),
-                        },
-                    });
+    watch(
+        [start, end],
+        async () => {
+            if (!start.value || !end.value) {
+                return;
+            }
 
-                    orders.value = response;
-                    // console.log("Orders loaded successfully.");
-                } catch (error) {
-                    console.error("Error fetching orders:", error);
-                } finally {
-                    // isLoading.value = false;
-                    // console.log("Loading complete.");
-                }
-            },
-            { immediate: true },
-        );
+            console.log("Date range:", dateRange);
 
-        const calcTotal = <T>(
-            array: T[] | undefined,
-            callback: (item: T) => number,
-        ): number =>
-            (array ?? []).reduce((sum, item) => sum + callback(item), 0);
-
-        const refunds = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                calcTotal(
-                    order.refunds ?? [],
-                    (refund) => refund?.amountMoney?.amount ?? 0,
-                ),
-            ),
-        );
-
-        const discounts = computed(() =>
-            calcTotal(
-                orders.value,
-                (order: Order) => order?.totalDiscountMoney?.amount || 0,
-            ),
-        );
-
-        const grossSales = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                calcTotal(
-                    order.lineItems ?? [],
-                    (item) => item?.grossSalesMoney?.amount,
-                ),
-            ),
-        );
-
-        const netSales = computed(
-            () =>
-                calcTotal(
-                    orders.value,
-                    (order: Order) => order?.totalMoney?.amount,
-                ) - refunds.value,
-        );
-
-        const fees = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                calcTotal(
-                    order.tenders ?? [],
-                    (tender) =>
-                        tender?.payment?.processingFees?.reduce(
-                            (feeTotal, fee) =>
-                                feeTotal + (fee.amountMoney?.amount || 0),
-                            0,
-                        ) || 0,
-                ),
-            ),
-        );
-
-        const netTotal = computed(() => netSales.value - fees.value);
-
-        const transactions = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                order.refunds?.length ? 0 : 1,
-            ),
-        );
-
-        const avgTransaction = computed(() =>
-            transactions.value === 0
-                ? 0
-                : grossSales.value / transactions.value,
-        );
-
-        const tenderTotal = (tenderType: string) =>
-            computed(() =>
-                calcTotal(orders.value, (order: Order) =>
-                    calcTotal(order.tenders ?? [], (tender) =>
-                        tender?.type === tenderType
-                            ? tender?.amountMoney?.amount || 0
-                            : 0,
-                    ),
-                ),
+            const cachedResults = await Promise.all(
+                dateKeys.value.map(getOrdersFromCache),
             );
 
-        const cashPayments = tenderTotal("CASH");
-        const cardPayments = tenderTotal("CARD");
+            console.log("cachedResults: ", cachedResults);
 
-        return {
-            orders,
-            netSales,
-            transactions,
-            grossSales,
-            avgTransaction,
-            discounts,
-            cashPayments,
-            cardPayments,
-            fees,
-            netTotal,
-        };
-    },
-);
+            // Loop through each date key and insert any existing cached data (from IndexedDB)
+            // into the shared `allOrders` store. This ensures any orders we already have
+            // don’t get refetched unnecessarily.
+            dateKeys.value.forEach((key, i) => {
+                const cached = cachedResults[i];
+                if (cached) {
+                    allOrders.value[key] = cached;
+                }
+            });
 
-// import { TZDate } from "@date-fns/tz";
-// import { formatISO, eachDayOfInterval, format, isToday } from "date-fns";
-// import type { Order } from "../src/gql/graphql";
-// import { useMemoize } from "@vueuse/core";
-// import {
-//     saveOrdersToCache,
-//     getOrdersFromCache,
-// } from "~/composables/useIndexDB";
+            // Determine which dateKeys are missing from the cache,
+            // and group those missing keys into contiguous (consecutive) date ranges.
+            // This lets us minimize the number of $fetch calls by batching adjacent missing dates
+            // into a single API request instead of one per day.
+            const fetchRanges: Array<[string, string]> = [];
+            let rangeStart: string | null = null;
 
-// export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
-//     const dateKey = computed(
-//         () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
-//     );
+            dateKeys.value.forEach((key, i) => {
+                if (!cachedResults[i]) {
+                    // If this is the first uncached day in a stretch, mark the beginning of a new range.
+                    if (rangeStart === null) {
+                        rangeStart = key;
+                    }
+                } else if (rangeStart !== null) {
+                    // If we hit a cached day while a range is open, it means the current missing range ends here.
+                    // We store the range from the first missing day up to the previous day.
+                    fetchRanges.push([rangeStart, dateKeys.value[i - 1]]);
+                    rangeStart = null;
+                }
+            });
 
-//     const allOrders = useState<Record<string, Order[]>>("orders", () => ({}));
-//     const orders = computed<Order[]>({
-//         get: () => allOrders.value[dateKey.value] || [],
-//         set: (newOrders) => (allOrders.value[dateKey.value] = newOrders),
-//     });
+            // If we reached the end of the loop while still tracking a missing range,
+            // we finalize that range to include the last dateKey in the list.
+            if (rangeStart !== null) {
+                fetchRanges.push([
+                    rangeStart,
+                    dateKeys.value[dateKeys.value.length - 1],
+                ]);
+            }
 
-//     watch([start, end], async () => {
-//         if (!start.value || !end.value) {
-//             return;
-//         }
+            console.log("fetchRanges: ", fetchRanges);
+            // Fetch and cache missing data
+            await Promise.all(
+                fetchRanges.map(async ([rangeStart, rangeEnd]) => {
+                    try {
+                        console.log("rangeEnd: ", rangeEnd);
+                        // debugger;
+                        const response: Order[] = await $fetch("/api/orders", {
+                            params: {
+                                startDate: formatISO(rangeStart + "T00:00:00"),
+                                endDate: formatISO(rangeEnd + "T23:59:59"),
+                            },
+                        });
 
-//         // Generate the array of dates in the range
-//         const dateRange = eachDayOfInterval({
-//             start: start.value,
-//             end: end.value,
-//         });
+                        dateKeys.value.forEach((dateKey) => {
+                            if (
+                                dateKey < rangeStart ||
+                                dateKey > rangeEnd ||
+                                isToday(new Date(dateKey))
+                            )
+                                return;
 
-//         console.log("Date range:", dateRange);
+                            const ordersForKey = response.filter((order) => {
+                                if (!order.closedAt) return false;
+                                const orderDate = format(
+                                    new Date(order.closedAt),
+                                    "yyyy-MM-dd",
+                                );
+                                return orderDate === dateKey;
+                            });
 
-//         // Create the object to store orders by date
-//         const toSaveToCache: Record<string, Order[]> = {};
+                            allOrders.value[dateKey] = ordersForKey;
+                            if (
+                                isBefore(`${dateKey}T00:00:00`, startOfToday())
+                            ) {
+                                saveOrdersToCache(dateKey, ordersForKey);
+                            }
+                        });
+                    } catch (error) {
+                        console.error(
+                            `Failed to fetch orders from ${rangeStart} to ${rangeEnd}:`,
+                            error,
+                        );
+                    }
+                }),
+            );
+        },
+        { immediate: true },
+    );
 
-//         for (const date of dateRange) {
-//             const dateKey = format(date, "yyyy-MM-dd"); // Convert date to string key
+    const calcTotal = <T>(
+        array: T[] | undefined,
+        callback: (item: T) => number,
+    ): number => (array ?? []).reduce((sum, item) => sum + callback(item), 0);
 
-//             if (isToday(date)) continue; // Skip caching today's orders
+    const refunds = computed(() =>
+        calcTotal(orders.value, (order: Order) =>
+            calcTotal(
+                order.refunds ?? [],
+                (refund) => refund?.amountMoney?.amount ?? 0,
+            ),
+        ),
+    );
 
-//             // Check if data exists in IndexedDB
-//             const cachedOrders = await getOrdersFromCache(dateKey);
-//             if (cachedOrders && cachedOrders.length > 0) {
-//                 console.log(
-//                     `Loaded ${cachedOrders.length} orders from cache for ${dateKey}`,
-//                 );
-//                 allOrders.value[dateKey] = cachedOrders;
-//                 continue; // Skip processing for this date
-//             }
-//         }
+    const discounts = computed(() =>
+        calcTotal(
+            orders.value,
+            (order: Order) => order?.totalDiscountMoney?.amount || 0,
+        ),
+    );
 
-//         try {
-//             const response: Order[] = await $fetch("/api/orders", {
-//                 params: {
-//                     startDate: formatISO(start.value),
-//                     endDate: formatISO(end.value),
-//                 },
-//             });
+    const grossSales = computed(() =>
+        calcTotal(orders.value, (order: Order) =>
+            calcTotal(
+                order.lineItems ?? [],
+                (item) => item?.grossSalesMoney?.amount,
+            ),
+        ),
+    );
 
-//             orders.value = response;
+    const netSales = computed(
+        () =>
+            calcTotal(
+                orders.value,
+                (order: Order) => order?.totalMoney?.amount,
+            ) - refunds.value,
+    );
 
-//             // Filter orders for each date and store them in toSaveToCache
-//             dateRange.forEach((date) => {
-//                 const dateKey = format(date, "yyyy-MM-dd");
-//                 if (isToday(date)) return; // skip caching today's orders
+    const fees = computed(() =>
+        calcTotal(orders.value, (order: Order) =>
+            calcTotal(
+                order.tenders ?? [],
+                (tender) =>
+                    tender?.payment?.processingFees?.reduce(
+                        (feeTotal, fee) =>
+                            feeTotal + (fee.amountMoney?.amount || 0),
+                        0,
+                    ) || 0,
+            ),
+        ),
+    );
 
-//                 // Only add to `toSaveToCache` if it's NOT already in IndexedDB
-//                 if (!allOrders.value[dateKey]) {
-//                     toSaveToCache[dateKey] = response.filter((order) => {
-//                         if (!order.closedAt) return false;
+    const netTotal = computed(() => netSales.value - fees.value);
 
-//                         const orderDate = format(
-//                             new Date(order.closedAt),
-//                             "yyyy-MM-dd",
-//                         );
+    const transactions = computed(() =>
+        calcTotal(orders.value, (order: Order) =>
+            order.refunds?.length ? 0 : 1,
+        ),
+    );
 
-//                         return orderDate === dateKey;
-//                     });
-//                 }
-//             });
+    const avgTransaction = computed(() =>
+        transactions.value === 0 ? 0 : grossSales.value / transactions.value,
+    );
 
-//             // Only save if there's something new to cache
-//             if (Object.keys(toSaveToCache).length > 0) {
-//                 // Save to IndexedDB
-//                 for (const key in toSaveToCache) {
-//                     await saveOrdersToCache(key, toSaveToCache[key]);
-//                 }
+    const tenderTotal = (tenderType: string) =>
+        computed(() =>
+            calcTotal(orders.value, (order: Order) =>
+                calcTotal(order.tenders ?? [], (tender) =>
+                    tender?.type === tenderType
+                        ? tender?.amountMoney?.amount || 0
+                        : 0,
+                ),
+            ),
+        );
 
-//                 console.log("toSaveToCache:", toSaveToCache);
-//             }
-//         } catch (error) {
-//             console.error("Error fetching orders:", error);
-//         }
-//     });
+    const cashPayments = tenderTotal("CASH");
+    const cardPayments = tenderTotal("CARD");
 
-//     const calcTotal = <T>(
-//         array: T[] | undefined,
-//         callback: (item: T) => number,
-//     ): number => (array ?? []).reduce((sum, item) => sum + callback(item), 0);
-
-//     const refunds = computed(() =>
-//         calcTotal(orders.value, (order: Order) =>
-//             calcTotal(
-//                 order.refunds ?? [],
-//                 (refund) => refund?.amountMoney?.amount ?? 0,
-//             ),
-//         ),
-//     );
-
-//     const discounts = computed(() =>
-//         calcTotal(
-//             orders.value,
-//             (order: Order) => order?.totalDiscountMoney?.amount || 0,
-//         ),
-//     );
-
-//     const grossSales = computed(() =>
-//         calcTotal(orders.value, (order: Order) =>
-//             calcTotal(
-//                 order.lineItems ?? [],
-//                 (item) => item?.grossSalesMoney?.amount,
-//             ),
-//         ),
-//     );
-
-//     const netSales = computed(
-//         () =>
-//             calcTotal(
-//                 orders.value,
-//                 (order: Order) => order?.totalMoney?.amount,
-//             ) - refunds.value,
-//     );
-
-//     const fees = computed(() =>
-//         calcTotal(orders.value, (order: Order) =>
-//             calcTotal(
-//                 order.tenders ?? [],
-//                 (tender) =>
-//                     tender?.payment?.processingFees?.reduce(
-//                         (feeTotal, fee) =>
-//                             feeTotal + (fee.amountMoney?.amount || 0),
-//                         0,
-//                     ) || 0,
-//             ),
-//         ),
-//     );
-
-//     const netTotal = computed(() => netSales.value - fees.value);
-
-//     const transactions = computed(() =>
-//         calcTotal(orders.value, (order: Order) =>
-//             order.refunds?.length ? 0 : 1,
-//         ),
-//     );
-
-//     const avgTransaction = computed(() =>
-//         transactions.value === 0 ? 0 : grossSales.value / transactions.value,
-//     );
-
-//     const tenderTotal = (tenderType: string) =>
-//         computed(() =>
-//             calcTotal(orders.value, (order: Order) =>
-//                 calcTotal(order.tenders ?? [], (tender) =>
-//                     tender?.type === tenderType
-//                         ? tender?.amountMoney?.amount || 0
-//                         : 0,
-//                 ),
-//             ),
-//         );
-
-//     const cashPayments = tenderTotal("CASH");
-//     const cardPayments = tenderTotal("CARD");
-
-//     return {
-//         orders,
-//         netSales,
-//         transactions,
-//         grossSales,
-//         avgTransaction,
-//         discounts,
-//         cashPayments,
-//         cardPayments,
-//         fees,
-//         netTotal,
-//     };
-// });
+    return {
+        orders,
+        netSales,
+        transactions,
+        grossSales,
+        avgTransaction,
+        discounts,
+        cashPayments,
+        cardPayments,
+        fees,
+        netTotal,
+    };
+});
