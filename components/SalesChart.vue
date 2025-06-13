@@ -1,25 +1,39 @@
 <script setup>
 import { eachMonthOfInterval, startOfMonth, endOfMonth } from "date-fns";
 import { TZDate } from "@date-fns/tz";
-import { $dt } from "@primeuix/themes";
+// import { $dt } from "@primeuix/themes";
 
-const chartColors = ref([
-    $dt("primary.500"),
-    $dt("blue.500"),
-    $dt("cyan.500"),
-    $dt("teal.500"),
-    $dt("amber.500"),
-    $dt("orange.500"),
-    $dt("red.500"),
-    $dt("lime.500"),
-    $dt("emerald.500"),
-    $dt("rose.500"),
-    $dt("pink.500"),
-    $dt("fuchsia.500"),
-]);
+// const chartColors = ref([
+//     $dt("primary.500"),
+//     $dt("blue.500"),
+//     $dt("cyan.500"),
+//     $dt("teal.500"),
+//     $dt("amber.500"),
+//     $dt("orange.500"),
+//     $dt("red.500"),
+//     $dt("lime.500"),
+//     $dt("emerald.500"),
+//     $dt("rose.500"),
+//     $dt("pink.500"),
+//     $dt("fuchsia.500"),
+// ]);
+const colorValues = [
+    "#8b5cf6", // primary.500
+    "#3b82f6", // blue.500
+    "#06b6d4", // cyan.500
+    "#14b8a6", // teal.500
+    "#f59e42", // amber.500
+    "#fb923c", // orange.500
+    "#ef4444", // red.500
+    "#a3e635", // lime.500
+    "#10b981", // emerald.500
+    "#f43f5e", // rose.500
+    "#ec4899", // pink.500
+    "#a21caf", // fuchsia.500
+];
 
-// Extract the actual color values
-const colorValues = chartColors.value.map((color) => color.value);
+// // Extract the actual color values
+// const colorValues = chartColors.value.map((color) => color.value);
 
 const selected = ref("Gross Sales");
 const options = ref(["Gross Sales", "Net Total", "Transactions"]);
