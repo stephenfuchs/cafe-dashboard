@@ -1,4 +1,5 @@
 <template>
+    <NuxtLoadingIndicator />
     <div
         class="flex min-h-screen flex-col-reverse gap-5 overflow-visible md:flex-row"
     >

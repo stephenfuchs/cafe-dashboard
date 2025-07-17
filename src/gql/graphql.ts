@@ -64,7 +64,10 @@ export type Scalars = {
   JsonSafeLong: { input: any; output: any; }
   /** A language code, in [BCP 47 format](https://tools.ietf.org/html/bcp47#appendix-A) */
   LanguageCode: { input: any; output: any; }
-  /** A Local Time Scalar */
+  /**
+   * A local time such as `"23:59:33"` or `"07:20:47.454"` without a time zone or offset, formatted based on the
+   * [partial-time portion of RFC3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6).
+   */
   LocalTime: { input: any; output: any; }
   /**
    * A numeric type for large integer values in the inclusive range -2^63
@@ -116,7 +119,7 @@ export type Address = {
    */
   administrativeDistrictLevel1?: Maybe<Scalars['String']['output']>;
   /** The address's country, in the two-letter format of ISO 3166. For example, `US` or `FR`. */
-  country: Country;
+  country?: Maybe<Country>;
   /**
    * The address's country, in the two-letter format of ISO 3166. For example, `US` or `FR`.
    * @deprecated Use `country` instead.
@@ -337,7 +340,7 @@ export type AppFeeRefundDetails = {
 /**
  * Input type used to specify filters on `AppFeeRefundDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type AppFeeRefundDetailsFilterInput = {
   /**
@@ -345,7 +348,7 @@ export type AppFeeRefundDetailsFilterInput = {
    *
    * > ID of the location associated with the refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   locationId?: InputMaybe<IdFilterInput>;
   /**
@@ -353,7 +356,7 @@ export type AppFeeRefundDetailsFilterInput = {
    *
    * > ID of the payment associated with the refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -374,7 +377,7 @@ export type AppFeeRevenueDetails = {
 /**
  * Input type used to specify filters on `AppFeeRevenueDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type AppFeeRevenueDetailsFilterInput = {
   /**
@@ -382,7 +385,7 @@ export type AppFeeRevenueDetailsFilterInput = {
    *
    * > ID of the location associated with the revenue.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   locationId?: InputMaybe<IdFilterInput>;
   /**
@@ -390,7 +393,7 @@ export type AppFeeRevenueDetailsFilterInput = {
    *
    * > ID of the payment associated with the revenue.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -482,7 +485,7 @@ export type AutomaticSavingsDetails = {
 /**
  * Input type used to specify filters on `AutomaticSavingsDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type AutomaticSavingsDetailsFilterInput = {
   /**
@@ -490,7 +493,7 @@ export type AutomaticSavingsDetailsFilterInput = {
    *
    * > ID of the payment related to the automatic savings.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
   /**
@@ -498,7 +501,7 @@ export type AutomaticSavingsDetailsFilterInput = {
    *
    * > ID of the payout associated with the automatic savings.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   payoutId?: InputMaybe<IdFilterInput>;
 };
@@ -519,7 +522,7 @@ export type AutomaticSavingsReversedDetails = {
 /**
  * Input type used to specify filters on `AutomaticSavingsReversedDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type AutomaticSavingsReversedDetailsFilterInput = {
   /**
@@ -527,7 +530,7 @@ export type AutomaticSavingsReversedDetailsFilterInput = {
    *
    * > ID of the payment related to the reversed automatic savings.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
   /**
@@ -535,7 +538,7 @@ export type AutomaticSavingsReversedDetailsFilterInput = {
    *
    * > ID of the payout associated with the reversed automatic savings.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   payoutId?: InputMaybe<IdFilterInput>;
 };
@@ -594,7 +597,7 @@ export type AvailabilityFilter = {
  * Permissions: PAYOUTS_READ
  *
  * Details of a transfer of funds to a banking folder. In the United States, the
- * folder name is 'Checking Folder'; in Canada, it's 'Balance Folder.'
+ * folder name is 'Checking Folder'; in Canada, it's 'Balance Folder'.
  */
 export type BalanceFoldersTransferDetails = {
   __typename?: 'BalanceFoldersTransferDetails';
@@ -605,7 +608,7 @@ export type BalanceFoldersTransferDetails = {
 /**
  * Input type used to specify filters on `BalanceFoldersTransferDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BalanceFoldersTransferDetailsFilterInput = {
   /**
@@ -613,7 +616,7 @@ export type BalanceFoldersTransferDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -622,7 +625,7 @@ export type BalanceFoldersTransferDetailsFilterInput = {
  * Permissions: PAYOUTS_READ
  *
  * Details of a transfer of funds from a banking folder. In the United States, the
- * folder name is 'Checking Folder'; in Canada, it's 'Balance Folder.'
+ * folder name is 'Checking Folder'; in Canada, it's 'Balance Folder'.
  */
 export type BalanceFoldersTransferReversedDetails = {
   __typename?: 'BalanceFoldersTransferReversedDetails';
@@ -633,7 +636,7 @@ export type BalanceFoldersTransferReversedDetails = {
 /**
  * Input type used to specify filters on `BalanceFoldersTransferReversedDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type BalanceFoldersTransferReversedDetailsFilterInput = {
   /**
@@ -641,7 +644,7 @@ export type BalanceFoldersTransferReversedDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -1522,21 +1525,23 @@ export type BooleanListFilterInput = {
 };
 
 /**
- * A record of an employee's break during a shift.
+ * A record of a team member's break on a timecard.
  * Permissions: TIMECARDS_SETTINGS_READ
  */
 export type Break = {
   __typename?: 'Break';
-  /** The `BreakType` that this `Break` was templated on. */
+  /** The BreakType that this break was templated on. */
   breakType?: Maybe<BreakType>;
   /**
-   * RFC 3339; follows the same timezone information as `Shift`. Precision up to
+   * RFC 3339; follows the same timezone information as the timecard. Precision up to
    * the minute is respected; seconds are truncated.
    */
   endAt?: Maybe<Scalars['DateTime']['output']>;
   /**
    * Format: RFC-3339 P[n]Y[n]M[n]DT[n]H[n]M[n]S. The expected length of
    * the break.
+   *
+   * Example for break expected duration of 15 minutes: PT15M
    */
   expectedDuration?: Maybe<Scalars['Duration']['output']>;
   /** The UUID for this object. */
@@ -1551,22 +1556,22 @@ export type Break = {
   /** A human-readable name. */
   name?: Maybe<Scalars['String']['output']>;
   /**
-   * RFC 3339; follows the same timezone information as `Shift`. Precision up to
+   * RFC 3339; follows the same timezone information as the timecard. Precision up to
    * the minute is respected; seconds are truncated.
    */
   startAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /**
- * A defined break template that sets an expectation for possible `Break`
- * instances on a `Shift`.
+ * A template for a type of break that can be added to a
+ * timecard, including the expected duration and paid status.
  * Permissions: TIMECARDS_SETTINGS_READ
  */
 export type BreakType = {
   __typename?: 'BreakType';
   /**
    * A human-readable name for this type of break. The name is displayed to
-   * employees in Square products.
+   * team members in Square products.
    */
   breakName?: Maybe<Scalars['String']['output']>;
   /**
@@ -1583,7 +1588,7 @@ export type BreakType = {
    * Format: RFC-3339 P[n]Y[n]M[n]DT[n]H[n]M[n]S. The expected length of
    * this break. Precision less than minutes is truncated.
    *
-   * Example for break expected duration of 15 minutes: T15M
+   * Example for break expected duration of 15 minutes: PT15M
    */
   expectedDuration?: Maybe<Scalars['Duration']['output']>;
   /** The UUID for this object. */
@@ -6099,7 +6104,7 @@ export type ChargeDetails = {
 /**
  * Input type used to specify filters on `ChargeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ChargeDetailsFilterInput = {
   /**
@@ -6107,7 +6112,7 @@ export type ChargeDetailsFilterInput = {
    *
    * > ID of the payment for the charge.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -9058,6 +9063,17 @@ export enum CurrencyCode {
  */
 export type CurrencyCodeFilterInput = {
   /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CurrencyCodeFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CurrencyCodeFilterInput>>;
+  /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
@@ -9352,7 +9368,7 @@ export enum CurrencyCodeInput {
   Sgd = 'SGD',
   /** Saint Helena pound */
   Shp = 'SHP',
-  /** Sierra Leonean leone */
+  /** Sierra Leonean first leone */
   Sll = 'SLL',
   /** Somali shilling */
   Sos = 'SOS',
@@ -9531,31 +9547,31 @@ export type CurrencyCodeListFilterInput = {
 /**
  * Input type used to specify filters on `Currency` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CurrencyFilter = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<CurrencyFilter>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Currency>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<CurrencyFilter>;
 };
@@ -10535,55 +10551,66 @@ export type CustomerTextFilter = {
 /**
  * Input type used to specify filters on `Date` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DateFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `DateFilterInput` input because of collisions between
+   * key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<DateFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DateFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Date']['input']>>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['Date']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['Date']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['Date']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['Date']['input']>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<DateFilterInput>;
 };
@@ -10660,116 +10687,124 @@ export type DateTimeAggregatedValues = {
 /**
  * Input type used to specify filters on `DateTime` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DateTimeFilter = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DateTimeFilter>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['DateTime']['input']>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<DateTimeFilter>;
-  /** Matches records based on the time-of-day of the `DateTime` values. */
+  /**
+   * Matches records based on the time-of-day of the `DateTime` values.
+   *
+   * When `null` is passed, matches all documents.
+   */
   timeOfDay?: InputMaybe<DateTimeTimeOfDayFilter>;
 };
 
 /**
  * Input type used to specify filters on `DateTime` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DateTimeFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<DateTimeFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['DateTime']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['DateTime']['input']>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<DateTimeFilterInput>;
-  /** Matches records based on the time-of-day of the `DateTime` values. */
+  /**
+   * Matches records based on the time-of-day of the `DateTime` values.
+   *
+   * When `null` is passed, matches all documents.
+   */
   timeOfDay?: InputMaybe<DateTimeTimeOfDayFilterInput>;
 };
 
@@ -10821,14 +10856,14 @@ export type DateTimeGroupedByAsTimeOfDayArgs = {
  * Input type offered when grouping on `DateTime` fields, representing the amount of offset
  * (positive or negative) to shift the `DateTime` boundaries of each grouping bucket.
  *
- * For example, when grouping by `WEEK`, you can shift by 24 hours to change
+ * For example, when grouping by `WEEK`, you can shift by 1 day to change
  * what day-of-week weeks are considered to start on.
  */
 export type DateTimeGroupingOffset = {
   /** Number (positive or negative) of the given `unit` to offset the boundaries of the `DateTime` groupings. */
   amount: Scalars['Int']['input'];
   /** Unit of offsetting to apply to the boundaries of the `DateTime` groupings. */
-  unit: DateTimeUnit;
+  unit: DateTimeUnitInput;
 };
 
 /**
@@ -10842,7 +10877,7 @@ export type DateTimeGroupingOffsetInput = {
   /** Number (positive or negative) of the given `unit` to offset the boundaries of the `DateTime` groupings. */
   amount: Scalars['Int']['input'];
   /** Unit of offsetting to apply to the boundaries of the `DateTime` groupings. */
-  unit: DateTimeUnit;
+  unit: DateTimeUnitInput;
 };
 
 /** Enumerates the supported truncation units of a `DateTime`. */
@@ -10974,40 +11009,40 @@ export type DateTimeListFilterInput = {
 /**
  * Input type used to specify filters on the time-of-day of `DateTime` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DateTimeTimeOfDayFilter = {
   /**
    * Matches records where the time of day of the `DateTime` field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<Scalars['LocalTime']['input']>>;
   /**
    * Matches records where the time of day of the `DateTime` field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['LocalTime']['input']>;
   /**
    * Matches records where the time of day of the `DateTime` field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['LocalTime']['input']>;
   /**
    * Matches records where the time of day of the `DateTime` field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['LocalTime']['input']>;
   /**
    * Matches records where the time of day of the `DateTime` field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['LocalTime']['input']>;
   /** TimeZone to use when comparing the `DateTime` values against the provided `LocalTime` values. */
@@ -11017,40 +11052,40 @@ export type DateTimeTimeOfDayFilter = {
 /**
  * Input type used to specify filters on the time-of-day of `DateTime` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DateTimeTimeOfDayFilterInput = {
   /**
    * Matches records where the time of day of the `DateTime` field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<Scalars['LocalTime']['input']>>;
   /**
    * Matches records where the time of day of the `DateTime` field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['LocalTime']['input']>;
   /**
    * Matches records where the time of day of the `DateTime` field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['LocalTime']['input']>;
   /**
    * Matches records where the time of day of the `DateTime` field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['LocalTime']['input']>;
   /**
    * Matches records where the time of day of the `DateTime` field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['LocalTime']['input']>;
   /** TimeZone to use when comparing the `DateTime` values against the provided `LocalTime` values. */
@@ -11058,7 +11093,7 @@ export type DateTimeTimeOfDayFilterInput = {
 };
 
 /** Enumeration of `DateTime` units. */
-export enum DateTimeUnit {
+export enum DateTimeUnitInput {
   /** The time period of a full rotation of the Earth with respect to the Sun. */
   Day = 'DAY',
   /** 1/24th of a day. */
@@ -11106,7 +11141,7 @@ export type DayOfWeekGroupingOffsetInput = {
   /** Number (positive or negative) of the given `unit` to offset the boundaries of the `DayOfWeek` groupings. */
   amount: Scalars['Int']['input'];
   /** Unit of offsetting to apply to the boundaries of the `DayOfWeek` groupings. */
-  unit: DateTimeUnit;
+  unit: DateTimeUnitInput;
 };
 
 /**
@@ -11123,7 +11158,7 @@ export type DepositFeeDetails = {
 /**
  * Input type used to specify filters on `DepositFeeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DepositFeeDetailsFilterInput = {
   /**
@@ -11131,7 +11166,7 @@ export type DepositFeeDetailsFilterInput = {
    *
    * > ID of the payout associated with the deposit fee.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   payoutId?: InputMaybe<IdFilterInput>;
 };
@@ -11150,7 +11185,7 @@ export type DepositFeeReversedDetails = {
 /**
  * Input type used to specify filters on `DepositFeeReversedDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DepositFeeReversedDetailsFilterInput = {
   /**
@@ -11158,7 +11193,7 @@ export type DepositFeeReversedDetailsFilterInput = {
    *
    * > ID of the payout associated with the reversed deposit fee.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   payoutId?: InputMaybe<IdFilterInput>;
 };
@@ -11180,7 +11215,7 @@ export type Destination = {
 /**
  * Input type used to specify filters on `Destination` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DestinationFilterInput = {
   /**
@@ -11188,7 +11223,7 @@ export type DestinationFilterInput = {
    *
    * > Square issued unique ID (also known as the instrument ID) associated with this destination.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   id?: InputMaybe<IdFilterInput>;
   /**
@@ -11196,7 +11231,7 @@ export type DestinationFilterInput = {
    *
    * > Type of the destination such as a bank account or debit card.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   type?: InputMaybe<StringFilterInput>;
 };
@@ -12832,7 +12867,8 @@ export enum DeviceStatusCategory {
   Critical = 'CRITICAL',
   DeviceStatusCategoryUnknown = 'DEVICE_STATUS_CATEGORY_UNKNOWN',
   NeedsAttention = 'NEEDS_ATTENTION',
-  Offline = 'OFFLINE'
+  Offline = 'OFFLINE',
+  Preconnected = 'PRECONNECTED'
 }
 
 /**
@@ -12884,7 +12920,8 @@ export enum DeviceStatusCategoryInput {
   Critical = 'CRITICAL',
   DeviceStatusCategoryUnknown = 'DEVICE_STATUS_CATEGORY_UNKNOWN',
   NeedsAttention = 'NEEDS_ATTENTION',
-  Offline = 'OFFLINE'
+  Offline = 'OFFLINE',
+  Preconnected = 'PRECONNECTED'
 }
 
 /** An enum for DeviceStatusDetail. */
@@ -13316,7 +13353,7 @@ export type DisputeDetails = {
 /**
  * Input type used to specify filters on `DisputeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type DisputeDetailsFilterInput = {
   /**
@@ -13324,7 +13361,7 @@ export type DisputeDetailsFilterInput = {
    *
    * > ID of the payment involved in the dispute.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -13949,6 +13986,8 @@ export enum ErrorCode {
   OneInstrumentExpected = 'ONE_INSTRUMENT_EXPECTED',
   /** The order was already used. */
   OrderAlreadyUsed = 'ORDER_ALREADY_USED',
+  /** The client attempted to create an order with an order client ID from a preexisting order. */
+  OrderClientIdReused = 'ORDER_CLIENT_ID_REUSED',
   /** The requested order has expired and cannot be updated. */
   OrderExpired = 'ORDER_EXPIRED',
   /** The creation request contains too many catalog IDs. */
@@ -14446,6 +14485,8 @@ export enum ErrorCodeInput {
   OneInstrumentExpected = 'ONE_INSTRUMENT_EXPECTED',
   /** The order was already used. */
   OrderAlreadyUsed = 'ORDER_ALREADY_USED',
+  /** The client attempted to create an order with an order client ID from a preexisting order. */
+  OrderClientIdReused = 'ORDER_CLIENT_ID_REUSED',
   /** The requested order has expired and cannot be updated. */
   OrderExpired = 'ORDER_EXPIRED',
   /** The creation request contains too many catalog IDs. */
@@ -14954,7 +14995,7 @@ export type FeeDetails = {
 /**
  * Input type used to specify filters on `FeeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type FeeDetailsFilterInput = {
   /**
@@ -14962,7 +15003,7 @@ export type FeeDetailsFilterInput = {
    *
    * > Unique ID for the payment related to the fee.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -15000,7 +15041,7 @@ export type FreeProcessingDetails = {
 /**
  * Input type used to specify filters on `FreeProcessingDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type FreeProcessingDetailsFilterInput = {
   /**
@@ -15008,7 +15049,7 @@ export type FreeProcessingDetailsFilterInput = {
    *
    * > Unique ID for the payment related to free processing.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -15853,7 +15894,7 @@ export type GiftCardLoadFeeDetails = {
 /**
  * Input type used to specify filters on `GiftCardLoadFeeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type GiftCardLoadFeeDetailsFilterInput = {
   /**
@@ -15861,7 +15902,7 @@ export type GiftCardLoadFeeDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -15880,7 +15921,7 @@ export type GiftCardLoadFeeRefundDetails = {
 /**
  * Input type used to specify filters on `GiftCardLoadFeeRefundDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type GiftCardLoadFeeRefundDetailsFilterInput = {
   /**
@@ -15888,7 +15929,7 @@ export type GiftCardLoadFeeRefundDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -15909,7 +15950,7 @@ export type GiftCardPoolTransferDetails = {
 /**
  * Input type used to specify filters on `GiftCardPoolTransferDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type GiftCardPoolTransferDetailsFilterInput = {
   /**
@@ -15917,7 +15958,7 @@ export type GiftCardPoolTransferDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -15938,7 +15979,7 @@ export type GiftCardPoolTransferReversedDetails = {
 /**
  * Input type used to specify filters on `GiftCardPoolTransferReversedDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type GiftCardPoolTransferReversedDetailsFilterInput = {
   /**
@@ -15946,7 +15987,7 @@ export type GiftCardPoolTransferReversedDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -16026,7 +16067,7 @@ export type HoldAdjustmentDetails = {
 /**
  * Input type used to specify filters on `HoldAdjustmentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type HoldAdjustmentDetailsFilterInput = {
   /**
@@ -16034,7 +16075,7 @@ export type HoldAdjustmentDetailsFilterInput = {
    *
    * > Unique ID for the payment related to the hold adjustment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -16042,31 +16083,31 @@ export type HoldAdjustmentDetailsFilterInput = {
 /**
  * Input type used to specify filters on `ID` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type IdFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<IdFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<IdFilterInput>;
 };
@@ -16139,55 +16180,55 @@ export type IdListFilterInput = {
 /**
  * Input type used to specify filters on `Int` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type IntFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<IntFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   /**
    * Matches records where the field value is greater than (>) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gt?: InputMaybe<Scalars['Int']['input']>;
   /**
    * Matches records where the field value is greater than or equal to (>=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   gte?: InputMaybe<Scalars['Int']['input']>;
   /**
    * Matches records where the field value is less than (<) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lt?: InputMaybe<Scalars['Int']['input']>;
   /**
    * Matches records where the field value is less than or equal to (<=) the provided value.
    *
-   * Will be ignored when `null` is passed.
+   * When `null` is passed, matches all documents.
    */
   lte?: InputMaybe<Scalars['Int']['input']>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<IntFilterInput>;
 };
@@ -16723,6 +16764,17 @@ export type Job = {
  */
 export type JsonSafeLongFilterInput = {
   /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `JsonSafeLongFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<JsonSafeLongFilterInput>>;
+  /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
@@ -16886,7 +16938,7 @@ export type LocalOffersCashbackDetails = {
 /**
  * Input type used to specify filters on `LocalOffersCashbackDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type LocalOffersCashbackDetailsFilterInput = {
   /**
@@ -16894,7 +16946,7 @@ export type LocalOffersCashbackDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -16914,7 +16966,7 @@ export type LocalOffersFeeDetails = {
 /**
  * Input type used to specify filters on `LocalOffersFeeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type LocalOffersFeeDetailsFilterInput = {
   /**
@@ -16922,7 +16974,7 @@ export type LocalOffersFeeDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -17076,13 +17128,14 @@ export enum LocationCapability {
 }
 
 /**
- * A list of Location.
+ * Represents a paginated collection of `Location` results.
  *
- * Permissions:MERCHANT_PROFILE_READ
+ * See the [Relay GraphQL Cursor Connections
+ * Specification](https://relay.dev/graphql/connections.htm#sec-Connection-Types) for more info.
  */
 export type LocationConnection = {
   __typename?: 'LocationConnection';
-  /** A list of Location. */
+  /** The list of `Location` results. */
   nodes: Array<Location>;
   /** Provides pagination-related information. */
   pageInfo: PageInfo;
@@ -17888,78 +17941,6 @@ export type LoyaltyProgramFilter = {
 };
 
 /**
- * Provides details about the reward tier discount.DEPRECATED at version 2020-12-16. Discount details
- * are now defined using a catalog pricing rule and other catalog objects. For more information, see
- * [Getting discount details for a reward tier](https://developer.squareup.com/docs/loyalty-api/loyalty-rewards#get-discount-details).
- * Permissions: LOYALTY_READ
- */
-export type LoyaltyProgramRewardDefinition = {
-  __typename?: 'LoyaltyProgramRewardDefinition';
-  /**
-   * The list of catalog objects to which this reward can be applied. They are either all item-variation ids or category ids, depending on the `type` field.
-   * DEPRECATED at version 2020-12-16. You can find this information in the `product_set_data.product_ids_any` field
-   * of the `PRODUCT_SET` catalog object referenced by the pricing rule.
-   */
-  catalogObjectIds?: Maybe<Array<Maybe<Scalars['ID']['output']>>>;
-  /**
-   * The type of discount the reward tier offers. DEPRECATED at version 2020-12-16. You can find this information
-   * in the `discount_data.discount_type` field of the `DISCOUNT` catalog object referenced by the pricing rule.
-   */
-  discountType?: Maybe<LoyaltyProgramRewardDefinitionType>;
-  /**
-   * The amount of the discount. Present if `discount_type` is `FIXED_AMOUNT`. For example, $5 off.
-   * DEPRECATED at version 2020-12-16. You can find this information in the `discount_data.amount_money` field of the
-   * `DISCOUNT` catalog object referenced by the pricing rule.
-   */
-  fixedDiscountMoney?: Maybe<Money>;
-  /**
-   * When `discount_type` is `FIXED_PERCENTAGE`, the maximum discount amount that can be applied.
-   * DEPRECATED at version 2020-12-16. You can find this information in the `discount_data.maximum_amount_money` field
-   * of the `DISCOUNT` catalog object referenced by the the pricing rule.
-   */
-  maxDiscountMoney?: Maybe<Money>;
-  /**
-   * The fixed percentage of the discount. Present if `discount_type` is `FIXED_PERCENTAGE`.
-   * For example, a 7.25% off discount will be represented as "7.25". DEPRECATED at version 2020-12-16. You can find this
-   * information in the `discount_data.percentage` field of the `DISCOUNT` catalog object referenced by the pricing rule.
-   */
-  percentageDiscount?: Maybe<Scalars['String']['output']>;
-  /**
-   * Indicates the scope of the reward tier. DEPRECATED at version 2020-12-16. You can find this information in the
-   * `product_set_data` field of the `PRODUCT_SET` catalog object referenced by the pricing rule. For `ORDER` scopes,
-   * `all_products` is true. For `ITEM_VARIATION` or `CATEGORY` scopes, `product_ids_any` is a list of
-   * catalog object IDs of the given type.
-   */
-  scope?: Maybe<LoyaltyProgramRewardDefinitionScope>;
-};
-
-/**
- * Indicates the scope of the reward tier.DEPRECATED at version 2020-12-16. Discount details
- * are now defined using a catalog pricing rule and other catalog objects. For more information, see
- * [Getting discount details for a reward tier](https://developer.squareup.com/docs/loyalty-api/loyalty-rewards#get-discount-details).
- */
-export enum LoyaltyProgramRewardDefinitionScope {
-  /** The discount applies only to items in the given categories. */
-  Category = 'CATEGORY',
-  /** The discount applies only to specific item variations. */
-  ItemVariation = 'ITEM_VARIATION',
-  /** The discount applies to the entire order. */
-  Order = 'ORDER'
-}
-
-/**
- * The type of discount the reward tier offers.DEPRECATED at version 2020-12-16. Discount details
- * are now defined using a catalog pricing rule and other catalog objects. For more information, see
- * [Getting discount details for a reward tier](https://developer.squareup.com/docs/loyalty-api/loyalty-rewards#get-discount-details).
- */
-export enum LoyaltyProgramRewardDefinitionType {
-  /** The fixed amount discounted. */
-  FixedAmount = 'FIXED_AMOUNT',
-  /** The fixed percentage discounted. */
-  FixedPercentage = 'FIXED_PERCENTAGE'
-}
-
-/**
  * Represents a reward tier in a loyalty program.A reward tier defines how buyers can redeem points for a reward, such as the number of points required and the value and scope of the discount. A loyalty program can offer multiple reward tiers.
  * Permissions: LOYALTY_READ
  */
@@ -17975,11 +17956,6 @@ export type LoyaltyProgramRewardTier = {
    * Pacific Standard Time with UTC offset:  2020-01-25T18:25:34-08:00
    */
   createdAt?: Maybe<Scalars['DateTime']['output']>;
-  /**
-   * Provides details about the reward tier definition.
-   * DEPRECATED at version 2020-12-16. Replaced by the `pricing_rule_reference` field.
-   */
-  definition?: Maybe<LoyaltyProgramRewardDefinition>;
   /** The Square-assigned ID of the reward tier. */
   id: Scalars['ID']['output'];
   /** The name of the reward tier. */
@@ -18871,7 +18847,7 @@ export type OpenDisputeDetails = {
 /**
  * Input type used to specify filters on `OpenDisputeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type OpenDisputeDetailsFilterInput = {
   /**
@@ -18879,7 +18855,7 @@ export type OpenDisputeDetailsFilterInput = {
    *
    * > Unique ID for the payment involved in the open dispute.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -21814,7 +21790,7 @@ export type OtherAdjustmentDetails = {
 /**
  * Input type used to specify filters on `OtherAdjustmentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type OtherAdjustmentDetailsFilterInput = {
   /**
@@ -21822,7 +21798,7 @@ export type OtherAdjustmentDetailsFilterInput = {
    *
    * > Unique ID for the payment related to other adjustments.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -21841,7 +21817,7 @@ export type OtherDetails = {
 /**
  * Input type used to specify filters on `OtherDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type OtherDetailsFilterInput = {
   /**
@@ -21849,7 +21825,7 @@ export type OtherDetailsFilterInput = {
    *
    * > Unique ID for the payment related to other details.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -24140,12 +24116,12 @@ export type PayoutEntry = {
   typeAutomaticSavingsReversedDetails?: Maybe<AutomaticSavingsReversedDetails>;
   /**
    * Details of a transfer of funds to a banking folder. In the United States, the
-   * folder name is 'Checking Folder'; in Canada, it's 'Balance Folder.'
+   * folder name is 'Checking Folder'; in Canada, it's 'Balance Folder'.
    */
   typeBalanceFoldersTransferDetails?: Maybe<BalanceFoldersTransferDetails>;
   /**
    * Details of a transfer of funds from a banking folder. In the United States,
-   * the folder name is 'Checking Folder'; in Canada, it's 'Balance Folder.'
+   * the folder name is 'Checking Folder'; in Canada, it's 'Balance Folder'.
    */
   typeBalanceFoldersTransferReversedDetails?: Maybe<BalanceFoldersTransferReversedDetails>;
   /** Details of credit card payment captures. */
@@ -24285,15 +24261,26 @@ export type PayoutEntryEdge = {
 /**
  * Input type used to specify filters on `PayoutEntry` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PayoutEntryFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PayoutEntryFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PayoutEntryFilterInput>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PayoutEntryFilterInput>>;
   /**
@@ -24301,7 +24288,7 @@ export type PayoutEntryFilterInput = {
    *
    * > The timestamp of when the payout entry affected the balance, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   effectiveAt?: InputMaybe<DateTimeFilterInput>;
   /**
@@ -24309,7 +24296,7 @@ export type PayoutEntryFilterInput = {
    *
    * > The amount of Square fees associated with this payout entry.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   feeAmountMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -24317,7 +24304,7 @@ export type PayoutEntryFilterInput = {
    *
    * > The amount of money involved in this payout entry.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   grossAmountMoney?: InputMaybe<MoneyFilterInput>;
   /**
@@ -24325,7 +24312,7 @@ export type PayoutEntryFilterInput = {
    *
    * > A unique ID for the payout entry. Min Length 1.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   id?: InputMaybe<IdFilterInput>;
   /**
@@ -24333,7 +24320,7 @@ export type PayoutEntryFilterInput = {
    *
    * > The merchant that owns this payout entry.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   merchant?: InputMaybe<MerchantRefFilterInput>;
   /**
@@ -24341,14 +24328,14 @@ export type PayoutEntryFilterInput = {
    *
    * > The net proceeds from this transaction after any fees.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   netAmountMoney?: InputMaybe<MoneyFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PayoutEntryFilterInput>;
   /**
@@ -24356,7 +24343,7 @@ export type PayoutEntryFilterInput = {
    *
    * > The ID of the payout entries’ associated payout. Min Length 1.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   payoutId?: InputMaybe<IdFilterInput>;
   /**
@@ -24364,7 +24351,7 @@ export type PayoutEntryFilterInput = {
    *
    * > The type of activity associated with this payout entry.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   type?: InputMaybe<StringFilterInput>;
   /**
@@ -24372,7 +24359,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a refund for an application fee on a payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeAppFeeRefundDetails?: InputMaybe<AppFeeRefundDetailsFilterInput>;
   /**
@@ -24380,7 +24367,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Revenue generated from an application fee on a payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeAppFeeRevenueDetails?: InputMaybe<AppFeeRevenueDetailsFilterInput>;
   /**
@@ -24388,7 +24375,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any automatic transfer from the payment processing balance to the Square Savings account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeAutomaticSavingsDetails?: InputMaybe<AutomaticSavingsDetailsFilterInput>;
   /**
@@ -24396,25 +24383,25 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any automatic transfer from the Square Savings account back to the processing balance.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeAutomaticSavingsReversedDetails?: InputMaybe<AutomaticSavingsReversedDetailsFilterInput>;
   /**
    * Used to filter on the `typeBalanceFoldersTransferDetails` field:
    *
    * > Details of a transfer of funds to a banking folder. In the United States,
-   * the folder name is 'Checking Folder'; in Canada, it's 'Balance Folder.'
+   * the folder name is 'Checking Folder'; in Canada, it's 'Balance Folder'.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeBalanceFoldersTransferDetails?: InputMaybe<BalanceFoldersTransferDetailsFilterInput>;
   /**
    * Used to filter on the `typeBalanceFoldersTransferReversedDetails` field:
    *
    * > Details of a transfer of funds from a banking folder. In the United States,
-   * the folder name is 'Checking Folder'; in Canada, it's 'Balance Folder.'
+   * the folder name is 'Checking Folder'; in Canada, it's 'Balance Folder'.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeBalanceFoldersTransferReversedDetails?: InputMaybe<BalanceFoldersTransferReversedDetailsFilterInput>;
   /**
@@ -24422,7 +24409,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of credit card payment captures.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeChargeDetails?: InputMaybe<ChargeDetailsFilterInput>;
   /**
@@ -24430,7 +24417,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any fees involved with deposits such as for instant deposits.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeDepositFeeDetails?: InputMaybe<DepositFeeDetailsFilterInput>;
   /**
@@ -24438,7 +24425,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any reversal or refund of fees involved with deposits such as for instant deposits.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeDepositFeeReversedDetails?: InputMaybe<DepositFeeReversedDetailsFilterInput>;
   /**
@@ -24446,7 +24433,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any balance change due to a dispute event.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeDisputeDetails?: InputMaybe<DisputeDetailsFilterInput>;
   /**
@@ -24454,7 +24441,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of adjustments due to the Square processing fee.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeFeeDetails?: InputMaybe<FeeDetailsFilterInput>;
   /**
@@ -24462,7 +24449,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any credit to the merchant for the purposes of Free Processing.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeFreeProcessingDetails?: InputMaybe<FreeProcessingDetailsFilterInput>;
   /**
@@ -24473,7 +24460,7 @@ export type PayoutEntryFilterInput = {
    * from the merchant's payment balance. The fee is recorded as a new payout
    * entry, not part of the CHARGE payout entry.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeGiftCardLoadFeeDetails?: InputMaybe<GiftCardLoadFeeDetailsFilterInput>;
   /**
@@ -24481,7 +24468,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a refund for the fee charged during the sale or reload of a gift card.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeGiftCardLoadFeeRefundDetails?: InputMaybe<GiftCardLoadFeeRefundDetailsFilterInput>;
   /**
@@ -24491,7 +24478,7 @@ export type PayoutEntryFilterInput = {
    * card pool account. In franchises, when gift cards are loaded or reloaded at
    * any location, the money transfers to the franchisor's account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeGiftCardPoolTransferDetails?: InputMaybe<GiftCardPoolTransferDetailsFilterInput>;
   /**
@@ -24499,7 +24486,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a refund for the fee charged during the sale or reload of a gift card.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeGiftCardPoolTransferReversedDetails?: InputMaybe<GiftCardPoolTransferReversedDetailsFilterInput>;
   /**
@@ -24507,7 +24494,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any adjustment related to the holding or releasing of a payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeHoldAdjustmentDetails?: InputMaybe<HoldAdjustmentDetailsFilterInput>;
   /**
@@ -24515,7 +24502,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a cashback amount given by a Square Local Offers seller to their customer for a purchase.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeLocalOffersCashbackDetails?: InputMaybe<LocalOffersCashbackDetailsFilterInput>;
   /**
@@ -24524,7 +24511,7 @@ export type PayoutEntryFilterInput = {
    * > Details of a commission fee paid by a Square Local Offers seller to Square
    * for a purchase discovered through Square Local Offers.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeLocalOffersFeeDetails?: InputMaybe<LocalOffersFeeDetailsFilterInput>;
   /**
@@ -24532,7 +24519,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any open disputes.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeOpenDisputeDetails?: InputMaybe<OpenDisputeDetailsFilterInput>;
   /**
@@ -24540,7 +24527,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any other type of adjustments that don't fall under existing types.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeOtherAdjustmentDetails?: InputMaybe<OtherAdjustmentDetailsFilterInput>;
   /**
@@ -24548,7 +24535,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of any other type that does not belong in the rest of the types.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeOtherDetails?: InputMaybe<OtherDetailsFilterInput>;
   /**
@@ -24558,7 +24545,7 @@ export type PayoutEntryFilterInput = {
    * an installment to repay the amount from a dispute that had been offset during
    * Percentage Processing enrollment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typePercentageProcessingRepaymentDetails?: InputMaybe<PercentageProcessingRepaymentDetailsFilterInput>;
   /**
@@ -24567,7 +24554,7 @@ export type PayoutEntryFilterInput = {
    * > Details of the reversal of a percentage processing repayment that happens
    * for example when a refund is issued for a payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typePercentageProcessingRepaymentReversedDetails?: InputMaybe<PercentageProcessingRepaymentReversedDetailsFilterInput>;
   /**
@@ -24578,7 +24565,7 @@ export type PayoutEntryFilterInput = {
    * sales, the processing fee is recorded separately as a new payout entry, not
    * part of the CHARGE payout entry.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeProcessingFeeDetails?: InputMaybe<ProcessingFeeDetailsFilterInput>;
   /**
@@ -24588,7 +24575,7 @@ export type PayoutEntryFilterInput = {
    * enrolled in Gross Settlement. The refunded processing fee is recorded
    * separately as a new payout entry, not part of the REFUND payout entry.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeProcessingFeeRefundDetails?: InputMaybe<ProcessingFeeRefundDetailsFilterInput>;
   /**
@@ -24596,7 +24583,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a refund for an existing card payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeRefundDetails?: InputMaybe<TypeRefundDetailsFilterInput>;
   /**
@@ -24604,7 +24591,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of fees released for adjustments.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeReleaseAdjustmentDetails?: InputMaybe<ReleaseAdjustmentDetailsFilterInput>;
   /**
@@ -24612,7 +24599,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of fees paid for funding risk reserve.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeReserveHoldDetails?: InputMaybe<ReserveHoldDetailsFilterInput>;
   /**
@@ -24620,7 +24607,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of fees released from risk reserve.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeReserveReleaseDetails?: InputMaybe<ReserveReleaseDetailsFilterInput>;
   /**
@@ -24628,7 +24615,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of capital merchant cash advance (MCA) assessments.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeSquareCapitalPaymentDetails?: InputMaybe<SquareCapitalPaymentDetailsFilterInput>;
   /**
@@ -24636,7 +24623,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of capital merchant cash advance (MCA) assessment refunds.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeSquareCapitalReversedPaymentDetails?: InputMaybe<SquareCapitalReversedPaymentDetailsFilterInput>;
   /**
@@ -24644,7 +24631,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a payroll payment that was transferred to a team member’s bank account.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeSquarePayrollTransferDetails?: InputMaybe<SquarePayrollTransferDetailsFilterInput>;
   /**
@@ -24652,7 +24639,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a payroll payment to a team member’s bank account that was deposited back to the seller’s account by Square.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeSquarePayrollTransferReversedDetails?: InputMaybe<SquarePayrollTransferReversedDetailsFilterInput>;
   /**
@@ -24660,7 +24647,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of tax paid on fee amounts.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeTaxOnFeeDetails?: InputMaybe<TaxOnFeeDetailsFilterInput>;
   /**
@@ -24668,7 +24655,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of fees collected by a third-party platform.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeThirdPartyFeeDetails?: InputMaybe<ThirdPartyFeeDetailsFilterInput>;
   /**
@@ -24676,7 +24663,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of refunded fees from a third-party platform.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeThirdPartyFeeRefundDetails?: InputMaybe<ThirdPartyFeeRefundDetailsFilterInput>;
   /**
@@ -24684,7 +24671,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a reversed refund for a fee charged during the sale or reload of a gift card.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeUndoGiftCardLoadFeeRefundDetails?: InputMaybe<UndoGiftCardLoadFeeRefundDetailsFilterInput>;
   /**
@@ -24692,7 +24679,7 @@ export type PayoutEntryFilterInput = {
    *
    * > Details of a reversed processing fee for a payment refund in a Gross Settlement payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   typeUndoProcessingFeeRefundDetails?: InputMaybe<UndoProcessingFeeRefundDetailsFilterInput>;
 };
@@ -24936,24 +24923,35 @@ export enum PayoutEntrySortOrderInput {
 /**
  * Input type used to specify filters on `Payout` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PayoutFilterInput = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `PayoutFilterInput` input because of collisions
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<PayoutFilterInput>>;
   /**
    * Used to filter on the `amountMoney` field:
    *
    * > The amount of money involved in the payout. A positive amount indicates a
    * deposit, and a negative amount indicates a withdrawal. This amount is never zero.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   amountMoney?: InputMaybe<MoneyFilterInput>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<PayoutFilterInput>>;
   /**
@@ -24962,7 +24960,7 @@ export type PayoutFilterInput = {
    * > The calendar date, in ISO 8601 format (YYYY-MM-DD), when the payout is due
    * to arrive in the seller’s banking destination.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   arrivalDate?: InputMaybe<DateFilterInput>;
   /**
@@ -24971,7 +24969,7 @@ export type PayoutFilterInput = {
    * > The timestamp of when the payout was created and submitted for deposit to
    * the seller's banking destination, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   createdAt?: InputMaybe<DateTimeFilterInput>;
   /**
@@ -24980,7 +24978,7 @@ export type PayoutFilterInput = {
    * > Information about the banking destination (such as a bank account, Square
    * checking account, or debit card) against which the payout was made.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   destination?: InputMaybe<DestinationFilterInput>;
   /**
@@ -24988,7 +24986,7 @@ export type PayoutFilterInput = {
    *
    * > A unique ID for each Payout object that might also appear on the seller’s bank statement.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   endToEndId?: InputMaybe<IdFilterInput>;
   /**
@@ -24996,7 +24994,7 @@ export type PayoutFilterInput = {
    *
    * > A unique ID for the payout.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   id?: InputMaybe<IdFilterInput>;
   /**
@@ -25004,7 +25002,7 @@ export type PayoutFilterInput = {
    *
    * > The ID of the location associated with the payout.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   location?: InputMaybe<LocationRefFilterInput>;
   /**
@@ -25012,14 +25010,14 @@ export type PayoutFilterInput = {
    *
    * > The merchant that owns this payout.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   merchant?: InputMaybe<MerchantRefFilterInput>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<PayoutFilterInput>;
   /**
@@ -25027,7 +25025,7 @@ export type PayoutFilterInput = {
    *
    * > Indicates the payout status.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   status?: InputMaybe<StringFilterInput>;
   /**
@@ -25035,7 +25033,7 @@ export type PayoutFilterInput = {
    *
    * > Indicates the payout type.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   type?: InputMaybe<StringFilterInput>;
   /**
@@ -25043,7 +25041,7 @@ export type PayoutFilterInput = {
    *
    * > The timestamp of when the payout was last updated, in RFC 3339 format.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   /**
@@ -25051,7 +25049,7 @@ export type PayoutFilterInput = {
    *
    * > The version number, which is incremented each time an update is made to this payout record.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   version?: InputMaybe<IntFilterInput>;
 };
@@ -25136,7 +25134,7 @@ export type PercentageProcessingRepaymentDetails = {
 /**
  * Input type used to specify filters on `PercentageProcessingRepaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PercentageProcessingRepaymentDetailsFilterInput = {
   /**
@@ -25144,7 +25142,7 @@ export type PercentageProcessingRepaymentDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -25163,7 +25161,7 @@ export type PercentageProcessingRepaymentReversedDetails = {
 /**
  * Input type used to specify filters on `PercentageProcessingRepaymentReversedDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type PercentageProcessingRepaymentReversedDetailsFilterInput = {
   /**
@@ -25171,7 +25169,7 @@ export type PercentageProcessingRepaymentReversedDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -25283,7 +25281,7 @@ export type ProcessingFeeDetails = {
 /**
  * Input type used to specify filters on `ProcessingFeeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ProcessingFeeDetailsFilterInput = {
   /**
@@ -25291,7 +25289,7 @@ export type ProcessingFeeDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -25312,7 +25310,7 @@ export type ProcessingFeeRefundDetails = {
 /**
  * Input type used to specify filters on `ProcessingFeeRefundDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ProcessingFeeRefundDetailsFilterInput = {
   /**
@@ -25320,7 +25318,7 @@ export type ProcessingFeeRefundDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -25634,7 +25632,7 @@ export type QueryGiftCardActivitiesArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   filter: GiftCardActivityFilter;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<SortOrder>>;
+  orderBy?: InputMaybe<Array<SortOrderTypeInput>>;
 };
 
 
@@ -25906,7 +25904,7 @@ export type ReleaseAdjustmentDetails = {
 /**
  * Input type used to specify filters on `ReleaseAdjustmentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ReleaseAdjustmentDetailsFilterInput = {
   /**
@@ -25914,7 +25912,7 @@ export type ReleaseAdjustmentDetailsFilterInput = {
    *
    * > ID of the payment associated with the release adjustment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -25933,7 +25931,7 @@ export type ReserveHoldDetails = {
 /**
  * Input type used to specify filters on `ReserveHoldDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ReserveHoldDetailsFilterInput = {
   /**
@@ -25941,7 +25939,7 @@ export type ReserveHoldDetailsFilterInput = {
    *
    * > Unique ID for the payment related to the reserve hold.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -25960,7 +25958,7 @@ export type ReserveReleaseDetails = {
 /**
  * Input type used to specify filters on `ReserveReleaseDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ReserveReleaseDetailsFilterInput = {
   /**
@@ -25968,7 +25966,7 @@ export type ReserveReleaseDetailsFilterInput = {
    *
    * > Unique ID for the payment related to the reserve release.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -26044,15 +26042,15 @@ export type ScannerScaleComponentDetails = {
 };
 
 /**
- * A record of the hourly rate, start, and end times for a future scheduled shift
- * for an employee.This might include a record of the start and end times for breaks
- * taken during the shift.
+ * Represents a specific time slot in a work schedule.This object is used to manage the
+ * lifecycle of a scheduled shift from the draft to published state. A scheduled shift contains
+ * the latest draft shift details and current published shift details.
  * Permissions: TIMECARDS_READ
  */
 export type ScheduledShift = {
   __typename?: 'ScheduledShift';
   /**
-   * A read-only timestamp in RFC 3339 format; presented in UTC.
+   * The timestamp of when the scheduled shift was created, in RFC 3339 format presented as UTC.
    *
    * Examples for January 25th, 2020 6:25:34pm Pacific Standard Time:
    *
@@ -26062,23 +26060,21 @@ export type ScheduledShift = {
    */
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   /**
-   * The read-only convenience value that is calculated from the location based
-   * on the `location_id`. Format: the IANA timezone database identifier for the
-   * location timezone.
+   * The latest draft shift details for the scheduled shift. Draft shift details are used to
+   * stage and manage shifts before publishing. This field is always present.
    */
   draftShiftDetails?: Maybe<ScheduledShiftDetails>;
-  /** The UUID for this object. */
+  /** **Read only** The Square-issued ID of the scheduled shift. */
   id: Scalars['ID']['output'];
   /** The Square-issued ID of the merchant. */
   merchantId: Scalars['ID']['output'];
   /**
-   * Job and pay related information. If the wage is not set on create, it defaults to a wage
-   * of zero. If the title is not set on create, it defaults to the name of the role the employee
-   * is assigned to, if any.
+   * The current published (public) shift details for the scheduled shift. This field is
+   * present only if the shift was published.
    */
   publishedShiftDetails?: Maybe<ScheduledShiftDetails>;
   /**
-   * A read-only timestamp in RFC 3339 format; presented in UTC.
+   * The timestamp of when the scheduled shift was last updated, in RFC 3339 format presented as UTC.
    *
    * Examples for January 25th, 2020 6:25:34pm Pacific Standard Time:
    *
@@ -26088,10 +26084,9 @@ export type ScheduledShift = {
    */
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   /**
-   * Used for resolving concurrency issues. The request fails if the version
-   * provided does not match the server version at the time of the request. If not provided,
-   * Square executes a blind write; potentially overwriting data from another
-   * write.
+   * **Read only** The current version of the scheduled shift, which is incremented with each update.
+   * This field is used for [optimistic concurrency](https://developer.squareup.com/docs/build-basics/common-api-patterns/optimistic-concurrency)
+   * control to ensure that requests don't overwrite data from another request.
    */
   version?: Maybe<Scalars['JsonSafeLong']['output']>;
 };
@@ -26110,39 +26105,41 @@ export type ScheduledShiftConnection = {
 };
 
 /**
- * Details of the scheduled shift.
+ * Represents shift details for draft and published versions of a scheduled shift,
+ * such as job ID, team member assignment, and start and end times.
  * Permissions: TIMECARDS_READ
  */
 export type ScheduledShiftDetails = {
   __typename?: 'ScheduledShiftDetails';
   /**
-   * RFC 3339; shifted to the timezone + offset. Precision up to the minute is
-   * respected; seconds are truncated.
+   * The end time for the shift, in RFC 3339 format in the time zone &plus;
+   * offset of the shift location specified in `location_id`. Precision up to the minute
+   * is respected; seconds are truncated.
    */
   endAt?: Maybe<Scalars['DateTime']['output']>;
   /**
-   * Whether the scheduled shift is deleted. If this is only on the staged version, then it will be deleted when published.
-   * If the staged version is deleted and it doesn’t have a published version or the published version is also deleted,
-   * then the entire shift schedule is considered deleted and won’t be retrieved by any endpoints.
+   * Indicates whether the draft shift version is deleted. If set to `true` when the shift
+   * is published, the entire scheduled shift (including the published shift) is deleted and
+   * cannot be accessed using any endpoint.
    */
   isDeleted?: Maybe<Scalars['Boolean']['output']>;
-  /** The ID of the job this shift is scheduled for. */
+  /** The ID of the job the shift is scheduled for. */
   job?: Maybe<Job>;
-  /** The ID of the location this shift is scheduled for. */
+  /** The ID of the location the shift is scheduled for. */
   location?: Maybe<Location>;
-  /** Notes for the scheduled shift. */
+  /** Optional notes for the shift. */
   notes?: Maybe<Scalars['String']['output']>;
   /**
-   * RFC 3339; shifted to the location timezone + offset. Precision up to the
-   * minute is respected; seconds are truncated.
+   * The start time of the shift, in RFC 3339 format in the time zone &plus;
+   * offset of the shift location specified in `location_id`. Precision up to the minute
+   * is respected; seconds are truncated.
    */
   startAt?: Maybe<Scalars['DateTime']['output']>;
-  /** The ID of the team member scheduled for this shift. */
+  /** The ID of the team member scheduled for the shift. */
   teamMember?: Maybe<TeamMember>;
   /**
-   * The read-only convenience value that is calculated from the location based
-   * on the `location_id`. Format: the IANA timezone database identifier for the
-   * location timezone.
+   * The time zone of the shift location, calculated based on the `location_id`. This field
+   * is provided for convenience.
    */
   timezone?: Maybe<Scalars['String']['output']>;
 };
@@ -26171,6 +26168,36 @@ export type ScheduledShiftFilter = {
   workday?: InputMaybe<ShiftWorkdayFilter>;
 };
 
+/**
+ * Defines valid values for the `assignment_status` filter in a
+ * [SearchScheduledShifts](api-endpoint:Labor-SearchScheduledShifts) request.Assignment status is based on the `draft_shift_details.team_member_id` and
+ * `published_shift_details.team_member_id` fields of the scheduled shift.
+ */
+export enum ScheduledShiftFilterAssignmentStatus {
+  /** The shift is assigned to a team member. */
+  Assigned = 'ASSIGNED',
+  /** The shift isn't assigned to a team member. */
+  Unassigned = 'UNASSIGNED'
+}
+
+/**
+ * Defines valid values for the `scheduled_shift_statuses` filter in a
+ * [SearchScheduledShifts](api-endpoint:Labor-SearchScheduledShifts) request.
+ */
+export enum ScheduledShiftFilterScheduledShiftStatus {
+  /**
+   * The scheduled shift has never been published or its draft details were
+   * updated after it was published. This means that the shift has no `published_shift_details`
+   * field or that `draft_shift_details` has different settings than `published_shift_details`.
+   */
+  Draft = 'DRAFT',
+  /**
+   * The scheduled shift was published. This means that the shift has a
+   * `published_shift_details` field.
+   */
+  Published = 'PUBLISHED'
+}
+
 export enum ScheduledShiftSort {
   CreatedAtAsc = 'createdAt_ASC',
   CreatedAtDesc = 'createdAt_DESC',
@@ -26180,6 +26207,31 @@ export enum ScheduledShiftSort {
   StartAtDesc = 'startAt_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC'
+}
+
+/**
+ * Defines valid values for the `field` sort setting in a
+ * [SearchScheduledShifts](api-endpoint:Labor-SearchScheduledShifts) request.
+ */
+export enum ScheduledShiftSortField {
+  /** Sort by the creation date of the shift. */
+  CreatedAt = 'CREATED_AT',
+  /** Sort by the end time of the shift. */
+  EndAt = 'END_AT',
+  /** Sort by the start time of the shift. */
+  StartAt = 'START_AT',
+  /** Sort by the last updated date of the shift. */
+  UpdatedAt = 'UPDATED_AT'
+}
+
+/** Defines the logic used to apply a workday filter. */
+export enum ScheduledShiftWorkdayMatcher {
+  /** All shifts that end on or before the specified workday */
+  EndAt = 'END_AT',
+  /** All shifts that start between the start and end workdays (inclusive) */
+  Intersection = 'INTERSECTION',
+  /** All shifts that start on or after the specified workday */
+  StartAt = 'START_AT'
 }
 
 /** The query used to search for buyer-accessible availabilities of bookings. */
@@ -26230,6 +26282,9 @@ export type SegmentFilter = {
  * A record of the hourly rate, start, and end times for a single work shift
  * for an employee.This might include a record of the start and end times for breaks
  * taken during the shift.
+ *
+ * Deprecated at Square API version 2025-05-21. Replaced by Timecard.
+ * See the [migration notes](https://developer.squareup.com/docs/labor-api/what-it-does#migration-notes).
  * Permissions: TIMECARDS_READ
  */
 export type Shift = {
@@ -26350,7 +26405,7 @@ export enum ShiftSort {
   UpdatedAtDesc = 'updatedAt_DESC'
 }
 
-/** Enumerates the possible status of a `Shift`. */
+/** Enumerates the possible status of a `Shift`.Deprecated at Square API version 2025-05-21. See the [migration notes](https://developer.squareup.com/docs/labor-api/what-it-does#migration-notes). */
 export enum ShiftStatus {
   /** Employee started and ended a work shift. */
   Closed = 'CLOSED',
@@ -26367,7 +26422,7 @@ export enum ShiftStatusInput {
 }
 
 /**
- * The hourly wage rate used to compensate an employee for this shift.
+ * The hourly wage rate used to compensate an employee for this shift.Deprecated at Square API version 2025-05-21. See the [migration notes](https://developer.squareup.com/docs/labor-api/what-it-does#migration-notes).
  * Permissions: TIMECARDS_SETTINGS_READ
  */
 export type ShiftWage = {
@@ -26379,7 +26434,7 @@ export type ShiftWage = {
   hourlyRate?: Maybe<Money>;
   /**
    * The id of the job performed during this shift. Square
-   * labor-reporting UIs might group shifts together by id. This cannot be used to retrieve the job.
+   * labor-reporting UIs might group shifts together by id.
    */
   jobId?: Maybe<Scalars['ID']['output']>;
   /** Whether team members are eligible for tips when working this job. */
@@ -26422,6 +26477,13 @@ export enum SortOrder {
   /** The results are returned in ascending (e.g., oldest-first or A-Z) order. */
   Asc = 'ASC',
   /** The results are returned in descending (e.g., newest-first or Z-A) order. */
+  Desc = 'DESC'
+}
+
+export enum SortOrderTypeInput {
+  /** Ascending order */
+  Asc = 'ASC',
+  /** Descending order */
   Desc = 'DESC'
 }
 
@@ -26496,7 +26558,7 @@ export type SquareCapitalPaymentDetails = {
 /**
  * Input type used to specify filters on `SquareCapitalPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type SquareCapitalPaymentDetailsFilterInput = {
   /**
@@ -26504,7 +26566,7 @@ export type SquareCapitalPaymentDetailsFilterInput = {
    *
    * > ID of the payment associated with the MCA assessment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -26523,7 +26585,7 @@ export type SquareCapitalReversedPaymentDetails = {
 /**
  * Input type used to specify filters on `SquareCapitalReversedPaymentDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type SquareCapitalReversedPaymentDetailsFilterInput = {
   /**
@@ -26531,7 +26593,7 @@ export type SquareCapitalReversedPaymentDetailsFilterInput = {
    *
    * > ID of the payment associated with the MCA assessment refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -26682,7 +26744,7 @@ export type SquarePayrollTransferDetails = {
 /**
  * Input type used to specify filters on `SquarePayrollTransferDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type SquarePayrollTransferDetailsFilterInput = {
   /**
@@ -26690,7 +26752,7 @@ export type SquarePayrollTransferDetailsFilterInput = {
    *
    * > The ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -26709,7 +26771,7 @@ export type SquarePayrollTransferReversedDetails = {
 /**
  * Input type used to specify filters on `SquarePayrollTransferReversedDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type SquarePayrollTransferReversedDetailsFilterInput = {
   /**
@@ -26717,7 +26779,7 @@ export type SquarePayrollTransferReversedDetailsFilterInput = {
    *
    * > The ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -26840,31 +26902,31 @@ export type StandComponentDetails = {
 /**
  * Input type used to specify filters on `String` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type StringFilterInput = {
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents.
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
    */
   anyOf?: InputMaybe<Array<StringFilterInput>>;
   /**
    * Matches records where the field value is equal to any of the provided values.
    * This works just like an IN operator in SQL.
    *
-   * Will be ignored when `null` is passed. When an empty list is passed, will cause this
-   * part of the filter to match no documents. When `null` is passed in the list, will
-   * match records where the field value is `null`.
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
    */
   equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /**
-   * Matches records where the provided sub-filter does not evaluate to true.
+   * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
-   * Will be ignored when `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches no documents.
    */
   not?: InputMaybe<StringFilterInput>;
 };
@@ -26905,10 +26967,10 @@ export type StringListFilterInput = {
    *
    * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
    * be provided on a single `StringListFilterInput` input because of collisions
-   * between key names. For example, if you want to provide
-   * multiple `anySatisfy: ...` filters, you could do `allOf: [{anySatisfy: ...}, {anySatisfy: ...}]`.
+   * between key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
    *
-   * Will be ignored when `null` is passed or an empty list is passed.
+   * When `null` or an empty list is passed, matches all documents.
    */
   allOf?: InputMaybe<Array<StringListFilterInput>>;
   /**
@@ -27230,7 +27292,7 @@ export type TaxOnFeeDetails = {
 /**
  * Input type used to specify filters on `TaxOnFeeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type TaxOnFeeDetailsFilterInput = {
   /**
@@ -27238,7 +27300,7 @@ export type TaxOnFeeDetailsFilterInput = {
    *
    * > ID of the payment on which the tax is applied.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -27305,8 +27367,8 @@ export type TeamMemberBookingProfileFilter = {
 };
 
 /**
- * The hourly wage rate that a team member earns on a `Shift` for doing the job
- * specified by the `title` property of this object.
+ * Job and wage information for a team member.This convenience object provides details needed to specify the `wage`
+ * field for a timecard.
  * Permissions: EMPLOYEES_READ
  */
 export type TeamMemberWage = {
@@ -27318,10 +27380,7 @@ export type TeamMemberWage = {
   hourlyRate?: Maybe<Money>;
   /** The UUID for this object. */
   id: Scalars['ID']['output'];
-  /**
-   * An identifier for the job that this wage relates to. This cannot be
-   * used to retrieve the job.
-   */
+  /** An identifier for the job that this wage relates to. */
   jobId?: Maybe<Scalars['ID']['output']>;
   /** The Square-issued ID of the merchant. */
   merchantId: Scalars['ID']['output'];
@@ -27370,7 +27429,7 @@ export type ThirdPartyFeeDetails = {
 /**
  * Input type used to specify filters on `ThirdPartyFeeDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ThirdPartyFeeDetailsFilterInput = {
   /**
@@ -27378,7 +27437,7 @@ export type ThirdPartyFeeDetailsFilterInput = {
    *
    * > ID of the payment related to the third-party fee.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -27397,7 +27456,7 @@ export type ThirdPartyFeeRefundDetails = {
 /**
  * Input type used to specify filters on `ThirdPartyFeeRefundDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type ThirdPartyFeeRefundDetailsFilterInput = {
   /**
@@ -27405,7 +27464,7 @@ export type ThirdPartyFeeRefundDetailsFilterInput = {
    *
    * > Unique ID for the payment related to the third-party fee refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -27421,7 +27480,6 @@ export type TimeRangeFilter = {
 /**
  * A record of the hourly rate, start, and end times for a timecard.
  * This might include a record of the start and end times for breaks taken during the shift.
- *
  * Permissions: TIMECARDS_READ
  */
 export type Timecard = {
@@ -27576,7 +27634,7 @@ export type TypeRefundDetails = {
 /**
  * Input type used to specify filters on `TypeRefundDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type TypeRefundDetailsFilterInput = {
   /**
@@ -27584,7 +27642,7 @@ export type TypeRefundDetailsFilterInput = {
    *
    * > Unique ID for the payment.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
   /**
@@ -27592,7 +27650,7 @@ export type TypeRefundDetailsFilterInput = {
    *
    * > Unique ID for the refund.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   refundId?: InputMaybe<IdFilterInput>;
 };
@@ -27622,7 +27680,7 @@ export type UndoGiftCardLoadFeeRefundDetails = {
 /**
  * Input type used to specify filters on `UndoGiftCardLoadFeeRefundDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type UndoGiftCardLoadFeeRefundDetailsFilterInput = {
   /**
@@ -27630,7 +27688,7 @@ export type UndoGiftCardLoadFeeRefundDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
@@ -27649,7 +27707,7 @@ export type UndoProcessingFeeRefundDetails = {
 /**
  * Input type used to specify filters on `UndoProcessingFeeRefundDetails` fields.
  *
- * Will be ignored if passed as an empty object (or as `null`).
+ * Will match all documents if passed as an empty object (or as `null`).
  */
 export type UndoProcessingFeeRefundDetailsFilterInput = {
   /**
@@ -27657,7 +27715,7 @@ export type UndoProcessingFeeRefundDetailsFilterInput = {
    *
    * > ID of the payment associated with this activity.
    *
-   * Will be ignored if `null` or an empty object is passed.
+   * When `null` or an empty object is passed, matches all documents.
    */
   paymentId?: InputMaybe<IdFilterInput>;
 };
