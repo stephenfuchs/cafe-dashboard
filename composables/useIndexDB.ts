@@ -1,22 +1,29 @@
-import { openDB } from "idb";
+import { openDB, type IDBPDatabase } from "idb";
 import type { Order } from "~/src/gql/graphql";
 
 const DB_NAME = "ordersDB";
 const STORE_NAME = "ordersCache";
 
-export async function getDB() {
-    return openDB(DB_NAME, 1, {
-        upgrade(db) {
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME);
-            }
-        },
-    });
+let dbPromise: Promise<IDBPDatabase> | null = null;
+
+function getDB() {
+    if (!dbPromise) {
+        dbPromise = openDB(DB_NAME, 1, {
+            upgrade(db) {
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME);
+                }
+            },
+        });
+    }
+
+    return dbPromise;
 }
 
 // Save orders to IndexDB
 export async function saveOrdersToCache(dateKey: string, orders: Order[]) {
-    console.log("saveOrdersToCache: ", dateKey, orders);
+    // console.log("saveOrdersToCache: ", dateKey, orders);
+    console.log(`saveOrdersToCache: ${dateKey}, ${orders.length} orders`);
     try {
         const db = await getDB();
         await db.put(STORE_NAME, orders, dateKey);
