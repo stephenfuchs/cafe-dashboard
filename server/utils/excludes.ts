@@ -27,3 +27,12 @@ export const excludeDonations: Array<string> = [
     "french vanilla",
     "hazelnut",
 ];
+
+export const excludeCoffeePots: Array<string> = [
+    "coffee pot",
+    "regular",
+    "caramel",
+    "decaf",
+    "french vanilla",
+    "hazelnut",
+];

@@ -1,5 +1,5 @@
 <script setup>
-import { formatCurrency } from "~/server/utils/formatCurrency";
+import { excludeCoffeePots } from "../server/utils/excludes";
 
 const filters = useFilters();
 
@@ -9,7 +9,7 @@ const { orders: previousOrders } = useOrders(
     filters.comparisonEndDate,
 );
 
-const { salesList } = useSalesList(orders, previousOrders, []);
+const { salesList } = useSalesList(orders, previousOrders, excludeCoffeePots);
 
 const donations = computed(() => {
     return salesList.value
@@ -35,8 +35,12 @@ const trendDonations = computed(() => {
         <template #title> Donations </template>
         <template #options>
             <div class="flex items-center gap-4">
-                <UiAppTrendIndicator :value="trendDonations" money/>
-                <UiAppBadgeStatus :value="totalDonations" :trendValue="trendDonations" money />
+                <UiAppTrendIndicator :value="trendDonations" money />
+                <UiAppBadgeStatus
+                    :value="totalDonations"
+                    :trendValue="trendDonations"
+                    money
+                />
             </div>
         </template>
         <UiAppCardList :source="donations" type="item" money />
