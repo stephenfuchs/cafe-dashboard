@@ -1,5 +1,7 @@
 import { TZDate } from "@date-fns/tz";
 import {
+    parse,
+    parseISO,
     formatISO,
     eachDayOfInterval,
     format,
@@ -105,8 +107,12 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
                         // debugger;
                         const response: Order[] = await $fetch("/api/orders", {
                             params: {
-                                startDate: formatISO(rangeStart + "T00:00:00"),
-                                endDate: formatISO(rangeEnd + "T23:59:59"),
+                                startDate: formatISO(
+                                    parseISO(`${rangeStart}T00:00:00`),
+                                ),
+                                endDate: formatISO(
+                                    parseISO(`${rangeEnd}T23:59:59`),
+                                ),
                             },
                         });
 
@@ -114,7 +120,9 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
                             if (
                                 dateKey < rangeStart ||
                                 dateKey > rangeEnd ||
-                                isToday(new Date(dateKey))
+                                isToday(
+                                    parse(dateKey, "yyyy-MM-dd", new Date()),
+                                )
                             )
                                 return;
 
