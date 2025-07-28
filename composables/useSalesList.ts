@@ -99,7 +99,11 @@ export function useSalesList(
                     category = itemCategoryMap[category];
                 }
 
-                if (category === "unknown category") {
+                if (
+                    category === "unknown category" ||
+                    (itemCategoryAssignment[name] &&
+                        category !== itemCategoryAssignment[name])
+                ) {
                     category = itemCategoryAssignment[name];
                 }
 

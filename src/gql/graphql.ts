@@ -9566,7 +9566,7 @@ export type CurrencyFilter = {
    * this part of the filter matches no documents. When `null` is passed in the
    * list, this part of the filter matches records where the field value is `null`.
    */
-  equalToAnyOf?: InputMaybe<Array<InputMaybe<Currency>>>;
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<CurrencyInput>>>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
@@ -9577,9 +9577,8 @@ export type CurrencyFilter = {
 };
 
 /**
- * Indicates the associated currency for an amount of money.
- *
- * Values correspond to [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217).
+ * Indicates the associated currency for an amount of money. Values correspond to
+ * [ISO 4217](https://wikipedia.org/wiki/ISO_4217), with the exception of BTC (Bitcoin).
  */
 export enum CurrencyInput {
   /** United Arab Emirates dirham */
@@ -9846,7 +9845,7 @@ export enum CurrencyInput {
   Sgd = 'SGD',
   /** Saint Helena pound */
   Shp = 'SHP',
-  /** Sierra Leonean leone */
+  /** Sierra Leonean First leone */
   Sll = 'SLL',
   /** Somali shilling */
   Sos = 'SOS',
@@ -9981,7 +9980,7 @@ export type CurrencyListElementFilterInput = {
    * this part of the filter matches no documents. When `null` is passed in the
    * list, this part of the filter matches records where the field value is `null`.
    */
-  equalToAnyOf?: InputMaybe<Array<Currency>>;
+  equalToAnyOf?: InputMaybe<Array<CurrencyInput>>;
 };
 
 /**
@@ -13155,6 +13154,7 @@ export enum DigitalWalletPaymentBrand {
   AuPay = 'AU_PAY',
   CashApp = 'CASH_APP',
   DBarai = 'D_BARAI',
+  Lightning = 'LIGHTNING',
   Merpay = 'MERPAY',
   Paypay = 'PAYPAY',
   RakutenPay = 'RAKUTEN_PAY',
@@ -13211,6 +13211,7 @@ export enum DigitalWalletPaymentBrandInput {
   AuPay = 'AU_PAY',
   CashApp = 'CASH_APP',
   DBarai = 'D_BARAI',
+  Lightning = 'LIGHTNING',
   Merpay = 'MERPAY',
   Paypay = 'PAYPAY',
   RakutenPay = 'RAKUTEN_PAY',
@@ -13656,6 +13657,8 @@ export enum ErrorCode {
   AllowablePinTriesExceeded = 'ALLOWABLE_PIN_TRIES_EXCEEDED',
   /** The requested payment amount is too high for the provided payment source. */
   AmountTooHigh = 'AMOUNT_TOO_HIGH',
+  /** The requested payment amount is too low for the provided payment source. */
+  AmountTooLow = 'AMOUNT_TOO_LOW',
   /** The provided Square-Version is incompatible with the requested action. */
   ApiVersionIncompatible = 'API_VERSION_INCOMPATIBLE',
   /** Square could not find the associated Apple Pay certificate. */
@@ -14068,6 +14071,11 @@ export enum ErrorCode {
   SourceUsed = 'SOURCE_USED',
   /** A temporary internal error occurred. You can safely retry your call using the same idempotency key. */
   TemporaryError = 'TEMPORARY_ERROR',
+  /**
+   * The request is invalid because the third party terminal already has a pending transaction enqueued. A new
+   * transaction cannot be started until the previous transaction is completed or cancelled.
+   */
+  ThirdPartyTerminalTransactionAlreadyEnqueued = 'THIRD_PARTY_TERMINAL_TRANSACTION_ALREADY_ENQUEUED',
   /** Too many entries in the map field. */
   TooManyMapEntries = 'TOO_MANY_MAP_ENTRIES',
   /**
@@ -14155,6 +14163,8 @@ export enum ErrorCodeInput {
   AllowablePinTriesExceeded = 'ALLOWABLE_PIN_TRIES_EXCEEDED',
   /** The requested payment amount is too high for the provided payment source. */
   AmountTooHigh = 'AMOUNT_TOO_HIGH',
+  /** The requested payment amount is too low for the provided payment source. */
+  AmountTooLow = 'AMOUNT_TOO_LOW',
   /** The provided Square-Version is incompatible with the requested action. */
   ApiVersionIncompatible = 'API_VERSION_INCOMPATIBLE',
   /** Square could not find the associated Apple Pay certificate. */
@@ -14567,6 +14577,11 @@ export enum ErrorCodeInput {
   SourceUsed = 'SOURCE_USED',
   /** A temporary internal error occurred. You can safely retry your call using the same idempotency key. */
   TemporaryError = 'TEMPORARY_ERROR',
+  /**
+   * The request is invalid because the third party terminal already has a pending transaction enqueued. A new
+   * transaction cannot be started until the previous transaction is completed or cancelled.
+   */
+  ThirdPartyTerminalTransactionAlreadyEnqueued = 'THIRD_PARTY_TERMINAL_TRANSACTION_ALREADY_ENQUEUED',
   /** Too many entries in the map field. */
   TooManyMapEntries = 'TOO_MANY_MAP_ENTRIES',
   /**
