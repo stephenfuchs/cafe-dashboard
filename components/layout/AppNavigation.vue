@@ -58,30 +58,6 @@
                 label="Discounts"
                 tooltip="Discounts"
             />
-            <Tag
-                variant="text"
-                severity="secondary"
-                value="2XL"
-                class="hidden w-full text-center 2xl:block"
-            />
-            <Tag
-                variant="text"
-                severity="secondary"
-                value="XL"
-                class="hidden w-full text-center xl:max-2xl:block"
-            />
-            <Tag
-                variant="text"
-                severity="secondary"
-                value="LG"
-                class="hidden w-full text-center lg:max-xl:block"
-            />
-            <Tag
-                variant="text"
-                severity="secondary"
-                value="MD"
-                class="hidden w-full text-center md:max-lg:block"
-            />
             <UiAppSettingsButton />
 
             <!-- <Button label="Cache" @click="clearCache" /> -->
