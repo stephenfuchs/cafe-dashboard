@@ -8,6 +8,7 @@ export const excludeDate: Set<string> = new Set([
     "11-11-2022",
     "11-12-2022",
     "07-23-2025",
+    "07-25-2025",
 ]);
 
 // Exclude items from being processed
