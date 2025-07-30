@@ -56,6 +56,7 @@ interface SalesData {
 
 interface Modifier {
     name: string;
+    count?: number;
 }
 
 import {
@@ -65,6 +66,7 @@ import {
     itemNameMap,
     itemCategoryMap,
     itemCategoryAssignment,
+    itemModifierAssignment,
     modifierGlobalNameMap,
     modifierItemNameMap,
     modifierCategoryMap,
@@ -86,6 +88,8 @@ export function useSalesList(
             order.lineItems.forEach((item) => {
                 let name =
                     item?.name?.trimEnd().toLowerCase() || "Unknown Item";
+                const originalName = name;
+
                 let category =
                     item?.itemVariation?.item?.categories?.[0]?.category?.name?.toLowerCase() ||
                     "unknown category";
@@ -95,6 +99,23 @@ export function useSalesList(
                 if (itemNameMap[name]) {
                     name = itemNameMap[name];
                 }
+
+                // Fix historical data for items that split modifiers into
+                // individial items by assigning item names as modifier names.
+                if (!item.modifiers) {
+                    item.modifiers = [];
+                }
+
+                Object.entries(itemModifierAssignment).forEach(
+                    ([itemName, modifiers]) => {
+                        if (originalName.includes(itemName)) {
+                            modifiers.forEach((modifier) => {
+                                item.modifiers!.push(modifier);
+                            });
+                        }
+                    },
+                );
+
                 if (itemCategoryMap[category]) {
                     category = itemCategoryMap[category];
                 }
@@ -208,11 +229,12 @@ export function useSalesList(
                         );
 
                         if (existingModifier) {
-                            existingModifier.count += quantity;
+                            const modCount = modifier.count ?? quantity;
+                            existingModifier.count += modCount;
                         } else {
                             modifiers[categoryName].push({
                                 selection: modifierName,
-                                count: quantity,
+                                count: modifier.count ?? quantity,
                                 previousCount: 0,
                             });
                         }

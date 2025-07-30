@@ -58,6 +58,10 @@ export const itemNameMap: Record<string, string> = {
     "premium white wine": "white wine",
     "premium red wine": "red wine",
     "iced coffee": "americano",
+    "unsweetened tea": "iced tea",
+    "sweet tea": "iced tea",
+    "apple juice": "juice",
+    "orange juice": "juice",
 };
 
 export const itemCategoryMap: Record<string, string> = {
@@ -86,6 +90,17 @@ export const itemCategoryAssignment: Record<string, string> = {
     "vitamin water": "drink cooler",
     "unsweetened tea": "drink cooler",
     steamer: "barista",
+    juice: "drink cooler",
+};
+
+export const itemModifierAssignment: Record<
+    string,
+    { name: string; count: number }[]
+> = {
+    "sweet tea": [{ name: "sweetened", count: 1 }],
+    "unsweetened tea": [{ name: "unsweetened", count: 1 }],
+    "apple juice": [{ name: "apple", count: 1 }],
+    "orange juice": [{ name: "orange", count: 1 }],
 };
 
 // 1. Remap modifier names
@@ -317,6 +332,8 @@ export const modifierCategoryAssignment: Record<string, string> = {
     revive: "flavor",
     "white (glacier cherry)": "flavor",
     xxx: "flavor",
+    sweetened: "variety",
+    unsweetened: "variety",
     // Wine Varieties
     blend: "variety",
     cabernet: "variety",
