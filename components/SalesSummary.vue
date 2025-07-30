@@ -19,12 +19,13 @@ const {
 
 <template>
     <UiAppCard full>
-        <template #title
+        <!-- <template #title
             >{{ selected !== "All" ? selected : "" }} Sales Summary</template
-        >
-        <template #options>
+        > -->
+        <template #title>Sales Summary</template>
+        <!-- <template #options>
             <UiAppCardSelector :options="options" v-model:selected="selected" />
-        </template>
+        </template> -->
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-2">
                 <div class="material-symbols-outlined">shopping_basket</div>
