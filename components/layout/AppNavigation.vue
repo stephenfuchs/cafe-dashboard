@@ -38,7 +38,7 @@
             </svg>
         </div>
         <nav
-            class="flex w-full flex-row items-center max-md:justify-evenly md:flex-col md:gap-4"
+            class="flex w-full flex-row items-center max-md:justify-evenly md:flex-col md:gap-4 md:h-full"
         >
             <UiAppNavigationButton
                 to="/"
@@ -59,8 +59,6 @@
                 tooltip="Discounts"
             />
             <UiAppSettingsButton />
-
-            <!-- <Button label="Cache" @click="clearCache" /> -->
         </nav>
     </aside>
 </template>

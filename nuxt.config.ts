@@ -128,12 +128,21 @@ export default defineNuxtConfig({
         "@nuxtjs/tailwindcss",
         "@primevue/nuxt-module",
         "@nuxtjs/google-fonts",
+        "@nuxtjs/color-mode",
     ],
     runtimeConfig: {
         // The private keys which are only available server-side
         squareApiSecret: process.env.NUXT_SQUARE_API_SECRET,
         squareLocationSecret: process.env.NUXT_SQUARE_LOCATION_SECRET,
         squareMerchantSecret: process.env.NUXT_SQUARE_MERCHANT_SECRET,
+    },
+
+    colorMode: {
+        preference: "system",
+        fallback: "light",
+        storage: "cookie",
+        storageKey: "color-mode-wr-ashboard",
+        classSuffix: "",
     },
 
     googleFonts: {
@@ -205,6 +214,7 @@ export default defineNuxtConfig({
                         name: "primevue",
                         order: "tailwind-base, primevue, tailwind-utilities",
                     },
+                    darkModeSelector: ".dark",
                 },
                 preset: MyPreset,
             },

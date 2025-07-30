@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const buttonPassthrough = {
     root: {
-        class: "hover:bg-transparent gap-0 flex-1",
+        class: "hover:bg-transparent gap-0 max-md:flex-1 md:flex-none",
     },
     label: {
         class: "md:hidden text-xs font-semibold",

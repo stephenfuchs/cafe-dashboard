@@ -11,6 +11,7 @@ export default {
         },
     },
 
+    darkMode: ["selector", '[class~="dark"]'],
     // plugins: [tailwindcssPrimeui],
     plugins: [PrimeUI],
 };
