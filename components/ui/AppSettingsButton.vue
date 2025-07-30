@@ -58,7 +58,7 @@ const visible = ref(false);
         <UiAppSettingsButtonContent />
     </Drawer>
 
-    <Popover ref="settings" :pt="popoverPassthrough">
+    <Popover ref="settings" :pt="popoverPassthrough" append-to="self">
         <span class="block text-sm font-bold uppercase text-muted-color mb-4"
             >Settings
         </span>
