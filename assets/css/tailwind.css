@@ -37,3 +37,13 @@
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "liga"; /* Enables ligatures for Material Symbols */
 }
+
+.material-symbols-outlined,
+.material-symbols-rounded {
+    visibility: hidden;
+}
+
+.font-loaded .material-symbols-outlined,
+.font-loaded .material-symbols-rounded {
+    visibility: visible;
+}
