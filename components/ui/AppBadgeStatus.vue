@@ -8,6 +8,7 @@ const props = defineProps<{
     percentage?: boolean;
     money?: boolean;
     trend?: boolean;
+    isLoading?: boolean;
 }>();
 
 const setIcon = computed(() => {
@@ -25,7 +26,9 @@ const setIcon = computed(() => {
 </script>
 
 <template>
+    <Skeleton v-if="isLoading" height="1.75rem" width="5rem" />
     <div
+        v-else
         class="flex items-center gap-1 rounded px-2 py-1 text-sm font-bold flex-shrink-0"
         :class="{
             'bg-green-500 text-white': props.trendValue > 0,

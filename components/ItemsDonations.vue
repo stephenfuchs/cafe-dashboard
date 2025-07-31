@@ -3,8 +3,8 @@ import { excludeCoffeePots } from "../server/utils/excludes";
 
 const filters = useFilters();
 
-const { orders } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders } = useOrders(
+const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
+const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
@@ -35,14 +35,27 @@ const trendDonations = computed(() => {
         <template #title> Donations </template>
         <template #options>
             <div class="flex items-center gap-4">
-                <UiAppTrendIndicator :value="trendDonations" money />
+                <UiAppTrendIndicator
+                    :value="trendDonations"
+                    money
+                    :isLoading="isLoading"
+                    :prevIsLoading="prevIsLoading"
+                />
                 <UiAppBadgeStatus
                     :value="totalDonations"
                     :trendValue="trendDonations"
                     money
+                    :isLoading="isLoading"
+                    :prevIsLoading="prevIsLoading"
                 />
             </div>
         </template>
-        <UiAppCardList :source="donations" type="item" money />
+        <UiAppCardList
+            :source="donations"
+            type="item"
+            money
+            :isLoading="isLoading"
+            :prevIsLoading="prevIsLoading"
+        />
     </UiAppCard>
 </template>

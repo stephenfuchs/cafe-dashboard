@@ -16,6 +16,7 @@ import {
 } from "~/composables/useIndexDB";
 
 export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
+    const isLoading = ref(false);
     // const dateKey = computed(
     //     () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
     // );
@@ -99,6 +100,7 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
 
             console.log("fetchRanges: ", fetchRanges);
             // Fetch and cache missing data
+            isLoading.value = true;
             await Promise.all(
                 fetchRanges.map(async ([rangeStart, rangeEnd]) => {
                     try {
@@ -145,6 +147,7 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
                     }
                 }),
             );
+            isLoading.value = false;
         },
         { immediate: true },
     );
@@ -238,5 +241,6 @@ export const useOrders = useMemoize((start: Ref<TZDate>, end: Ref<TZDate>) => {
         cardPayments,
         fees,
         netTotal,
+        isLoading,
     };
 });

@@ -2,8 +2,8 @@
 import { calcChange } from "~/server/utils/calcChange";
 
 const filters = useFilters();
-const { orders } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders } = useOrders(
+const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
+const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
@@ -44,13 +44,25 @@ const percentChange = computed(() => {
         <template #title> Discounted Items </template>
         <template #options>
             <div class="flex items-center gap-4">
-                <UiAppTrendIndicator :value="percentChange" percentage />
+                <UiAppTrendIndicator
+                    :value="percentChange"
+                    percentage
+                    :isLoading="isLoading"
+                    :prevIsLoading="prevIsLoading"
+                />
                 <UiAppBadgeStatus
                     :value="currentTotalQuantity"
                     :trendValue="trendQuantity"
+                    :isLoading="isLoading"
+                    :prevIsLoading="prevIsLoading"
                 />
             </div>
         </template>
-        <UiAppCardList :source="topItems" type="item" />
+        <UiAppCardList
+            :source="topItems"
+            type="item"
+            :isLoading="isLoading"
+            :prevIsLoading="prevIsLoading"
+        />
     </UiAppCard>
 </template>

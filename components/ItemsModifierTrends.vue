@@ -2,8 +2,8 @@
 import { excludeDonations } from "../server/utils/excludes";
 const filters = useFilters();
 
-const { orders } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders } = useOrders(
+const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
+const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
@@ -52,10 +52,20 @@ const options = ref(["Top", "Bottom"]);
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
         <div v-if="selected === 'Top'">
-            <UiAppCardList :source="topTrending" type="item" />
+            <UiAppCardList
+                :source="topTrending"
+                type="item"
+                :isLoading="isLoading"
+                :prevIsLoading="prevIsLoading"
+            />
         </div>
         <div v-else-if="selected === 'Bottom'">
-            <UiAppCardList :source="bottomTrending" type="item" />
+            <UiAppCardList
+                :source="bottomTrending"
+                type="item"
+                :isLoading="isLoading"
+                :prevIsLoading="prevIsLoading"
+            />
         </div>
     </UiAppCard>
 </template>

@@ -1,8 +1,8 @@
 <script setup>
 const filters = useFilters();
 
-const { orders } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders } = useOrders(
+const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
+const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
@@ -64,6 +64,16 @@ const dataviewPassthrough = {
         :sortField="sortField"
         :pt="dataviewPassthrough"
     >
+        <template #empty>
+            <div v-if="isLoading || prevIsLoading" class="flex flex-col gap-6">
+                <Skeleton class="w-full" height="7rem"></Skeleton>
+                <Skeleton class="w-full" height="7rem"></Skeleton>
+                <Skeleton class="w-full" height="7rem"></Skeleton>
+            </div>
+            <div v-else class="mt-10">
+                <UiAppNoData />
+            </div>
+        </template>
         <template #header>
             <UiAppCard noTitle class="flex justify-between">
                 <Select
@@ -74,12 +84,19 @@ const dataviewPassthrough = {
                     @change="onSortChange($event)"
                 />
                 <div class="flex items-center gap-4">
-                    <UiAppTrendIndicator :value="trendValue" money />
+                    <UiAppTrendIndicator
+                        :value="trendValue"
+                        money
+                        :isLoading="isLoading"
+                        :prevIsLoading="prevIsLoading"
+                    />
                     <UiAppBadgeStatus
                         icon
                         :value="currentTotalValue"
                         :trendValue="trendValue"
                         money
+                        :isLoading="isLoading"
+                        :prevIsLoading="prevIsLoading"
                     />
                 </div>
             </UiAppCard>

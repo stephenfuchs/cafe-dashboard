@@ -14,6 +14,7 @@ const {
     cardPayments,
     fees,
     netTotal,
+    isLoading,
 } = useOrders(filters.startDate, filters.endDate);
 </script>
 
@@ -32,7 +33,12 @@ const {
                 <div class="flex-1 text-base font-semibold text-color">
                     Gross Sales
                 </div>
-                <div class="text-base font-semibold text-color">
+                <Skeleton
+                    v-if="isLoading"
+                    height="1.5rem"
+                    width="3.75rem"
+                ></Skeleton>
+                <div v-else class="text-base font-semibold text-color">
                     {{ formatCurrency(grossSales ?? 0) }}
                 </div>
             </div>
@@ -41,14 +47,24 @@ const {
                 <div class="flex-1 text-sm font-medium text-color">
                     Discounts
                 </div>
-                <div class="text-sm font-medium text-red-500">
+                <Skeleton
+                    v-if="isLoading"
+                    height="1.25rem"
+                    width="3.75rem"
+                ></Skeleton>
+                <div v-else class="text-sm font-medium text-red-500">
                     ({{ formatCurrency(discounts ?? 0) }})
                 </div>
             </div>
             <div class="flex items-center gap-2">
                 <div class="material-symbols-outlined">payments</div>
                 <div class="flex-1 font-medium text-color">Net Sales</div>
-                <div class="text-base font-semibold text-color">
+                <Skeleton
+                    v-if="isLoading"
+                    height="1.5rem"
+                    width="3.75rem"
+                ></Skeleton>
+                <div v-else class="text-base font-semibold text-color">
                     {{ formatCurrency(netSales ?? 0) }}
                 </div>
             </div>
@@ -57,7 +73,12 @@ const {
                 <div class="flex-1 text-sm font-medium text-color">
                     Cash Payments
                 </div>
-                <div class="text-sm font-medium text-green-500">
+                <Skeleton
+                    v-if="isLoading"
+                    height="1.25rem"
+                    width="3.75rem"
+                ></Skeleton>
+                <div v-else class="text-sm font-medium text-green-500">
                     {{ formatCurrency(cashPayments ?? 0) }}
                 </div>
             </div>
@@ -66,21 +87,36 @@ const {
                 <div class="flex-1 text-sm font-medium text-color">
                     Card Payments
                 </div>
-                <div class="text-sm font-medium text-green-500">
+                <Skeleton
+                    v-if="isLoading"
+                    height="1.25rem"
+                    width="3.75rem"
+                ></Skeleton>
+                <div v-else class="text-sm font-medium text-green-500">
                     {{ formatCurrency(cardPayments ?? 0) }}
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
                 <div class="material-symbols-outlined">paid</div>
                 <div class="flex-1 text-sm font-medium text-color">Fees</div>
-                <div class="text-sm font-medium text-red-500">
+                <Skeleton
+                    v-if="isLoading"
+                    height="1.25rem"
+                    width="3.75rem"
+                ></Skeleton>
+                <div v-else class="text-sm font-medium text-red-500">
                     ({{ formatCurrency(fees ?? 0) }})
                 </div>
             </div>
             <div class="flex items-center gap-2">
                 <div class="material-symbols-outlined">account_balance</div>
                 <div class="flex-1 font-semibold text-color">Net Total</div>
-                <div class="text-base font-semibold text-color">
+                <Skeleton
+                    v-if="isLoading"
+                    height="1.5rem"
+                    width="3.75rem"
+                ></Skeleton>
+                <div v-else class="text-base font-semibold text-color">
                     {{ formatCurrency(netTotal ?? 0) }}
                 </div>
             </div>

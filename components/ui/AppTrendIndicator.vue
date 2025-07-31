@@ -5,11 +5,19 @@ const props = defineProps<{
     value: number;
     money?: boolean;
     percentage?: boolean;
+    isLoading?: boolean;
+    prevIsLoading?: boolean;
 }>();
 </script>
 
 <template>
+    <Skeleton
+        v-if="isLoading || prevIsLoading"
+        width="4.5rem"
+        height="1.5rem"
+    />
     <div
+        v-else
         class="flex items-center gap-1 font-semibold text-base"
         :class="{
             'text-green-500': value > 0,

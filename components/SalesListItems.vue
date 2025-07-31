@@ -4,7 +4,7 @@ import {
 } from "../server/utils/excludes";
 
 const filters = useFilters();
-const { orders } = useOrders(filters.startDate, filters.endDate);
+const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
 const { orders: previousOrders } = useOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
@@ -58,10 +58,19 @@ const topCategories = computed(() => {
             <UiAppCardSelector :options="options" v-model:selected="selected" />
         </template>
         <div v-if="selected === 'Items'">
-            <UiAppCardList :source="topItems" type="item" />
+            <UiAppCardList
+                :source="topItems"
+                type="item"
+                :isLoading="isLoading"
+            />
         </div>
         <div v-else-if="selected === 'Categories'">
-            <UiAppCardList :source="topCategories" type="category" money />
+            <UiAppCardList
+                :source="topCategories"
+                type="category"
+                money
+                :isLoading="isLoading"
+            />
         </div>
     </UiAppCard>
 </template>

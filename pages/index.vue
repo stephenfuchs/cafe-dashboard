@@ -8,15 +8,14 @@ definePageMeta({
 
 const filters = useFilters();
 
-const { netTotal, transactions, grossSales, avgTransaction } = useOrders(
-    filters.startDate,
-    filters.endDate,
-); // Assume orders is a reactive ref
+const { netTotal, transactions, grossSales, avgTransaction, isLoading } =
+    useOrders(filters.startDate, filters.endDate); // Assume orders is a reactive ref
 const {
     netTotal: prevNetTotal,
     transactions: prevTransactions,
     grossSales: prevGrossSales,
     avgTransaction: prevAvgTransaction,
+    isLoading: prevIsLoading,
 } = useOrders(filters.comparisonStartDate, filters.comparisonEndDate);
 </script>
 
@@ -28,24 +27,32 @@ const {
                 :value="formatCurrency(grossSales)"
                 :percent="calcChange(prevGrossSales, grossSales)"
                 :vsValue="formatCurrency(prevGrossSales)"
+                :isLoading="isLoading"
+                :prevIsLoading="prevIsLoading"
             />
             <SalesStat
                 title="Net Total"
                 :value="formatCurrency(netTotal)"
                 :percent="calcChange(prevNetTotal, netTotal)"
                 :vsValue="formatCurrency(prevNetTotal)"
+                :isLoading="isLoading"
+                :prevIsLoading="prevIsLoading"
             />
             <SalesStat
                 title="Transactions"
                 :value="transactions"
                 :percent="calcChange(prevTransactions, transactions)"
                 :vsValue="prevTransactions"
+                :isLoading="isLoading"
+                :prevIsLoading="prevIsLoading"
             />
             <SalesStat
                 title="Average Sale"
                 :value="formatCurrency(avgTransaction)"
                 :percent="calcChange(prevAvgTransaction, avgTransaction)"
                 :vsValue="formatCurrency(prevAvgTransaction)"
+                :isLoading="isLoading"
+                :prevIsLoading="prevIsLoading"
             />
         </div>
         <div class="grid grid-cols-6 gap-6">

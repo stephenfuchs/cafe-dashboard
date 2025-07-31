@@ -7,12 +7,14 @@ const props = withDefaults(
         chart?: boolean;
         noTitle?: boolean;
         full?: boolean;
+        isLoading?: boolean;
     }>(),
     {
         stat: false,
         chart: false,
         noTitle: false,
         full: false,
+        isLoading: false,
     },
 );
 </script>

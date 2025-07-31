@@ -1,7 +1,7 @@
 <script setup type="ts">
 const filters = useFilters();
-const { orders } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders } = useOrders(
+const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
+const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
@@ -43,8 +43,10 @@ const coffeeDonations = computed(() => {
                 :value="coffeeDonations.value"
                 :trendValue="coffeeDonations.trendValue"
                 money
+                :isLoading="isLoading"
+                :prevIsLoading="prevIsLoading"
             />
         </template>
-        <UiAppCardList :source="coffees" type="coffee" />
+        <UiAppCardList :source="coffees" type="coffee" :isLoading="isLoading" />
     </UiAppCard>
 </template>

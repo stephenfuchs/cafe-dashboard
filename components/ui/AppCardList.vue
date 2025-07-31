@@ -18,6 +18,8 @@ const props = defineProps<{
     source: SourceItem[];
     type: "item" | "category" | "coffee";
     money?: boolean;
+    isLoading?: boolean;
+    prevIsLoading?: boolean;
 }>();
 
 const getImageSrc = (item: SourceItem): string | undefined => {
@@ -49,8 +51,15 @@ const getTrendValue = (item: SourceItem): number => {
 
 <template>
     <div class="flex flex-col">
-        <div v-if="source.length === 0" class="mt-4 self-center italic">
-            No Sales Data Available
+        <div v-if="isLoading || prevIsLoading" class="flex flex-col gap-4">
+            <Skeleton class="w-full" height="2.5rem"></Skeleton>
+            <Skeleton class="w-full" height="2.5rem"></Skeleton>
+            <Skeleton class="w-full" height="2.5rem"></Skeleton>
+            <Skeleton class="w-full" height="2.5rem"></Skeleton>
+            <Skeleton class="w-full" height="2.5rem"></Skeleton>
+        </div>
+        <div v-else-if="source.length === 0" class="mt-4">
+            <UiAppNoData />
         </div>
         <div
             v-else
