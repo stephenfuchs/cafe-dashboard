@@ -124,7 +124,13 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: "2024-12-03",
-    modules: ["@nuxtjs/tailwindcss", "@primevue/nuxt-module", "@nuxtjs/google-fonts", "@nuxtjs/color-mode", "@nuxt/icon"],
+    modules: [
+        "@nuxtjs/tailwindcss",
+        "@primevue/nuxt-module",
+        "@nuxt/fonts",
+        "@nuxtjs/color-mode",
+        "@nuxt/icon",
+    ],
     runtimeConfig: {
         // The private keys which are only available server-side
         squareApiSecret: process.env.NUXT_SQUARE_API_SECRET,
@@ -140,14 +146,10 @@ export default defineNuxtConfig({
         classSuffix: "",
     },
 
-    googleFonts: {
-        families: {
-            "Open+Sans": [300, 400, 500, 600, 700, 800], // Explicitly list all weights and italics
-            "Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,-25": true,
-            "Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,-25": true,
+    fonts: {
+        defaults: {
+            weights: ["300 800"],
         },
-        display: "swap", // Matches the `@import` example
-        preconnect: true, // For improved performance
     },
 
     primevue: {
