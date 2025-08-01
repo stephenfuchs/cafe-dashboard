@@ -151,6 +151,16 @@ const getTrendValue = (modifier: Modifier): number => {
                                 >{{ modifier.selection }}</span
                             >
                         </div>
+                        <div v-if="set.modifiers.length < 1">
+                            <span
+                                class="block text-xs font-bold uppercase text-muted-color"
+                                >Modifier:</span
+                            >
+                            <span
+                                class="text-sm font-normal capitalize text-color"
+                                >No modifiers selected</span
+                            >
+                        </div>
                     </UiAppCard>
                 </div>
             </div>
