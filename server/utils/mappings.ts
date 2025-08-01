@@ -19,14 +19,14 @@ export const imagesCoffee: Record<string, string> = {
 };
 
 export const imagesDiscount: Record<string, string> = {
-    "cafe volunteer": "volunteer_activism",
-    comp: "money_off",
-    "cookie card": "cookie",
-    "bagel card": "adjust",
-    "loyalty card": "loyalty",
-    "custom discount": "price_change",
-    musician: "artist",
-    sample: "glass_cup",
+    "cafe volunteer": "volunteer-activism-outline",
+    comp: "money-off",
+    "cookie card": "cookie-outline",
+    "bagel card": "adjust-outline",
+    "loyalty card": "loyalty-outline",
+    "custom discount": "price-change-outline",
+    musician: "artist-outline",
+    sample: "glass-cup-outline",
 };
 
 export const imagesDefault = "/img/item-default.png";

@@ -124,12 +124,7 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: "2024-12-03",
-    modules: [
-        "@nuxtjs/tailwindcss",
-        "@primevue/nuxt-module",
-        "@nuxtjs/google-fonts",
-        "@nuxtjs/color-mode",
-    ],
+    modules: ["@nuxtjs/tailwindcss", "@primevue/nuxt-module", "@nuxtjs/google-fonts", "@nuxtjs/color-mode", "@nuxt/icon"],
     runtimeConfig: {
         // The private keys which are only available server-side
         squareApiSecret: process.env.NUXT_SQUARE_API_SECRET,

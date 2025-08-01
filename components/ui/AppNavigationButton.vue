@@ -35,7 +35,7 @@ const getSeverity = computed(() =>
         :pt="buttonPassthrough"
     >
         <template #icon>
-            <i class="material-symbols-rounded text-2xl">{{ icon }}</i>
+            <Icon :name="`material-symbols:${icon}`" class="text-2xl" />
         </template>
     </Button>
 </template>

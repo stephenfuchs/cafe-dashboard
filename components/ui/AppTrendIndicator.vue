@@ -25,15 +25,10 @@ const props = defineProps<{
             'text-muted-color': value === 0,
         }"
     >
-        <div class="material-symbols-outlined text-end">
-            {{
-                value > 0
-                    ? "trending_up"
-                    : value < 0
-                      ? "trending_down"
-                      : "trending_flat"
-            }}
-        </div>
+        <Icon
+            :name="`material-symbols:${value > 0 ? 'trending-up' : value < 0 ? 'trending-down' : 'trending-flat'}`"
+            class="text-end"
+        />
         <div v-if="money">{{ formatCurrency(Math.abs(value)) }}</div>
         <div v-else-if="percentage">{{ Math.abs(value).toFixed(2) }}%</div>
         <div v-else>{{ Math.abs(value) }}</div>

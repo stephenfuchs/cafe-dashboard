@@ -46,7 +46,7 @@ const visible = ref(false);
         :pt="buttonPassthrough"
     >
         <template #icon>
-            <i class="material-symbols-outlined text-2xl">settings</i>
+            <Icon name="material-symbols:settings-outline" class="text-2xl" />
         </template>
     </Button>
     <Drawer

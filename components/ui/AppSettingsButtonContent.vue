@@ -49,9 +49,9 @@ const colorMode = useColorMode();
 
 const selectedMode = ref(colorMode.preference);
 const options = [
-    { label: "System", value: "system", icon: "computer" },
-    { label: "Light", value: "light", icon: "sunny" },
-    { label: "Dark", value: "dark", icon: "bedtime" },
+    { label: "System", value: "system", icon: "computer-outline" },
+    { label: "Light", value: "light", icon: "sunny-outline" },
+    { label: "Dark", value: "dark", icon: "bedtime-outline" },
 ];
 
 // Sync select button to color mode
@@ -86,9 +86,7 @@ watch(
                 :allow-empty="false"
             >
                 <template #option="slotProps">
-                    <i class="material-symbols-outlined">{{
-                        slotProps.option.icon
-                    }}</i>
+                    <Icon :name="`material-symbols:${slotProps.option.icon}`" />
                     {{ slotProps.option.label }}
                 </template>
             </SelectButton>
@@ -111,7 +109,10 @@ watch(
                 @click="clearCache"
             >
                 <template #icon>
-                    <i class="material-symbols-outlined text-lg">delete</i>
+                    <Icon
+                        name="material-symbols:delete-outline"
+                        class="text-lg"
+                    />
                 </template>
             </Button>
         </div>

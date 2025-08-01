@@ -31,10 +31,10 @@ const selectOption = (option: string) => {
     />
     <Button variant="link" @click="togglePopover" class="w-auto p-0 xl:hidden">
         <template #icon>
-            <i
-                class="material-symbols-outlined text-2xl leading-none text-primary-500"
-                >more_horiz</i
-            >
+            <Icon
+                name="material-symbols:more-horiz"
+                class="text-2xl leading-none text-primary-500"
+            />
         </template>
     </Button>
     <Popover ref="popoverRef">

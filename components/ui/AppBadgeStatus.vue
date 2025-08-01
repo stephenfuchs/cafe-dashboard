@@ -14,12 +14,12 @@ const props = defineProps<{
 const setIcon = computed(() => {
     if (props.percentage || (props.trend && props.icon)) {
         return props.trendValue > 0
-            ? "trending_up"
+            ? "trending-up"
             : props.trendValue < 0
-              ? "trending_down"
-              : "trending_flat";
+              ? "trending-down"
+              : "trending-flat";
     } else if (props.money && props.icon) {
-        return "money_bag";
+        return "money-bag-outline";
     }
     return "";
 });
@@ -36,9 +36,11 @@ const setIcon = computed(() => {
             'bg-neutral-200 text-neutral-700': props.trendValue === 0,
         }"
     >
-        <div v-if="icon" class="material-symbols-outlined">
-            {{ setIcon }}
-        </div>
+        <Icon
+            v-if="money || percentage || trend"
+            :name="`material-symbols:${setIcon}`"
+        />
+
         <div v-if="money">{{ formatCurrency(props.value ?? 0) }}</div>
         <div v-else-if="percentage">
             {{

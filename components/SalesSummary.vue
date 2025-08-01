@@ -29,7 +29,7 @@ const {
         </template> -->
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-2">
-                <div class="material-symbols-outlined">shopping_basket</div>
+                <Icon name="material-symbols:shopping-basket-outline" />
                 <div class="flex-1 text-base font-semibold text-color">
                     Gross Sales
                 </div>
@@ -43,7 +43,7 @@ const {
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
-                <div class="material-symbols-outlined">percent</div>
+                <Icon name="material-symbols:percent" />
                 <div class="flex-1 text-sm font-medium text-color">
                     Discounts
                 </div>
@@ -57,7 +57,7 @@ const {
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <div class="material-symbols-outlined">payments</div>
+                <Icon name="material-symbols:payments-outline" />
                 <div class="flex-1 font-medium text-color">Net Sales</div>
                 <Skeleton
                     v-if="isLoading"
@@ -69,7 +69,7 @@ const {
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
-                <div class="material-symbols-outlined">universal_currency</div>
+                <Icon name="material-symbols:universal-currency-outline" />
                 <div class="flex-1 text-sm font-medium text-color">
                     Cash Payments
                 </div>
@@ -83,7 +83,7 @@ const {
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
-                <div class="material-symbols-outlined">credit_card</div>
+                <Icon name="material-symbols:credit-card-outline" />
                 <div class="flex-1 text-sm font-medium text-color">
                     Card Payments
                 </div>
@@ -97,7 +97,7 @@ const {
                 </div>
             </div>
             <div class="flex items-center gap-2 ps-6">
-                <div class="material-symbols-outlined">paid</div>
+                <Icon name="material-symbols:paid-outline" />
                 <div class="flex-1 text-sm font-medium text-color">Fees</div>
                 <Skeleton
                     v-if="isLoading"
@@ -109,7 +109,7 @@ const {
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <div class="material-symbols-outlined">account_balance</div>
+                <Icon name="material-symbols:account-balance-outline" />
                 <div class="flex-1 font-semibold text-color">Net Total</div>
                 <Skeleton
                     v-if="isLoading"

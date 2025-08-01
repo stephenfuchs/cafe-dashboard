@@ -428,11 +428,11 @@ const setLastYear = () => {
         dateFormat="mm/dd/y"
     >
         <template #inputicon="slotProps">
-            <i
-                class="material-symbols-outlined text-lg leading-none"
+            <Icon
+                name="material-symbols:date-range-outline"
+                class="text-lg leading-none"
                 @click="slotProps.clickCallback"
-                >date_range</i
-            >
+            />
         </template>
         <template #footer>
             <!-- SelectButton Component for preset date ranges -->

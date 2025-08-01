@@ -25,8 +25,9 @@ const props = defineProps<{
         v-if="icon"
         class="flex size-16 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-700"
     >
-        <span class="material-symbols-outlined text-2xl text-primary">
-            {{ icon }}
-        </span>
+        <Icon
+            :name="`material-symbols:${icon}`"
+            class="text-2xl text-primary"
+        />
     </div>
 </template>

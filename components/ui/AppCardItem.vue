@@ -46,6 +46,16 @@ const toggleVisibility = (): void => {
 const hasModifiers = computed(() => {
     return Object.keys(props.item?.modifiers ?? {}).length > 0;
 });
+
+const trendIcon = computed(() => {
+    return props.item?.currentSortOrder < props.item?.previousSortOrder ||
+        props.item?.previousSortOrder === null ||
+        props.item?.previousSortOrder === 0
+        ? "arrow-upward"
+        : props.item?.currentSortOrder > props.item?.previousSortOrder
+          ? "arrow-downward"
+          : "horizontal-rule";
+});
 </script>
 
 <template>
@@ -89,11 +99,13 @@ const hasModifiers = computed(() => {
                         </span>
                         {{ item?.name ?? "unknown item" }}
 
-                        <span
+                        <div
                             v-if="type === 'item'"
-                            class="block text-xs font-light text-muted-color"
-                            ><span
-                                class="material-symbols-outlined font-bold"
+                            class="flex gap-1 items-center text-xs font-light text-muted-color"
+                        >
+                            <Icon
+                                :name="`material-symbols:${trendIcon}`"
+                                class="font-bold"
                                 :class="{
                                     'text-green-500':
                                         item?.previousSortOrder === 0 ||
@@ -107,26 +119,15 @@ const hasModifiers = computed(() => {
                                         item?.currentSortOrder ===
                                         item?.previousSortOrder,
                                 }"
-                                >{{
-                                    item?.currentSortOrder <
-                                        item?.previousSortOrder ||
-                                    item?.previousSortOrder === null ||
-                                    item?.previousSortOrder === 0
-                                        ? "arrow_upward"
-                                        : item?.currentSortOrder >
-                                            item?.previousSortOrder
-                                          ? "arrow_downward"
-                                          : "horizontal_rule"
-                                }}</span
-                            >
+                            />
                             {{ item?.currentSortOrder }} current |
                             {{
                                 item?.previousSortOrder !== 0
                                     ? item?.previousSortOrder
                                     : "--"
                             }}
-                            previous</span
-                        >
+                            previous
+                        </div>
                     </div>
                 </div>
                 <div class="max-md:ps-2 col-span-3 order-3 md:order-2">
@@ -166,11 +167,11 @@ const hasModifiers = computed(() => {
                     severity="secondary"
                     size="small"
                     @click="toggleVisibility"
-                    class="w-auto self-center place-self-end col-span-1 order-2 md:order-4"
+                    class="w-auto self-center place-self-end col-span-1 order-2 md:order-4 text-xl"
                     :class="{ invisible: type === 'item' && !hasModifiers }"
                 >
                     <template #icon>
-                        <i class="material-symbols-outlined text-xl">style</i>
+                        <Icon name="material-symbols:style-outline" />
                     </template>
                 </Button>
             </div>

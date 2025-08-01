@@ -42,7 +42,7 @@
         >
             <UiAppNavigationButton
                 to="/"
-                icon="dashboard"
+                icon="dashboard-rounded"
                 label="Overview"
                 tooltip="Sales Overview"
             />
