@@ -387,7 +387,7 @@ export function useSalesList(
         const previousOrdersData = previousOrders.value || [];
 
         // Early return if no data to process
-        if (currentOrdersData.length === 0 || previousOrdersData.length === 0)
+        if (currentOrdersData.length === 0 && previousOrdersData.length === 0)
             return [];
 
         const currentSales = calcSalesData(currentOrdersData);
