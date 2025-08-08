@@ -8,6 +8,18 @@ const props = defineProps<{
     isLoading?: boolean;
     prevIsLoading?: boolean;
 }>();
+
+const iconName = computed(() => {
+    if (props.value > 0) return "trending-up";
+    if (props.value < 0) return "trending-down";
+    return "trending-flat";
+});
+
+const trendColor = computed(() => {
+    if (props.value > 0) return "text-green-500";
+    if (props.value < 0) return "text-red-500";
+    return "text-muted-color";
+});
 </script>
 
 <template>
@@ -19,14 +31,11 @@ const props = defineProps<{
     <div
         v-else
         class="flex items-center gap-1 font-semibold text-base"
-        :class="{
-            'text-green-500': value > 0,
-            'text-red-500': value < 0,
-            'text-muted-color': value === 0,
-        }"
+        :class="trendColor"
     >
         <Icon
-            :name="`material-symbols:${value > 0 ? 'trending-up' : value < 0 ? 'trending-down' : 'trending-flat'}`"
+            :name="`material-symbols:${iconName}`"
+            :key="iconName"
             class="text-end"
         />
         <div v-if="money">{{ formatCurrency(Math.abs(value)) }}</div>

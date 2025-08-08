@@ -138,20 +138,14 @@ export function useSalesList(
 
                 const imgItemOriginal =
                     item.itemVariation?.item?.images?.[0]?.url;
-                let imgItem = imagesDefault;
-
-                if (imgItemOriginal) {
-                    // Extract the part after /files/
+                const imgItem = (() => {
+                    if (!imgItemOriginal) return imagesDefault;
                     const tail = imgItemOriginal.split("/files/")[1];
                     if (tail && imagesItem[tail]) {
-                        imgItem = imgItemOriginal.replace(
-                            tail,
-                            imagesItem[tail],
-                        );
-                    } else {
-                        imgItem = imgItemOriginal;
+                        return imgItemOriginal.replace(tail, imagesItem[tail]);
                     }
-                }
+                    return imgItemOriginal;
+                })();
                 const imgCategory = imagesCategory[category] || imagesDefault;
                 const imgCoffee = imagesCoffee[name] || imagesDefault;
 

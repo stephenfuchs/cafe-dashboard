@@ -105,6 +105,7 @@ const trendIcon = computed(() => {
                         >
                             <Icon
                                 :name="`material-symbols:${trendIcon}`"
+                                :key="trendIcon"
                                 class="font-bold"
                                 :class="{
                                     'text-green-500':

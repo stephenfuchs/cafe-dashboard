@@ -39,6 +39,7 @@ const setIcon = computed(() => {
         <Icon
             v-if="money || percentage || trend"
             :name="`material-symbols:${setIcon}`"
+            :key="setIcon"
         />
 
         <div v-if="money">{{ formatCurrency(props.value ?? 0) }}</div>
