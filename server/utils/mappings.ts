@@ -29,6 +29,63 @@ export const imagesDiscount: Record<string, string> = {
     sample: "glass-cup-outline",
 };
 
+export const imagesItem: Record<string, string> = {
+    // Americano
+    "19a8edf8bea957bc3fed2674fb22ed16e58b5e20/original.jpeg":
+        "da48c8f2fce4aaa2d5fb450ecaee9ef74ccc40a9/original.png",
+    // Chai Latte
+    "d4d76a084281e6879367edc6cdb0b7095a577793/original.jpeg":
+        "7798ede6c21a2655e687b3c8c7e01acd9c9aaf81/original.png",
+    // Cupcake
+    "5e93fcd6302a7c488bcf326e0ee335643beb13c9/original.png":
+        "d43b52b572ff8cb41925d92d8f52b0ce2f29d537/original.png",
+    // Donut
+    "2462525b0768c5ab9d357c925edad85d508900d9/original.png":
+        "08f241035b13cd2f811839f5d12806b22f1ed4cf/original.png",
+    // Granola Bar
+    "ccf865831e9b92e5aec9af72cd233759b6a7f83c/original.png":
+        "2230fce73600107cedc773fc3985c3d2effb483a/original.png",
+    // Fruit Snacks
+    "6b62fb7e2257b9e89cdedf5e2517acd17477669a/original.png":
+        "52d8eadd51d97e531645698556dcf2a3dddc39d9/original.png",
+    // Hotdog
+    "c8dab5948d02b88f4cf547e64dc765cf1088739f/original.png":
+        "f6b5c7ce583b8ad49401a9bcc8c0f0d820881dd2/original.png",
+    // Iced Tea
+    "08025a202205a4ca2391c10c6d5ce81179690169/original.jpeg":
+        "ca266497f306db0381a6be3da511ea6750039ded/original.png",
+    // Juice
+    "42304e22e6c2cafc5c8d4900157e326b986932e0/original.png":
+        "0f48c61c09f84043c7c97fd84819d79d9230f7f0/original.png",
+    // Juice
+    "27cd50f3602d645c7ba52608e050afddf50f4a72/original.png":
+        "0f48c61c09f84043c7c97fd84819d79d9230f7f0/original.png",
+    // Milk
+    "68ebc4084544d5b71124b4024279cbd3634657a3/original.png":
+        "9c90ee8d0d22a8ddafcd5debe153e9c6841b3879/original.png",
+    // Nica
+    "2f205e84525d1170eb0162d40e6b986ce664cc43/original.png":
+        "510b50015917067334e5cb0d94a7e44b69877d28/original.png",
+    // Oatmeal
+    "991217b7e98186aacc52c695cb19938fcfa0f046/original.png":
+        "fad169b588034204a07c92e74966ef02a527df86/original.png",
+    // Pizza
+    "452b643e9e788b3da6d00d06307f776f596db256/original.png":
+        "a06d712a1b59e659cadcb544ea0c8e5f89d68d04/original.png",
+    // Powerade
+    "5084c7438d623025bccebfcb322640e4b08f9869/original.png":
+        "03453661b8f7511a6e373ccf8e89cf7ebddf74ce/original.png",
+    // Scone
+    "12c6fe6e984b1271e1e8e2342d0a0301fc04e689/original.jpeg":
+        "2d036c2558982c4302c58681ae612b153a97a803/original.png",
+    // Thin Mint Brownie
+    "d03645bb347a9247b803c14c56b6f21180a36d03/original.jpeg":
+        "2749cf98b3f9355eac4ca7012476966e9d54cc1c/original.png",
+    // Vitamin Water
+    "61273ed94e9ac281d5bae3867e691a0256f6f4ea/original.png":
+        "fa6887ea321c1bf60ad574664a597e284ebe6a65/original.png",
+};
+
 export const imagesDefault = "/img/item-default.png";
 
 // Item Name Mappings
@@ -72,9 +129,11 @@ export const itemCategoryMap: Record<string, string> = {
 };
 
 export const itemCategoryAssignment: Record<string, string> = {
+    "avocado toast": "toaster",
     americano: "barista",
     "apple juice": "drink cooler",
     "chai latte": "barista",
+    "cake pop": "baked goods",
     "iced chai latte": "barista",
     "chai tea": "barista",
     chips: "snacks",
@@ -249,6 +308,7 @@ export const modifierCategoryAssignment: Record<string, string> = {
     almond: "flavor",
     "apple pie": "flavor",
     blueberry: "flavor",
+    "blueberry crumble": "flavor",
     butterscotch: "flavor",
     caramel: "flavor",
     "caramel cookie": "flavor",

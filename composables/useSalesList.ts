@@ -63,6 +63,7 @@ import {
     imagesCategory,
     imagesCoffee,
     imagesDefault,
+    imagesItem,
     itemNameMap,
     itemCategoryMap,
     itemCategoryAssignment,
@@ -135,8 +136,22 @@ export function useSalesList(
 
                 if (!name || exclude.includes(name)) return;
 
-                const imgItem =
-                    item.itemVariation?.item?.images?.[0]?.url || imagesDefault;
+                const imgItemOriginal =
+                    item.itemVariation?.item?.images?.[0]?.url;
+                let imgItem = imagesDefault;
+
+                if (imgItemOriginal) {
+                    // Extract the part after /files/
+                    const tail = imgItemOriginal.split("/files/")[1];
+                    if (tail && imagesItem[tail]) {
+                        imgItem = imgItemOriginal.replace(
+                            tail,
+                            imagesItem[tail],
+                        );
+                    } else {
+                        imgItem = imgItemOriginal;
+                    }
+                }
                 const imgCategory = imagesCategory[category] || imagesDefault;
                 const imgCoffee = imagesCoffee[name] || imagesDefault;
 
