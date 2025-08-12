@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useToast } from "primevue/usetoast";
 import { clearOldOrders } from "~/composables/useIndexDB";
 
 const toast = useToast();
