@@ -1,4 +1,4 @@
-import { parseISO, isValid, format } from "date-fns";
+import { parseISO, isValid, formatISO } from "date-fns";
 import { squareClient } from "../utils/square";
 import { gql } from "../../src/gql/gql";
 import { ApolloError } from "@apollo/client/core";
@@ -313,9 +313,8 @@ const getOrders = async (start: string, end: string) => {
         const convertedDates = orders.map((order) => ({
             ...order,
             closedAt: order.closedAt
-                ? format(
+                ? formatISO(
                       new TZDate(parseISO(order.closedAt), "America/Chicago"),
-                      "MM-dd-yyyy hh:mm aaa",
                   )
                 : null,
         }));
