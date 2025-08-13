@@ -4,7 +4,7 @@ const config: CodegenConfig = {
         {
             "https://connect.squareup.com/public/graphql": {
                 headers: {
-                    Authorization: `Bearer ${process.env.NUXT_SQUARE_API_SECRET}`,
+                    Authorization: `Bearer ${process.env.SQUARE_API_SECRET}`,
                 },
             },
         },
