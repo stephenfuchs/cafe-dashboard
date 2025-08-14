@@ -1,5 +1,5 @@
 import { parseISO, isValid, formatISO } from "date-fns";
-import { squareClient } from "../utils/square";
+import { createSquareClient } from "../utils/square";
 import { gql } from "../../src/gql/gql";
 import { ApolloError } from "@apollo/client/core";
 import { excludeDate, excludeItem } from "../utils/excludes";
@@ -132,6 +132,8 @@ const getOrders = async (start: string, end: string) => {
     const runtimeConfig = useRuntimeConfig();
     const locationID = runtimeConfig.squareLocationSecret;
     const merchantID = runtimeConfig.squareMerchantSecret;
+
+    const squareClient = createSquareClient();
 
     try {
         let cursor: string | null = null;
