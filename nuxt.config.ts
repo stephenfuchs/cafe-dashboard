@@ -150,6 +150,17 @@ export default defineNuxtConfig({
         transpile: ["@apollo/client"],
     },
 
+    vite: {
+        build: {
+            terserOptions: {
+                compress: {
+                    // Remove all console.* calls, not just log
+                    drop_console: true,
+                },
+            },
+        },
+    },
+
     compatibilityDate: "2024-12-03",
     modules: [
         "@nuxtjs/tailwindcss",
