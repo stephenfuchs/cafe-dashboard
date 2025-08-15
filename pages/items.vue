@@ -1,6 +1,13 @@
-<script setup>
-definePageMeta({
+<script setup lang="ts">
+const props = defineProps<{
+    setPageTitle: (title: string) => void;
+}>();
+
+props.setPageTitle("Item Sales");
+
+useSeoMeta({
     title: "Item Sales",
+    description: "Overview of sold items and modifiers.",
 });
 </script>
 

@@ -1,9 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { formatCurrency } from "~/server/utils/formatCurrency";
 import { calcChange } from "~/server/utils/calcChange";
 
-definePageMeta({
-    title: "Sales Overview",
+const props = defineProps<{
+    setPageTitle: (title: string) => void;
+}>();
+
+props.setPageTitle("Sales Overview");
+
+useSeoMeta({
+    title: "Dashboard",
+    description: "Dashboard overview of key sales metrics.",
 });
 
 const filters = useFilters();

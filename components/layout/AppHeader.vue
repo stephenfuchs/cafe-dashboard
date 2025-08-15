@@ -11,7 +11,10 @@ defineProps<{
                 West Ridge Café
             </span>
             <h1 class="text-3xl font-bold text-color">
-                {{ page || "Dashboard" }}
+                <template v-if="page">{{ page }}</template>
+                <template v-else>
+                    <Skeleton width="14rem" height="2.25rem"></Skeleton>
+                </template>
             </h1>
         </div>
         <div
