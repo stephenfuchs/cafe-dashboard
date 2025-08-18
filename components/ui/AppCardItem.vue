@@ -51,10 +51,10 @@ const trendIcon = computed(() => {
     return props.item?.currentSortOrder < props.item?.previousSortOrder ||
         props.item?.previousSortOrder === null ||
         props.item?.previousSortOrder === 0
-        ? "arrow-upward"
+        ? "material-symbols:arrow-upward"
         : props.item?.currentSortOrder > props.item?.previousSortOrder
-          ? "arrow-downward"
-          : "horizontal-rule";
+          ? "material-symbols:arrow-downward"
+          : "material-symbols:horizontal-rule";
 });
 </script>
 
@@ -104,7 +104,7 @@ const trendIcon = computed(() => {
                             class="flex gap-1 items-center text-xs font-light text-muted-color"
                         >
                             <Icon
-                                :name="`material-symbols:${trendIcon}`"
+                                :name="trendIcon"
                                 :key="trendIcon"
                                 class="font-bold"
                                 :class="{
