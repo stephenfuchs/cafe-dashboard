@@ -100,58 +100,44 @@ export const useOrders = useMemoize(
                 console.log("fetchRanges: ", fetchRanges);
                 // Fetch and cache missing data
                 isLoading.value = true;
-                await Promise.all(
-                    fetchRanges.map(async ([rangeStart, rangeEnd]) => {
-                        try {
-                            console.log("rangeEnd: ", rangeEnd);
-                            // debugger;
-                            const response: Order[] = await $fetch(
-                                "/api/orders",
-                                {
-                                    params: {
-                                        startDate: formatISO(
-                                            rangeStart + "T00:00:00",
-                                        ),
-                                        endDate: formatISO(
-                                            rangeEnd + "T23:59:59",
-                                        ),
-                                    },
-                                },
-                            );
+                for (const [rangeStart, rangeEnd] of fetchRanges) {
+                    await new Promise((resolve) => setTimeout(resolve, 100));
+                    try {
+                        console.log("rangeEnd: ", rangeEnd);
+                        const response: Order[] = await $fetch("/api/orders", {
+                            params: {
+                                startDate: formatISO(rangeStart + "T00:00:00"),
+                                endDate: formatISO(rangeEnd + "T23:59:59"),
+                            },
+                        });
 
-                            dateKeys.value.forEach((dateKey) => {
-                                if (dateKey < rangeStart || dateKey > rangeEnd)
-                                    return;
+                        dateKeys.value.forEach((dateKey) => {
+                            if (dateKey < rangeStart || dateKey > rangeEnd)
+                                return;
 
-                                const ordersForKey = response.filter(
-                                    (order) => {
-                                        if (!order.closedAt) return false;
-                                        const orderDate = format(
-                                            new Date(order.closedAt),
-                                            "yyyy-MM-dd",
-                                        );
-                                        return orderDate === dateKey;
-                                    },
+                            const ordersForKey = response.filter((order) => {
+                                if (!order.closedAt) return false;
+                                const orderDate = format(
+                                    new Date(order.closedAt),
+                                    "yyyy-MM-dd",
                                 );
-
-                                allOrders.value[dateKey] = ordersForKey;
-                                if (
-                                    isBefore(
-                                        `${dateKey}T00:00:00`,
-                                        startOfToday(),
-                                    )
-                                ) {
-                                    saveOrdersToCache(dateKey, ordersForKey);
-                                }
+                                return orderDate === dateKey;
                             });
-                        } catch (error) {
-                            console.error(
-                                `Failed to fetch orders from ${rangeStart} to ${rangeEnd}:`,
-                                error,
-                            );
-                        }
-                    }),
-                );
+
+                            allOrders.value[dateKey] = ordersForKey;
+                            if (
+                                isBefore(`${dateKey}T00:00:00`, startOfToday())
+                            ) {
+                                saveOrdersToCache(dateKey, ordersForKey);
+                            }
+                        });
+                    } catch (error) {
+                        console.error(
+                            `Failed to fetch orders from ${rangeStart} to ${rangeEnd}:`,
+                            error,
+                        );
+                    }
+                }
                 isLoading.value = false;
             },
             { immediate: true },
