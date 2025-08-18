@@ -151,13 +151,8 @@ export default defineNuxtConfig({
     },
 
     vite: {
-        build: {
-            terserOptions: {
-                compress: {
-                    // Remove all console.* calls, not just log
-                    drop_console: true,
-                },
-            },
+        esbuild: {
+            pure: ["console.log"],
         },
     },
 
