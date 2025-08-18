@@ -1,10 +1,8 @@
 import { TZDate } from "@date-fns/tz";
 import {
-    parse,
     formatISO,
     eachDayOfInterval,
     format,
-    isToday,
     isBefore,
     startOfToday,
 } from "date-fns";
@@ -18,9 +16,6 @@ import {
 export const useOrders = useMemoize(
     (start: Ref<TZDate | null>, end: Ref<TZDate | null>) => {
         const isLoading = ref(false);
-        // const dateKey = computed(
-        //     () => `${formatISO(start.value)}_to_${formatISO(end.value)}`,
-        // );
 
         // Use shallowReactive() for performance because we don't need to deeply track changes
         const allOrders = useState<Record<string, Order[]>>("orders", () =>

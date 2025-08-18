@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { twMerge } from "tailwind-merge";
 
-const props = defineProps<{
+defineProps<{
     icon?: string;
     large?: boolean;
     src?: string;

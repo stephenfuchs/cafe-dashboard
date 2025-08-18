@@ -7,7 +7,8 @@ interface DiscountItem {
     count: number;
     value: number;
 }
-const props = defineProps<{
+
+defineProps<{
     items: DiscountItem[];
 }>();
 </script>

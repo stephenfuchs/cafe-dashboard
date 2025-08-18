@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { twMerge } from "tailwind-merge";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         stat?: boolean;
         chart?: boolean;
