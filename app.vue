@@ -7,6 +7,25 @@ useHead({
     bodyAttrs: {
         class: "bg-surface-100 dark:bg-surface-950",
     },
+    meta: [
+        // Android / general theme color
+        { name: "theme-color", content: "#f1f5f9" },
+
+        // Light/dark mode theme colors
+        {
+            name: "theme-color",
+            content: "#f1f5f9",
+            media: "(prefers-color-scheme: light)",
+        },
+        {
+            name: "theme-color",
+            content: "#020617",
+            media: "(prefers-color-scheme: dark)",
+        },
+
+        // iOS status bar style
+        { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+    ],
 });
 
 const setPageTitle = (title: string) => {
