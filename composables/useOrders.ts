@@ -120,17 +120,7 @@ export const useOrders = useMemoize(
                             );
 
                             dateKeys.value.forEach((dateKey) => {
-                                if (
-                                    dateKey < rangeStart ||
-                                    dateKey > rangeEnd ||
-                                    isToday(
-                                        parse(
-                                            dateKey,
-                                            "yyyy-MM-dd",
-                                            new Date(),
-                                        ),
-                                    )
-                                )
+                                if (dateKey < rangeStart || dateKey > rangeEnd)
                                     return;
 
                                 const ordersForKey = response.filter(
