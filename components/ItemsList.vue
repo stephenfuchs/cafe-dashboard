@@ -11,7 +11,13 @@ const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
 const { salesList } = useSalesList(orders, previousOrders, excludeDonations);
 
 const categoryFilter = ref("all items");
-const categoryOptions = ["all items", "baked goods", "barista", "drink cooler"];
+const categoryOptions = [
+    "all items",
+    "baked goods",
+    "toaster",
+    "barista",
+    "drink cooler",
+];
 
 const filteredSalesList = computed(() => {
     let filteredList = salesList.value.filter((item) => item.quantity > 0);
