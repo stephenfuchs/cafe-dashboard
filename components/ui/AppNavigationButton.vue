@@ -8,10 +8,10 @@ const props = defineProps<{
 
 const buttonPassthrough = {
     root: {
-        class: "hover:bg-transparent gap-0 max-md:flex-1 md:flex-none",
+        class: "hover:bg-transparent gap-0 max-md:py-0 max-md:flex-1 md:flex-none",
     },
     label: {
-        class: "md:hidden text-xs font-semibold",
+        class: "md:hidden text-[0.625rem] md:text-xs font-semibold",
     },
 };
 
@@ -35,7 +35,10 @@ const getSeverity = computed(() =>
         :pt="buttonPassthrough"
     >
         <template #icon>
-            <Icon :name="`material-symbols:${icon}`" class="text-2xl" />
+            <Icon
+                :name="`material-symbols:${icon}`"
+                class="text-3xl md:text-2xl"
+            />
         </template>
     </Button>
 </template>

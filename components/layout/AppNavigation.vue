@@ -1,6 +1,6 @@
 <template>
     <aside
-        class="sticky bottom-0 z-50 box-content flex items-center gap-10 p-4 max-md:h-12 max-md:border-t max-md:border-neutral-100 max-md:pt-2 md:fixed md:start-0 md:top-0 md:w-12 md:flex-col md:p-5 max-md:dark:border-neutral-700"
+        class="sticky bottom-0 z-50 box-content flex md:items-center gap-10 p-4 max-md:h-16 max-md:border-t max-md:border-neutral-200 max-md:pt-1 md:fixed md:start-0 md:top-0 md:w-12 md:flex-col md:p-5 max-md:dark:border-neutral-700"
     >
         <div
             class="absolute inset-0 z-[-1] bg-surface-0/90 backdrop-blur md:bg-surface-0 dark:bg-surface-800/90 dark:md:bg-surface-800"
@@ -38,7 +38,7 @@
             </svg>
         </div>
         <nav
-            class="flex w-full flex-row items-center max-md:justify-evenly md:flex-col md:gap-4 md:h-full"
+            class="flex w-full flex-row items-start md:items-center max-md:justify-evenly md:flex-col md:gap-4 md:h-full"
         >
             <UiAppNavigationButton
                 to="/"

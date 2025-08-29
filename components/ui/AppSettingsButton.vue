@@ -6,10 +6,10 @@ const desktop = breakpoints.greaterOrEqual("md");
 
 const buttonPassthrough = {
     root: {
-        class: "hover:bg-transparent max-md:flex-1 gap-0 md:mt-auto ",
+        class: "hover:bg-transparent max-md:py-0 max-md:flex-1 gap-0 md:mt-auto ",
     },
     label: {
-        class: "md:hidden text-xs font-semibold",
+        class: "md:hidden text-[0.625rem] md:text-xs font-semibold",
     },
 };
 
@@ -46,7 +46,10 @@ const visible = ref(false);
         :pt="buttonPassthrough"
     >
         <template #icon>
-            <Icon name="material-symbols:settings-outline" class="text-2xl" />
+            <Icon
+                name="material-symbols:settings-outline"
+                class="text-3xl md:text-2xl"
+            />
         </template>
     </Button>
     <Drawer
