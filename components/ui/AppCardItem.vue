@@ -79,9 +79,9 @@ const trendIcon = computed(() => {
                 class="grid grid-cols-6 md:grid-cols-12 items-center self-stretch gap-4 w-full"
             >
                 <div
-                    class="col-span-5 md:max-xl:col-span-4 truncate text-lg font-bold uppercase text-color order-1 flex gap-4 items-center"
+                    class="col-span-5 md:max-xl:col-span-4 text-lg font-bold uppercase text-color order-1 flex gap-4 items-center"
                 >
-                    <div class="md:hidden">
+                    <div class="flex-shrink-0 md:hidden">
                         <UiAppCardItemImage
                             v-if="type === 'item'"
                             large
@@ -93,11 +93,13 @@ const trendIcon = computed(() => {
                             :icon="item?.imgDiscount ?? ''"
                         />
                     </div>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col truncate">
                         <span class="block text-xs font-medium text-muted-color"
                             >{{ type === "item" ? item?.category : "Discount" }}
                         </span>
-                        {{ item?.name ?? "unknown item" }}
+                        <span class="truncate">
+                            {{ item?.name ?? "unknown item" }}
+                        </span>
 
                         <div
                             v-if="type === 'item'"

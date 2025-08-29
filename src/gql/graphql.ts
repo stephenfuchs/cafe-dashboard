@@ -12866,8 +12866,7 @@ export enum DeviceStatusCategory {
   Critical = 'CRITICAL',
   DeviceStatusCategoryUnknown = 'DEVICE_STATUS_CATEGORY_UNKNOWN',
   NeedsAttention = 'NEEDS_ATTENTION',
-  Offline = 'OFFLINE',
-  Preconnected = 'PRECONNECTED'
+  Offline = 'OFFLINE'
 }
 
 /**
@@ -12919,8 +12918,7 @@ export enum DeviceStatusCategoryInput {
   Critical = 'CRITICAL',
   DeviceStatusCategoryUnknown = 'DEVICE_STATUS_CATEGORY_UNKNOWN',
   NeedsAttention = 'NEEDS_ATTENTION',
-  Offline = 'OFFLINE',
-  Preconnected = 'PRECONNECTED'
+  Offline = 'OFFLINE'
 }
 
 /** An enum for DeviceStatusDetail. */
@@ -13987,6 +13985,8 @@ export enum ErrorCode {
   NoFieldsSet = 'NO_FIELDS_SET',
   /** A general error occurred. */
   OneInstrumentExpected = 'ONE_INSTRUMENT_EXPECTED',
+  /** The order has already been completed and cannot be modified. */
+  OrderAlreadyCompleted = 'ORDER_ALREADY_COMPLETED',
   /** The order was already used. */
   OrderAlreadyUsed = 'ORDER_ALREADY_USED',
   /** The client attempted to create an order with an order client ID from a preexisting order. */
@@ -14493,6 +14493,8 @@ export enum ErrorCodeInput {
   NoFieldsSet = 'NO_FIELDS_SET',
   /** A general error occurred. */
   OneInstrumentExpected = 'ONE_INSTRUMENT_EXPECTED',
+  /** The order has already been completed and cannot be modified. */
+  OrderAlreadyCompleted = 'ORDER_ALREADY_COMPLETED',
   /** The order was already used. */
   OrderAlreadyUsed = 'ORDER_ALREADY_USED',
   /** The client attempted to create an order with an order client ID from a preexisting order. */
@@ -25577,7 +25579,7 @@ export type QueryBusinessBookingProfileArgs = {
 export type QueryCardsOnFileArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   filter: CardOnFileFilter;
-  orderBy?: InputMaybe<Array<SortOrder>>;
+  orderBy?: InputMaybe<Array<SortOrderTypeInput>>;
 };
 
 
@@ -26495,10 +26497,11 @@ export enum SortOrder {
   Desc = 'DESC'
 }
 
+/** The order (e.g., chronological or alphabetical) in which results from a request are returned. */
 export enum SortOrderTypeInput {
-  /** Ascending order */
+  /** The results are returned in ascending (e.g., oldest-first or A-Z) order. */
   Asc = 'ASC',
-  /** Descending order */
+  /** The results are returned in descending (e.g., newest-first or Z-A) order. */
   Desc = 'DESC'
 }
 
