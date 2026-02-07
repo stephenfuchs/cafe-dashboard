@@ -130,8 +130,21 @@ export function useSalesList(
                 }
 
                 if (name === "coffee pot" && item.modifiers?.length) {
-                    name = item.modifiers![1].name?.toLowerCase();
-                    if (item.modifiers![0].name === "HALF POT") quantity /= 2;
+                    const halfPot = item.modifiers.find(
+                        (m) => m.name === "HALF POT",
+                    );
+
+                    const coffeeType = item.modifiers.find(
+                        (m) => m.name !== "HALF POT",
+                    );
+
+                    if (coffeeType?.name) {
+                        name = coffeeType.name.toLowerCase();
+                    }
+
+                    if (halfPot) {
+                        quantity /= 2;
+                    }
                 }
 
                 if (!name || exclude.includes(name)) return;
