@@ -5,7 +5,7 @@
     "scripts": {
         "build": "nuxt build",
         "dev": "concurrently \"pnpm dev:nuxt\" \"pnpm dev:codegen\"",
-        "dev:nuxt": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' nuxt dev",
+        "dev:nuxt": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' nuxt dev --host",
         "dev:codegen": "dotenv -- graphql-codegen -w",
         "generate": "nuxt generate",
         "preview": "nuxt preview",

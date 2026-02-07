@@ -227,7 +227,7 @@ export default defineNuxtConfig({
                     },
                     pcInputText: {
                         root: {
-                            class: "border-surface-200 dark:border-surface-700 dark:bg-surface-900 text-sm text-color font-semibold rounded-lg",
+                            class: "border-surface-200 dark:border-surface-700 dark:bg-surface-900 sm:text-sm text-color font-semibold rounded-lg",
                         },
                     },
                     dropdown: {
