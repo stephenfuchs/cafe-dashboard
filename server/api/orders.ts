@@ -184,7 +184,7 @@ const getOrders = async (start: string, end: string) => {
             }
 
             const pageInfo = data.orders.pageInfo;
-            const newCursor = pageInfo.endCursor;
+            const newCursor: string | null = pageInfo.endCursor ?? null;
 
             if (pageInfo.hasNextPage && newCursor === previousCursor) {
                 throw new Error("Pagination cursor did not advance");

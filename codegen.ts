@@ -19,6 +19,11 @@ const config: CodegenConfig = {
             },
             config: {
                 useTypeImports: true,
+                scalars: {
+                    DateTime: "string",
+                    Cursor: "string",
+                    JsonSafeLong: "number",
+                },
             },
         },
     },
