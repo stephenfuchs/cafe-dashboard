@@ -23,6 +23,7 @@ const config: CodegenConfig = {
                     DateTime: "string",
                     Cursor: "string",
                     JsonSafeLong: "number",
+                    ID: "string",
                 },
             },
         },
