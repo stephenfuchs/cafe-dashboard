@@ -1,125 +1,9 @@
 import { parseISO, isValid, formatISO } from "date-fns";
 import { createSquareClient } from "../utils/square";
 import { gql } from "../../src/gql/gql";
+import type { OrdersQuery } from "../../src/gql/graphql";
 import { excludeDate, excludeItem } from "../utils/excludes";
 import { TZDate } from "@date-fns/tz";
-
-interface Order {
-    id: string;
-    closedAt: string;
-    lineItems: LineItem[];
-    discounts: Discount[];
-    returns: Return[];
-    refunds: Refund[];
-    tenders: Tender[];
-    totalDiscountMoney: Money;
-    totalMoney: Money;
-}
-
-interface LineItem {
-    uid: string;
-    name: string;
-    quantity: string;
-    itemVariation: ItemVariation;
-    modifiers: Modifier[];
-    appliedDiscounts: AppliedDiscount[];
-    grossSalesMoney: Money;
-    totalDiscountMoney: Money;
-    totalMoney: Money;
-}
-
-interface ItemVariation {
-    item: Item;
-}
-
-interface Item {
-    id: string;
-    images: Image[];
-    categories: Category[];
-    modifierListInfos: ModifierListInfo[];
-}
-
-interface Image {
-    url: string;
-}
-
-interface Category {
-    category: {
-        id: string;
-        name: string;
-        images: Image[];
-    };
-}
-
-interface ModifierListInfo {
-    modifierList: ModifierList;
-}
-
-interface ModifierList {
-    ordinal: number;
-    id: string;
-    name: string;
-    modifiers: Modifier[];
-}
-
-interface Modifier {
-    ordinal: number;
-    id: string;
-    name: string;
-    modifierList: ModifierList;
-}
-
-interface AppliedDiscount {
-    uid: string;
-    discountUid: string;
-    appliedMoney: Money;
-}
-
-interface Money {
-    amount: number;
-}
-
-interface Discount {
-    uid: string;
-    name: string;
-}
-
-interface Return {
-    lineItems: LineItem[];
-}
-
-interface Refund {
-    id: string;
-    transactionId: string;
-    reason: string;
-    processingFeeMoney: Money;
-    amountMoney: Money;
-}
-
-interface Tender {
-    id: string;
-    type: string;
-    amountMoney: Money;
-    payment: Payment;
-}
-
-interface Payment {
-    processingFees: ProcessingFee[];
-}
-
-interface ProcessingFee {
-    amountMoney: Money;
-}
-
-interface OrdersQueryResult {
-    orders: {
-        nodes: Order[];
-        pageInfo: {
-            hasNextPage: boolean;
-            endCursor: string | null;
-        };
-    };
-}
 
 const ORDERS_QUERY = gql(`
     query Orders($startDate: DateTime!, $endDate: DateTime!, $locationID: ID!, $merchantID: ID!, $cursor: Cursor) {
@@ -275,10 +159,10 @@ const getOrders = async (start: string, end: string) => {
 
     try {
         let cursor: string | null = null;
-        const orders: Order[] = [];
+        const orders: NonNullable<OrdersQuery["orders"]>["nodes"] = [];
 
         do {
-            const result = await squareClient.query<OrdersQueryResult>({
+            const result: { data?: OrdersQuery } = await squareClient.query({
                 query: ORDERS_QUERY,
                 variables: {
                     startDate: start,
@@ -323,7 +207,9 @@ const getOrders = async (start: string, end: string) => {
 
             const hasExcludedItems =
                 Array.isArray(order.lineItems) &&
-                order.lineItems.some((item) => excludeItem.has(item.name));
+                order.lineItems.some(
+                    (item) => item?.name && excludeItem.has(item.name),
+                );
             if (hasExcludedItems) return false;
 
             return (
