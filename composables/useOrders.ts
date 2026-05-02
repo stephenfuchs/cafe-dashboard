@@ -27,9 +27,14 @@ export const useOrders = useMemoize(
             dateRange.value.map((date) => format(date, "yyyy-MM-dd")),
         );
 
-        const orders = computed<Order[]>(() =>
-            dateKeys.value.map((key) => allOrders.value[key] || []).flat(),
-        );
+        const orders = computed<Order[]>(() => {
+            const result: Order[] = [];
+            for (const key of dateKeys.value) {
+                const list = allOrders.value[key];
+                if (list) result.push(...list);
+            }
+            return result;
+        });
 
         // Generate the array of dates in the range
         const dateRange = computed(() => {
@@ -44,7 +49,7 @@ export const useOrders = useMemoize(
                     return;
                 }
 
-                console.log("Date range:", dateRange);
+                console.log("Date range:", dateRange.value);
 
                 const cachedResults = await Promise.all(
                     dateKeys.value.map(getOrdersFromCache),
@@ -106,18 +111,25 @@ export const useOrders = useMemoize(
                             },
                         });
 
+                        const ordersByDate: Record<string, Order[]> = {};
+
+                        for (const order of response) {
+                            if (!order.closedAt) continue;
+
+                            const orderDate = order.closedAt.split("T")[0];
+
+                            if (!ordersByDate[orderDate]) {
+                                ordersByDate[orderDate] = [];
+                            }
+
+                            ordersByDate[orderDate].push(order);
+                        }
+
                         dateKeys.value.forEach((dateKey) => {
                             if (dateKey < rangeStart || dateKey > rangeEnd)
                                 return;
 
-                            const ordersForKey = response.filter((order) => {
-                                if (!order.closedAt) return false;
-                                const orderDate = format(
-                                    new Date(order.closedAt),
-                                    "yyyy-MM-dd",
-                                );
-                                return orderDate === dateKey;
-                            });
+                            const ordersForKey = ordersByDate[dateKey] ?? [];
 
                             allOrders.value[dateKey] = ordersForKey;
                             if (
@@ -164,7 +176,7 @@ export const useOrders = useMemoize(
             calcTotal(orders.value, (order: Order) =>
                 calcTotal(
                     order.lineItems ?? [],
-                    (item) => item?.grossSalesMoney?.amount,
+                    (item) => item?.grossSalesMoney?.amount ?? 0,
                 ),
             ),
         );
@@ -173,7 +185,7 @@ export const useOrders = useMemoize(
             () =>
                 calcTotal(
                     orders.value,
-                    (order: Order) => order?.totalMoney?.amount,
+                    (order: Order) => order?.totalMoney?.amount ?? 0,
                 ) - refunds.value,
         );
 
