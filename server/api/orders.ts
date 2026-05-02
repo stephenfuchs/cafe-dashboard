@@ -200,45 +200,45 @@ const getOrders = async (start: string, end: string) => {
             // console.log("UNFILTERED ORDERS: ", orders);
         }
 
-        const convertedDates = orders.map((order) => ({
-            ...order,
-            closedAt: order.closedAt
-                ? formatISO(
-                      new TZDate(parseISO(order.closedAt), "America/Chicago"),
-                  )
-                : null,
-        }));
+        const filteredOrders: typeof orders = [];
 
-        // console.log("CONVERTED ORDERS: ", convertedDates);
+        for (const order of orders) {
+            if (!order.closedAt) continue;
 
-        // Filter the orders based on tenders type (CASH or CARD)
-        const filteredOrders = convertedDates.filter((order) => {
-            if (!order.closedAt) return false;
-
-            const orderDate = order.closedAt.split(" ")[0];
-            if (excludeDate.has(orderDate)) return false;
-
-            const hasExcludedItems =
-                Array.isArray(order.lineItems) &&
-                order.lineItems.some(
-                    (item) => item?.name && excludeItem.has(item.name),
-                );
-            if (hasExcludedItems) return false;
-
-            return (
-                Array.isArray(order.tenders) && // Ensure tenders is an array
-                order.tenders.some(
-                    (tender) =>
-                        tender?.type === "CASH" || tender?.type === "CARD",
-                )
+            const parsedDate = parseISO(order.closedAt);
+            const convertedDate = formatISO(
+                new TZDate(parsedDate, "America/Chicago"),
             );
-        });
 
-        // console.log("FILTERED ORDERS: ", filteredOrders);
+            const orderDate = convertedDate.split("T")[0];
+            if (excludeDate.has(orderDate)) continue;
+
+            const hasExcludedItems = (order.lineItems ?? []).some((item) => {
+                if (!item?.name) return false;
+                return excludeItem.has(item.name);
+            });
+
+            if (hasExcludedItems) continue;
+
+            const hasValidTender = (order.tenders ?? []).some(
+                (tender) => tender?.type === "CASH" || tender?.type === "CARD",
+            );
+
+            if (!hasValidTender) continue;
+
+            filteredOrders.push({
+                ...order,
+                closedAt: convertedDate,
+            });
+        }
 
         return filteredOrders;
     } catch (error) {
-        console.error("error:", error);
+        console.error("Square orders fetch failed", {
+            start,
+            end,
+            error,
+        });
 
         if (typeof error === "object" && error !== null) {
             const err = error as any;
@@ -254,7 +254,7 @@ const getOrders = async (start: string, end: string) => {
             console.error("Unexpected Error:", error);
         }
 
-        throw error; // Re-throw the error after logging it
+        throw error;
     }
 };
 
@@ -277,8 +277,7 @@ export default defineEventHandler(async (event) => {
         throw new Error("Proper Date Not Found");
     }
     try {
-        const orders = await getOrders(String(startDate), String(endDate));
-        return orders;
+        return await getOrders(String(startDate), String(endDate));
     } catch (e) {
         console.log("Error Equals: ", JSON.parse(JSON.stringify(e)));
         console.log("Cause: ", (e as any).cause?.result?.errors);
