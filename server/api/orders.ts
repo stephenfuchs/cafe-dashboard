@@ -159,9 +159,12 @@ const getOrders = async (start: string, end: string) => {
 
     try {
         let cursor: string | null = null;
+        let hasNextPage = true;
+        let previousCursor: string | null = null;
+
         const orders: NonNullable<OrdersQuery["orders"]>["nodes"] = [];
 
-        do {
+        while (hasNextPage) {
             const result: { data?: OrdersQuery } = await squareClient.query({
                 query: ORDERS_QUERY,
                 variables: {
@@ -180,12 +183,22 @@ const getOrders = async (start: string, end: string) => {
                 throw new Error("No orders returned from Square");
             }
 
-            cursor = data.orders.pageInfo.endCursor;
+            const pageInfo = data.orders.pageInfo;
+            const newCursor = pageInfo.endCursor;
+
+            if (pageInfo.hasNextPage && newCursor === previousCursor) {
+                throw new Error("Pagination cursor did not advance");
+            }
+
+            previousCursor = newCursor;
+            cursor = newCursor;
+            hasNextPage = pageInfo.hasNextPage;
+
             console.log("CURSOR: ", cursor);
 
             orders.push(...(data.orders.nodes || []));
             // console.log("UNFILTERED ORDERS: ", orders);
-        } while (cursor);
+        }
 
         const convertedDates = orders.map((order) => ({
             ...order,
