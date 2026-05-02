@@ -1,7 +1,6 @@
 import { parseISO, isValid, formatISO } from "date-fns";
 import { createSquareClient } from "../utils/square";
 import { gql } from "../../src/gql/gql";
-import { ApolloError } from "@apollo/client/core";
 import { excludeDate, excludeItem } from "../utils/excludes";
 import { TZDate } from "@date-fns/tz";
 
@@ -350,13 +349,15 @@ const getOrders = async (start: string, end: string) => {
         // return result.data.orders?.nodes;
     } catch (error) {
         console.error("error:", error);
-        if (error instanceof ApolloError) {
-            console.error("Apollo GraphQL Errors:", error.graphQLErrors);
-            if (error.networkError && "result" in error.networkError) {
-                console.error(
-                    "Network Error:",
-                    (error.networkError as any).result,
-                );
+        if (typeof error === "object" && error !== null) {
+            const err = error as any;
+
+            if (err.graphQLErrors) {
+                console.error("Apollo GraphQL Errors:", err.graphQLErrors);
+            }
+
+            if (err.networkError && "result" in err.networkError) {
+                console.error("Network Error:", err.networkError.result);
             }
         } else {
             console.error("Unexpected Error:", error);

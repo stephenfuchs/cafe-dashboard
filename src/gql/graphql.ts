@@ -1516,6 +1516,12 @@ export type BooleanListFilterInput = {
    */
   anySatisfy?: InputMaybe<BooleanListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -2041,6 +2047,13 @@ export enum CardBrand {
    */
   CashApp = 'CASH_APP',
   /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  CashLocal = 'CASH_LOCAL',
+  /**
    * Comes from the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
    *
    * Also known as `UNIONPAY` on the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
@@ -2095,6 +2108,13 @@ export enum CardBrand {
    */
   Felica = 'FELICA',
   /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  Id = 'ID',
+  /**
    * Present on all 3 of the source enums:
    *
    * - The public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
@@ -2110,6 +2130,13 @@ export enum CardBrand {
    * - The internal [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enum.
    */
   Jcb = 'JCB',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  LocalCash = 'LOCAL_CASH',
   /**
    * Comes from the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
    *
@@ -2144,6 +2171,13 @@ export enum CardBrand {
    *
    * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
    */
+  Quicpay = 'QUICPAY',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
   RakutenPay = 'RAKUTEN_PAY',
   /**
    * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
@@ -2167,6 +2201,20 @@ export enum CardBrand {
    * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
    */
   SquareGiftCard = 'SQUARE_GIFT_CARD',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  StoredValue = 'STORED_VALUE',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  TransportationIc = 'TRANSPORTATION_IC',
   /**
    * Present on all 3 of the source enums:
    *
@@ -2294,6 +2342,13 @@ export enum CardBrandInput {
    */
   CashApp = 'CASH_APP',
   /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  CashLocal = 'CASH_LOCAL',
+  /**
    * Comes from the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
    *
    * Also known as `UNIONPAY` on the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
@@ -2348,6 +2403,13 @@ export enum CardBrandInput {
    */
   Felica = 'FELICA',
   /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  Id = 'ID',
+  /**
    * Present on all 3 of the source enums:
    *
    * - The public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
@@ -2363,6 +2425,13 @@ export enum CardBrandInput {
    * - The internal [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enum.
    */
   Jcb = 'JCB',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  LocalCash = 'LOCAL_CASH',
   /**
    * Comes from the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
    *
@@ -2397,6 +2466,13 @@ export enum CardBrandInput {
    *
    * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
    */
+  Quicpay = 'QUICPAY',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
   RakutenPay = 'RAKUTEN_PAY',
   /**
    * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
@@ -2420,6 +2496,20 @@ export enum CardBrandInput {
    * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
    */
   SquareGiftCard = 'SQUARE_GIFT_CARD',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  StoredValue = 'STORED_VALUE',
+  /**
+   * Comes from the internal [`CardTenderType`](https://prototype.sqprod.co/#/docs/squareup.common.tender.CardTenderType)
+   * and [`InstrumentType`](https://prototype.sqprod.co/#/docs/squareup.common.instrument.InstrumentType) enums.
+   *
+   * Not present on the public [`Card.Brand`](https://prototype.sqprod.co/#/docs/squareup.connect.v2.resources.Card.Brand) enum.
+   */
+  TransportationIc = 'TRANSPORTATION_IC',
   /**
    * Present on all 3 of the source enums:
    *
@@ -2505,6 +2595,12 @@ export type CardBrandListFilterInput = {
    */
   anySatisfy?: InputMaybe<CardBrandListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -2584,6 +2680,14 @@ export type CardFilterInput = {
    * When `null` or an empty object is passed, matches all documents.
    */
   cardBrand?: InputMaybe<CardBrandFilterInput>;
+  /**
+   * Used to filter on the `cardCoBrand` field:
+   *
+   * > The card's co-brand if available. For example, an Afterpay virtual card would have a co-brand of AFTERPAY.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  cardCoBrand?: InputMaybe<CardCoBrandFilterInput>;
   /**
    * Used to filter on the `cardType` field:
    *
@@ -6637,6 +6741,8 @@ export enum Country {
   Wf = 'WF',
   /** Samoa */
   Ws = 'WS',
+  /** Test country. */
+  Xt = 'XT',
   /** Yemen */
   Ye = 'YE',
   /** Mayotte */
@@ -8308,6 +8414,12 @@ export type CountryListFilterInput = {
    */
   anySatisfy?: InputMaybe<CountryListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -9536,6 +9648,12 @@ export type CurrencyCodeListFilterInput = {
    */
   anySatisfy?: InputMaybe<CurrencyCodeListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -9550,6 +9668,17 @@ export type CurrencyCodeListFilterInput = {
  * Will match all documents if passed as an empty object (or as `null`).
  */
 export type CurrencyFilter = {
+  /**
+   * Matches records where all of the provided sub-filters evaluate to true. This works just like an AND operator in SQL.
+   *
+   * Note: multiple filters are automatically ANDed together. This is only needed when you have multiple filters that can't
+   * be provided on a single `CurrencyFilter` input because of collisions between
+   * key names. For example, if you want to AND multiple
+   * OR'd sub-filters (the equivalent of (A OR B) AND (C OR D)), you could do allOf: [{anyOf: [...]}, {anyOf: [...]}].
+   *
+   * When `null` or an empty list is passed, matches all documents.
+   */
+  allOf?: InputMaybe<Array<CurrencyFilter>>;
   /**
    * Matches records where any of the provided sub-filters evaluate to true.
    * This works just like an OR operator in SQL.
@@ -9845,7 +9974,7 @@ export enum CurrencyInput {
   Sgd = 'SGD',
   /** Saint Helena pound */
   Shp = 'SHP',
-  /** Sierra Leonean First leone */
+  /** Sierra Leonean leone */
   Sll = 'SLL',
   /** Somali shilling */
   Sos = 'SOS',
@@ -10015,6 +10144,12 @@ export type CurrencyListFilterInput = {
    */
   anySatisfy?: InputMaybe<CurrencyListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -10090,9 +10225,15 @@ export type Customer = {
   customAttributes?: Maybe<Array<Maybe<CustomerCustomAttribute>>>;
   /** The email address associated with the customer profile. */
   emailAddress?: Maybe<Scalars['EmailAddress']['output']>;
-  /** The family name (that is, the last name) associated with the customer profile. */
+  /**
+   * The family name (that is, the last name) associated with the customer profile.
+   * @deprecated Will be removed in the future.
+   */
   familyName?: Maybe<Scalars['String']['output']>;
-  /** The given name (that is, the first name) associated with the customer profile. */
+  /**
+   * The given name (that is, the first name) associated with the customer profile.
+   * @deprecated Will be removed in the future.
+   */
   givenName?: Maybe<Scalars['String']['output']>;
   /** The IDs of customer groups the customer belongs to. */
   groupIds?: Maybe<Array<Maybe<Scalars['ID']['output']>>>;
@@ -10100,7 +10241,10 @@ export type Customer = {
   id: Scalars['ID']['output'];
   /** The Square-issued ID of the merchant. */
   merchantId: Scalars['ID']['output'];
-  /** A nickname for the customer profile. */
+  /**
+   * A nickname for the customer profile.
+   * @deprecated Will be removed in the future.
+   */
   nickname?: Maybe<Scalars['String']['output']>;
   /** A custom note associated with the customer profile. */
   note?: Maybe<Scalars['String']['output']>;
@@ -10996,6 +11140,12 @@ export type DateTimeListFilterInput = {
    * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<DateTimeListElementFilterInput>;
+  /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
@@ -12102,7 +12252,7 @@ export type DeviceConnection = {
 
 /**
  * Represents a specific `Device` in the context of a `DeviceConnection`,
- * providing access to both the `Device` and a pagination `Cursor`.
+ * providing access to both the `Device` and query-specific information such as the pagination `Cursor`.
  *
  * See the [Relay GraphQL Cursor Connections
  * Specification](https://relay.dev/graphql/connections.htm#sec-Edge-Types) for more info.
@@ -13010,6 +13160,7 @@ export enum DeviceType {
   DeviceTypeUnknown = 'DEVICE_TYPE_UNKNOWN',
   Handheld = 'HANDHELD',
   InternalPrinter = 'INTERNAL_PRINTER',
+  /** @deprecated Replaced with `INTERNAL_SCANNER` component type. */
   InternalScanner = 'INTERNAL_SCANNER',
   Ios = 'IOS',
   Printer = 'PRINTER',
@@ -13072,6 +13223,7 @@ export enum DeviceTypeInput {
   DeviceTypeUnknown = 'DEVICE_TYPE_UNKNOWN',
   Handheld = 'HANDHELD',
   InternalPrinter = 'INTERNAL_PRINTER',
+  /** @deprecated Replaced with `INTERNAL_SCANNER` component type. */
   InternalScanner = 'INTERNAL_SCANNER',
   Ios = 'IOS',
   Printer = 'PRINTER',
@@ -13151,9 +13303,14 @@ export enum DigitalWalletPaymentBrand {
   Alipay = 'ALIPAY',
   AuPay = 'AU_PAY',
   CashApp = 'CASH_APP',
+  /** A legacy misnamed alias for `LOCAL_CASH`. Prefer `LOCAL_CASH` for Local Cash wallet payments. */
+  CashLocal = 'CASH_LOCAL',
   DBarai = 'D_BARAI',
   Lightning = 'LIGHTNING',
+  /** The canonical wallet brand value for Local Cash payments. */
+  LocalCash = 'LOCAL_CASH',
   Merpay = 'MERPAY',
+  MultiBrand = 'MULTI_BRAND',
   Paypay = 'PAYPAY',
   RakutenPay = 'RAKUTEN_PAY',
   Unknown = 'UNKNOWN',
@@ -13208,9 +13365,14 @@ export enum DigitalWalletPaymentBrandInput {
   Alipay = 'ALIPAY',
   AuPay = 'AU_PAY',
   CashApp = 'CASH_APP',
+  /** A legacy misnamed alias for `LOCAL_CASH`. Prefer `LOCAL_CASH` for Local Cash wallet payments. */
+  CashLocal = 'CASH_LOCAL',
   DBarai = 'D_BARAI',
   Lightning = 'LIGHTNING',
+  /** The canonical wallet brand value for Local Cash payments. */
+  LocalCash = 'LOCAL_CASH',
   Merpay = 'MERPAY',
+  MultiBrand = 'MULTI_BRAND',
   Paypay = 'PAYPAY',
   RakutenPay = 'RAKUTEN_PAY',
   Unknown = 'UNKNOWN',
@@ -13630,6 +13792,12 @@ export type ErrorCategoryListFilterInput = {
    */
   anySatisfy?: InputMaybe<ErrorCategoryListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -13822,6 +13990,8 @@ export enum ErrorCode {
   FulfillmentSchedulingOffHours = 'FULFILLMENT_SCHEDULING_OFF_HOURS',
   /** A scheduling request was made outside of the allowed menu hours. */
   FulfillmentSchedulingOffMenuHours = 'FULFILLMENT_SCHEDULING_OFF_MENU_HOURS',
+  /** The scheduling request falls outside the item-level availabilities. */
+  FulfillmentSchedulingOutsideItemLevelAvailabilities = 'FULFILLMENT_SCHEDULING_OUTSIDE_ITEM_LEVEL_AVAILABILITIES',
   /** Gateway Timeout - a general error occurred. */
   GatewayTimeout = 'GATEWAY_TIMEOUT',
   /**
@@ -13985,6 +14155,8 @@ export enum ErrorCode {
   NoFieldsSet = 'NO_FIELDS_SET',
   /** A general error occurred. */
   OneInstrumentExpected = 'ONE_INSTRUMENT_EXPECTED',
+  /** Client attempted to operate on an Order that was already canceled. */
+  OrderAlreadyCanceled = 'ORDER_ALREADY_CANCELED',
   /** The order has already been completed and cannot be modified. */
   OrderAlreadyCompleted = 'ORDER_ALREADY_COMPLETED',
   /** The order was already used. */
@@ -13995,8 +14167,15 @@ export enum ErrorCode {
   OrderExpired = 'ORDER_EXPIRED',
   /** The creation request contains too many catalog IDs. */
   OrderTooManyCatalogObjects = 'ORDER_TOO_MANY_CATALOG_OBJECTS',
+  /** Client is operating on an order that cannot be paid due to a total amount mismatch. */
+  OrderTotalMismatch = 'ORDER_TOTAL_MISMATCH',
   /** The order attempting to be returned is not yet paid and cannot be returned. */
   OrderUnpaidNotReturnable = 'ORDER_UNPAID_NOT_RETURNABLE',
+  /**
+   * Client is operating on an order that cannot be paid because the client's order
+   * version is behind the server's order version.
+   */
+  OrderVersionBehindLatest = 'ORDER_VERSION_BEHIND_LATEST',
   /** The specified card number is invalid. For example, it is of incorrect length or is incorrectly formatted. */
   PanFailure = 'PAN_FAILURE',
   /** Delay capture of a partial payment is not supported. */
@@ -14012,6 +14191,8 @@ export enum ErrorCode {
   PaymentNotRefundable = 'PAYMENT_NOT_REFUNDABLE',
   /** The payment is not refundable because it has been disputed. */
   PaymentNotRefundableDueToDispute = 'PAYMENT_NOT_REFUNDABLE_DUE_TO_DISPUTE',
+  /** The provided merchant or location is not enabled to accept the requested payment source. */
+  PaymentSourceNotEnabledForTarget = 'PAYMENT_SOURCE_NOT_ENABLED_FOR_TARGET',
   /** Generic plaid error. */
   PlaidError = 'PLAID_ERROR',
   /** Plaid error - ITEM_LOGIN_REQUIRED. */
@@ -14330,6 +14511,8 @@ export enum ErrorCodeInput {
   FulfillmentSchedulingOffHours = 'FULFILLMENT_SCHEDULING_OFF_HOURS',
   /** A scheduling request was made outside of the allowed menu hours. */
   FulfillmentSchedulingOffMenuHours = 'FULFILLMENT_SCHEDULING_OFF_MENU_HOURS',
+  /** The scheduling request falls outside the item-level availabilities. */
+  FulfillmentSchedulingOutsideItemLevelAvailabilities = 'FULFILLMENT_SCHEDULING_OUTSIDE_ITEM_LEVEL_AVAILABILITIES',
   /** Gateway Timeout - a general error occurred. */
   GatewayTimeout = 'GATEWAY_TIMEOUT',
   /**
@@ -14493,6 +14676,8 @@ export enum ErrorCodeInput {
   NoFieldsSet = 'NO_FIELDS_SET',
   /** A general error occurred. */
   OneInstrumentExpected = 'ONE_INSTRUMENT_EXPECTED',
+  /** Client attempted to operate on an Order that was already canceled. */
+  OrderAlreadyCanceled = 'ORDER_ALREADY_CANCELED',
   /** The order has already been completed and cannot be modified. */
   OrderAlreadyCompleted = 'ORDER_ALREADY_COMPLETED',
   /** The order was already used. */
@@ -14503,8 +14688,15 @@ export enum ErrorCodeInput {
   OrderExpired = 'ORDER_EXPIRED',
   /** The creation request contains too many catalog IDs. */
   OrderTooManyCatalogObjects = 'ORDER_TOO_MANY_CATALOG_OBJECTS',
+  /** Client is operating on an order that cannot be paid due to a total amount mismatch. */
+  OrderTotalMismatch = 'ORDER_TOTAL_MISMATCH',
   /** The order attempting to be returned is not yet paid and cannot be returned. */
   OrderUnpaidNotReturnable = 'ORDER_UNPAID_NOT_RETURNABLE',
+  /**
+   * Client is operating on an order that cannot be paid because the client's order
+   * version is behind the server's order version.
+   */
+  OrderVersionBehindLatest = 'ORDER_VERSION_BEHIND_LATEST',
   /** The specified card number is invalid. For example, it is of incorrect length or is incorrectly formatted. */
   PanFailure = 'PAN_FAILURE',
   /** Delay capture of a partial payment is not supported. */
@@ -14520,6 +14712,8 @@ export enum ErrorCodeInput {
   PaymentNotRefundable = 'PAYMENT_NOT_REFUNDABLE',
   /** The payment is not refundable because it has been disputed. */
   PaymentNotRefundableDueToDispute = 'PAYMENT_NOT_REFUNDABLE_DUE_TO_DISPUTE',
+  /** The provided merchant or location is not enabled to accept the requested payment source. */
+  PaymentSourceNotEnabledForTarget = 'PAYMENT_SOURCE_NOT_ENABLED_FOR_TARGET',
   /** Generic plaid error. */
   PlaidError = 'PLAID_ERROR',
   /** Plaid error - ITEM_LOGIN_REQUIRED. */
@@ -14722,6 +14916,12 @@ export type ErrorCodeListFilterInput = {
    */
   anySatisfy?: InputMaybe<ErrorCodeListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -14815,6 +15015,8 @@ export type EthernetComponentDetails = {
   ethernetActive?: Maybe<Scalars['Boolean']['output']>;
   /** The string representation of the device's IPv4 address. */
   ipAddressV4?: Maybe<Scalars['String']['output']>;
+  /** The mac address of the device in this network. */
+  macAddress?: Maybe<Scalars['String']['output']>;
 };
 
 /**
@@ -15042,6 +15244,62 @@ export type FilterValue = {
   any?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** A list of terms that must not be present on the field the resource */
   none?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+/**
+ * Input type used to specify filters on `Float` fields.
+ *
+ * Will match all documents if passed as an empty object (or as `null`).
+ */
+export type FloatFilterInput = {
+  /**
+   * Matches records where any of the provided sub-filters evaluate to true.
+   * This works just like an OR operator in SQL.
+   *
+   * When `null` is passed, matches all documents.
+   * When an empty list is passed, this part of the filter matches no documents.
+   */
+  anyOf?: InputMaybe<Array<FloatFilterInput>>;
+  /**
+   * Matches records where the field value is equal to any of the provided values.
+   * This works just like an IN operator in SQL.
+   *
+   * When `null` is passed, matches all documents. When an empty list is passed,
+   * this part of the filter matches no documents. When `null` is passed in the
+   * list, this part of the filter matches records where the field value is `null`.
+   */
+  equalToAnyOf?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
+  /**
+   * Matches records where the field value is greater than (>) the provided value.
+   *
+   * When `null` is passed, matches all documents.
+   */
+  gt?: InputMaybe<Scalars['Float']['input']>;
+  /**
+   * Matches records where the field value is greater than or equal to (>=) the provided value.
+   *
+   * When `null` is passed, matches all documents.
+   */
+  gte?: InputMaybe<Scalars['Float']['input']>;
+  /**
+   * Matches records where the field value is less than (<) the provided value.
+   *
+   * When `null` is passed, matches all documents.
+   */
+  lt?: InputMaybe<Scalars['Float']['input']>;
+  /**
+   * Matches records where the field value is less than or equal to (<=) the provided value.
+   *
+   * When `null` is passed, matches all documents.
+   */
+  lte?: InputMaybe<Scalars['Float']['input']>;
+  /**
+   * Matches records where the provided sub-filter evaluates to false.
+   * This works just like a NOT operator in SQL.
+   *
+   * When `null` or an empty object is passed, matches no documents.
+   */
+  not?: InputMaybe<FloatFilterInput>;
 };
 
 /**
@@ -16186,6 +16444,12 @@ export type IdListFilterInput = {
    */
   anySatisfy?: InputMaybe<IdListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -16932,6 +17196,12 @@ export type JsonSafeLongListFilterInput = {
    * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<JsonSafeLongListElementFilterInput>;
+  /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
@@ -18823,12 +19093,10 @@ export type NonNumericAggregatedValues = {
 /** OAuth scopes */
 export enum OAuthScope {
   AppointmentsAllRead = 'APPOINTMENTS_ALL_READ',
-  AppointmentsBusinessSettingsRead = 'APPOINTMENTS_BUSINESS_SETTINGS_READ',
   AppointmentsRead = 'APPOINTMENTS_READ',
   BankAccountsRead = 'BANK_ACCOUNTS_READ',
   CashDrawerRead = 'CASH_DRAWER_READ',
   CustomersRead = 'CUSTOMERS_READ',
-  DevicesRead = 'DEVICES_READ',
   DisputesRead = 'DISPUTES_READ',
   EmployeesRead = 'EMPLOYEES_READ',
   GiftcardsRead = 'GIFTCARDS_READ',
@@ -18842,7 +19110,6 @@ export enum OAuthScope {
   OnlineStoreSnippetsRead = 'ONLINE_STORE_SNIPPETS_READ',
   OrdersRead = 'ORDERS_READ',
   PaymentsRead = 'PAYMENTS_READ',
-  PayoutsRead = 'PAYOUTS_READ',
   SettlementsRead = 'SETTLEMENTS_READ',
   SubscriptionsRead = 'SUBSCRIPTIONS_READ',
   TimecardsRead = 'TIMECARDS_READ',
@@ -22229,6 +22496,12 @@ export type PaymentAppProcessingFeeTypeListFilterInput = {
    */
   anySatisfy?: InputMaybe<PaymentAppProcessingFeeTypeListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -22461,6 +22734,12 @@ export type PaymentCapabilityListFilterInput = {
    * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<PaymentCapabilityListElementFilterInput>;
+  /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
@@ -23116,6 +23395,12 @@ export type PaymentProcessingFeeTypeListFilterInput = {
    * When `null` or an empty object is passed, matches all documents.
    */
   anySatisfy?: InputMaybe<PaymentProcessingFeeTypeListElementFilterInput>;
+  /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
   /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
@@ -27006,6 +27291,12 @@ export type StringListFilterInput = {
    */
   anySatisfy?: InputMaybe<StringListElementFilterInput>;
   /**
+   * Used to filter on the number of non-null elements in this list field.
+   *
+   * When `null` or an empty object is passed, matches all documents.
+   */
+  count?: InputMaybe<IntFilterInput>;
+  /**
    * Matches records where the provided sub-filter evaluates to false.
    * This works just like a NOT operator in SQL.
    *
@@ -27797,6 +28088,8 @@ export type WiFiComponentDetails = {
   __typename?: 'WiFiComponentDetails';
   /** The string representation of the device's IPv4 address. */
   ipAddressV4?: Maybe<Scalars['String']['output']>;
+  /** The mac address of the device in this network. */
+  macAddress?: Maybe<Scalars['String']['output']>;
   /** The security protocol for a secure connection (e.g. WPA2). None provided if the connection is unsecured. */
   secureConnection?: Maybe<Scalars['String']['output']>;
   /** The name of the connected WiFi network. */

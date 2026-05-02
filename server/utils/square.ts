@@ -1,5 +1,9 @@
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client/core";
-import { setContext } from "@apollo/client/link/context";
+import {
+    ApolloClient,
+    InMemoryCache,
+    HttpLink,
+    ApolloLink,
+} from "@apollo/client/core";
 
 export const createSquareClient = () => {
     const runtimeConfig = useRuntimeConfig();
@@ -8,12 +12,16 @@ export const createSquareClient = () => {
         uri: "https://connect.squareup.com/public/graphql",
     });
 
-    const authLink = setContext((_, { headers }) => ({
-        headers: {
-            ...headers,
-            Authorization: `Bearer ${runtimeConfig.squareApiSecret}`,
-        },
-    }));
+    const authLink = new ApolloLink((operation, forward) => {
+        operation.setContext(({ headers = {} }) => ({
+            headers: {
+                ...headers,
+                Authorization: `Bearer ${runtimeConfig.squareApiSecret}`,
+            },
+        }));
+
+        return forward(operation);
+    });
 
     return new ApolloClient({
         link: authLink.concat(httpLink),
