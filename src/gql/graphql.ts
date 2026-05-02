@@ -41,8 +41,8 @@ export type OrderTenderType =
 export type OrdersQueryVariables = Exact<{
   startDate: string;
   endDate: string;
-  locationID: string | number;
-  merchantID: string | number;
+  locationID: string;
+  merchantID: string;
   cursor?: string | null | undefined;
 }>;
 
