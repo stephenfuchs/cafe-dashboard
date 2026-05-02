@@ -26,5 +26,10 @@ export const createSquareClient = () => {
     return new ApolloClient({
         link: authLink.concat(httpLink),
         cache: new InMemoryCache(),
+        defaultOptions: {
+            query: {
+                fetchPolicy: "no-cache",
+            },
+        },
     });
 };

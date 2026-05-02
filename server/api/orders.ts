@@ -121,6 +121,145 @@ interface OrdersQueryResult {
     };
 }
 
+const ORDERS_QUERY = gql(`
+    query Orders($startDate: DateTime!, $endDate: DateTime!, $locationID: ID!, $merchantID: ID!, $cursor: Cursor) {
+        orders(
+            filter: {
+                merchantId: { equalToAnyOf: [$merchantID] }
+                location: { equalToAnyOf: [$locationID] }
+                state: { equalToAnyOf: [COMPLETED] }
+                closedAt: { startAt: $startDate, endAt: $endDate }
+            }
+            first: 100
+            after: $cursor
+        ) {
+            nodes {
+                id
+                closedAt
+                lineItems {
+                    uid
+                    name
+                    quantity
+                    itemVariation {
+                        item {
+                            id
+                            images {
+                                url
+                            }
+                            categories {
+                                category {
+                                    id
+                                    name
+                                    images {
+                                        url
+                                    }
+                                }
+                            }
+                            modifierListInfos {
+                                modifierList {
+                                    ordinal
+                                    id
+                                    name
+                                    modifiers {
+                                        ordinal
+                                        id
+                                        name
+                                        modifierList {
+                                            id
+                                            name
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    modifiers {
+                        uid
+                        name
+                    }
+                    appliedDiscounts {
+                        uid
+                        discountUid
+                        appliedMoney {
+                            amount
+                        }
+                    }
+                    grossSalesMoney {
+                        amount
+                    }
+                    totalDiscountMoney {
+                        amount
+                    }
+                    totalMoney {
+                        amount
+                    }
+                }
+                discounts {
+                    uid
+                    name
+                }
+                returns {
+                    lineItems {
+                        name
+                        quantity
+                        sourceLineItemUid
+                        uid
+                        itemVariation {
+                            item {
+                                id
+                                images {
+                                    url
+                                }
+                                categories {
+                                    category {
+                                        id
+                                        name
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                refunds {
+                    id
+                    transactionId
+                    reason
+                    processingFeeMoney {
+                        amount
+                    }
+                    amountMoney {
+                        amount
+                    }
+                }
+                tenders {
+                    id
+                    type
+                    amountMoney {
+                        amount
+                    }
+                    payment {
+                        processingFees {
+                            amountMoney {
+                                amount
+                            }
+                        }
+                    }
+                }
+                totalDiscountMoney {
+                    amount
+                }
+                totalMoney {
+                    amount
+                }
+            }
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+        }
+    }
+`);
+
 //@ts-ignore
 BigInt.prototype.toJSON = function () {
     const int = Number.parseInt(this.toString());
@@ -137,177 +276,30 @@ const getOrders = async (start: string, end: string) => {
     try {
         let cursor: string | null = null;
         const orders: Order[] = [];
+
         do {
-            let maybeCursor;
-            if (cursor) {
-                maybeCursor = cursor;
-            } else {
-                maybeCursor = undefined;
+            const result = await squareClient.query<OrdersQueryResult>({
+                query: ORDERS_QUERY,
+                variables: {
+                    startDate: start,
+                    endDate: end,
+                    locationID,
+                    merchantID,
+                    ...(cursor ? { cursor } : {}),
+                },
+                errorPolicy: "all",
+            });
+
+            const data = result.data;
+
+            if (!data?.orders) {
+                throw new Error("No orders returned from Square");
             }
 
-            const result: { data: OrdersQueryResult } =
-                await squareClient.query<OrdersQueryResult>({
-                    variables: {
-                        startDate: start,
-                        endDate: end,
-                        locationID,
-                        merchantID,
-                        // There seems to be an issue when we pass through `null` for
-                        // the value for `cursor`. This might be an issue with ApolloClient
-                        // because the Sqaure GraphQL playground successfully accepts `null`.
-                        // The error the Square API returns is: "An internal error has
-                        // occurred, and the API was unable to service your request." and
-                        // error code is "INTERNAL_SERVER_ERROR".
-                        //
-                        // Therefore, only include the cursor variable when it has a value
-                        // (like in our request for the first page):
-                        ...(cursor ? { cursor } : {}),
-                    },
-                    query: gql(`
-                query Orders($startDate: DateTime!, $endDate: DateTime!, $locationID: ID!, $merchantID: ID!, $cursor: Cursor) {
-                    orders(
-                        filter: {
-                            merchantId: { equalToAnyOf: [$merchantID] }
-                            location: { equalToAnyOf: [$locationID] }
-                            state: { equalToAnyOf: [COMPLETED] }
-                            closedAt: { startAt: $startDate, endAt: $endDate }
-                        }
-                        first: 100
-                        after: $cursor
-                    ) {
-                        nodes {
-                            id
-                            closedAt
-                            lineItems {
-                                uid
-                                name
-                                quantity
-                                itemVariation {
-                                    item {
-                                        id
-                                        images {
-                                            url
-                                        }
-                                        categories {
-                                            category {
-                                                id
-                                                name
-                                                images {
-                                                    url
-                                                }
-                                            }
-                                        }
-                                        modifierListInfos {
-                                            modifierList {
-                                                ordinal
-                                                id
-                                                name
-                                                modifiers {
-                                                    ordinal
-                                                    id
-                                                    name
-                                                    modifierList {
-                                                        id
-                                                        name
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                modifiers {
-                                    uid
-                                    name
-                                }
-                                appliedDiscounts {
-                                    uid
-                                    discountUid
-                                    appliedMoney {
-                                        amount
-                                    }
-                                }
-                                grossSalesMoney {
-                                    amount
-                                }
-                                totalDiscountMoney {
-                                    amount
-                                }
-                                totalMoney {
-                                    amount
-                                }
-                            }
-                            discounts {
-                                uid
-                                name
-                            }
-                            returns {
-                                lineItems {
-                                    name
-                                    quantity
-                                    sourceLineItemUid
-                                    uid
-                                    itemVariation {
-                                        item {
-                                            id
-                                            images {
-                                                url
-                                            }
-                                            categories {
-                                                category {
-                                                    id
-                                                    name
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            refunds {
-                                id
-                                transactionId
-                                reason
-                                processingFeeMoney {
-                                    amount
-                                }
-                                amountMoney {
-                                    amount
-                                }
-                            }
-                            tenders {
-                                id
-                                type
-                                amountMoney {
-                                    amount
-                                }
-                                payment {
-                                    processingFees {
-                                        amountMoney {
-                                            amount
-                                        }
-                                    }
-                                }
-                            }
-                            totalDiscountMoney {
-                                amount
-                            }
-                            totalMoney {
-                                amount
-                            }
-                        }
-                        pageInfo {
-                            hasNextPage
-                            endCursor
-                        }
-                    }
-                }
-            `),
-                });
-
-            // cursor = result.data.orders?.pageInfo.endCursor;
-            cursor = result.data.orders?.pageInfo.endCursor;
+            cursor = data.orders.pageInfo.endCursor;
             console.log("CURSOR: ", cursor);
 
-            orders.push(...(result.data.orders?.nodes || []));
+            orders.push(...(data.orders.nodes || []));
             // console.log("UNFILTERED ORDERS: ", orders);
         } while (cursor);
 
@@ -346,9 +338,9 @@ const getOrders = async (start: string, end: string) => {
         // console.log("FILTERED ORDERS: ", filteredOrders);
 
         return filteredOrders;
-        // return result.data.orders?.nodes;
     } catch (error) {
         console.error("error:", error);
+
         if (typeof error === "object" && error !== null) {
             const err = error as any;
 
@@ -362,6 +354,7 @@ const getOrders = async (start: string, end: string) => {
         } else {
             console.error("Unexpected Error:", error);
         }
+
         throw error; // Re-throw the error after logging it
     }
 };
@@ -378,7 +371,6 @@ export default defineEventHandler(async (event) => {
     const startDate = getQuery(event).startDate;
     const endDate = getQuery(event).endDate;
 
-    // try {
     if (
         !isValid(parseISO(String(startDate))) ||
         !isValid(parseISO(String(endDate)))
@@ -387,7 +379,6 @@ export default defineEventHandler(async (event) => {
     }
     try {
         const orders = await getOrders(String(startDate), String(endDate));
-
         return orders;
     } catch (e) {
         console.log("Error Equals: ", JSON.parse(JSON.stringify(e)));
