@@ -6,12 +6,14 @@ import {
     isBefore,
     startOfToday,
 } from "date-fns";
-import type { Order } from "../src/gql/graphql";
+import type { OrdersQuery } from "../src/gql/graphql";
 import { useMemoize } from "@vueuse/core";
 import {
     saveOrdersToCache,
     getOrdersFromCache,
 } from "~/composables/useIndexDB";
+
+type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
 export const useOrders = useMemoize(
     (start: Ref<TZDate | null>, end: Ref<TZDate | null>) => {
@@ -218,15 +220,50 @@ export const useOrders = useMemoize(
         );
 
         const tenderTotal = (tenderType: string) =>
-            computed(() =>
-                calcTotal(orders.value, (order: Order) =>
-                    calcTotal(order.tenders ?? [], (tender) =>
-                        tender?.type === tenderType
-                            ? tender?.amountMoney?.amount || 0
-                            : 0,
-                    ),
-                ),
-            );
+            computed(() => {
+                // Build a map of original order ID -> amount returned.
+                //
+                // A return order points back to the original sale through:
+                // return.source.id
+                const returnedAmountsByOrderId = new Map<string, number>();
+
+                for (const returnOrder of orders.value) {
+                    for (const orderReturn of returnOrder.returns ?? []) {
+                        const sourceOrderId = orderReturn?.source?.id;
+
+                        if (!sourceOrderId) continue;
+
+                        const returnedAmount =
+                            orderReturn?.amounts?.totalMoney?.amount ?? 0;
+
+                        returnedAmountsByOrderId.set(
+                            sourceOrderId,
+                            (returnedAmountsByOrderId.get(sourceOrderId) ?? 0) +
+                                returnedAmount,
+                        );
+                    }
+                }
+
+                return calcTotal(orders.value, (order: Order) => {
+                    // A return order itself is not a payment.
+                    if ((order.returns?.length ?? 0) > 0) {
+                        return 0;
+                    }
+
+                    const tenderAmount = calcTotal(
+                        order.tenders ?? [],
+                        (tender) =>
+                            tender?.type === tenderType
+                                ? tender?.amountMoney?.amount || 0
+                                : 0,
+                    );
+
+                    const returnedAmount =
+                        returnedAmountsByOrderId.get(order.id ?? "") ?? 0;
+
+                    return Math.max(0, tenderAmount - returnedAmount);
+                });
+            });
 
         const cashPayments = tenderTotal("CASH");
         const cardPayments = tenderTotal("CARD");

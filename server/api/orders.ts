@@ -83,6 +83,14 @@ const ORDERS_QUERY = gql(`
                     name
                 }
                 returns {
+                    source {
+                        id
+                    }
+                    amounts {
+                        totalMoney {
+                            amount
+                        }
+                    }
                     lineItems {
                         name
                         quantity
@@ -210,7 +218,7 @@ const getOrders = async (start: string, end: string) => {
                 new TZDate(parsedDate, "America/Chicago"),
             );
 
-            const orderDate = convertedDate.split("T")[0];
+            const orderDate = convertedDate.split("T")[0] ?? "";
             if (excludeDate.has(orderDate)) continue;
 
             const hasExcludedItems = (order.lineItems ?? []).some((item) => {
