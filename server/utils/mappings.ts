@@ -292,6 +292,8 @@ export const modifierCategoryMap: Record<string, string> = {
     "pop flavor": "flavor",
     "size (cocoa)": "size",
     "sparkling ice flavor": "flavor",
+    "coffee pot flavor": "flavor",
+    "coffee pot size": "size",
 };
 
 export const modifierSkipped = ["ask for order name"];

@@ -12,17 +12,37 @@ const { salesList } = useSalesList(
     [],
 );
 
-const coffees = computed(() => {
-    const coffeeNames = ["regular", "hazelnut", "french vanilla", "caramel", "decaf"]
-    let filteredList = salesList.value.filter((item) => coffeeNames.includes(item.name)).map((item) => ({
-        name: item.name,
-        imgCoffee: item.imgCoffee,
-        quantity: item.quantity,
-        trendQuantity: item.trendQuantity
-    }));
+const {
+    coffeeTotals,
+    totalPots,
+} = useBrewedCoffeeAnalytics(
+    filters.startDate,
+    filters.endDate,
+);
 
-    return filteredList.sort((a,b) => b.quantity - a.quantity);
-});
+// const coffees = computed(() => {
+//     const coffeeNames = ["regular", "hazelnut", "french vanilla", "caramel", "decaf"]
+//     let filteredList = salesList.value.filter((item) => coffeeNames.includes(item.name)).map((item) => ({
+//         name: item.name,
+//         imgCoffee: item.imgCoffee,
+//         quantity: item.quantity,
+//         trendQuantity: item.trendQuantity
+//     }));
+
+//     return filteredList.sort((a,b) => b.quantity - a.quantity);
+// });
+
+const coffees = computed(() =>
+    coffeeTotals.value.map((coffee) => ({
+        name: coffee.flavor,
+
+        imgCoffee: coffee.image,
+
+        quantity: coffee.quantity,
+
+        trendQuantity: 0,
+    })),
+);
 
 const coffeeDonations = computed(() => {
     const donation = salesList.value.find((item) => item.name === "coffee donation")
