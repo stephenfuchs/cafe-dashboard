@@ -1,14 +1,12 @@
 <script setup>
-import { excludeDonations } from "../server/utils/excludes";
 const filters = useFilters();
 
-const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
+const { items, isLoading, prevIsLoading } = useItemSalesAnalytics(
+    filters.startDate,
+    filters.endDate,
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
-
-const { salesList } = useSalesList(orders, previousOrders, excludeDonations);
 
 const categoryFilter = ref("all items");
 const categoryOptions = [
@@ -20,7 +18,9 @@ const categoryOptions = [
 ];
 
 const filteredSalesList = computed(() => {
-    let filteredList = salesList.value.filter((item) => item.quantity > 0);
+    let filteredList = items.value.filter(
+        (item) => item.quantity > 0 && item.category !== "donations",
+    );
 
     if (categoryFilter.value !== "all items") {
         filteredList = filteredList.filter(
@@ -28,7 +28,19 @@ const filteredSalesList = computed(() => {
         );
     }
 
-    return filteredList;
+    return filteredList.map((item) => ({
+        name: item.name,
+        category: item.category ?? "unknown",
+        quantity: item.quantity,
+        value: item.grossSales,
+        imgItem: item.imgItem,
+        trendQuantity: item.trendQuantity,
+        trendValue: item.trendGrossSales,
+        currentSortOrder: item.currentSortOrder,
+        previousSortOrder: item.previousSortOrder,
+        modifiers: item.modifiers,
+        modifierSets: item.modifierSets,
+    }));
 });
 
 const sortOptions = ref([

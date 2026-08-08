@@ -1,56 +1,54 @@
-<script setup type="ts">
+<script setup lang="ts">
 const filters = useFilters();
-const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
-    filters.comparisonStartDate,
-    filters.comparisonEndDate,
-);
 
-const { salesList } = useSalesList(
-    orders,
-    previousOrders,
-    [],
-);
-
-const {
-    coffeeTotals,
-    totalPots,
-} = useBrewedCoffeeAnalytics(
+const { sales: currentSales, isLoading } = useNormalizedOrders(
     filters.startDate,
     filters.endDate,
 );
 
-// const coffees = computed(() => {
-//     const coffeeNames = ["regular", "hazelnut", "french vanilla", "caramel", "decaf"]
-//     let filteredList = salesList.value.filter((item) => coffeeNames.includes(item.name)).map((item) => ({
-//         name: item.name,
-//         imgCoffee: item.imgCoffee,
-//         quantity: item.quantity,
-//         trendQuantity: item.trendQuantity
-//     }));
+const { sales: previousSales, isLoading: prevIsLoading } = useNormalizedOrders(
+    filters.comparisonStartDate,
+    filters.comparisonEndDate,
+);
 
-//     return filteredList.sort((a,b) => b.quantity - a.quantity);
-// });
+const {
+    coffeeTotals,
+    isLoading: coffeeIsLoading,
+    prevIsLoading: coffeePrevIsLoading,
+} = useBrewedCoffeeAnalytics(
+    filters.startDate,
+    filters.endDate,
+    filters.comparisonStartDate,
+    filters.comparisonEndDate,
+);
 
 const coffees = computed(() =>
     coffeeTotals.value.map((coffee) => ({
         name: coffee.flavor,
-
         imgCoffee: coffee.image,
-
         quantity: coffee.quantity,
-
-        trendQuantity: 0,
+        trendQuantity: coffee.trendQuantity,
     })),
 );
 
 const coffeeDonations = computed(() => {
-    const donation = salesList.value.find((item) => item.name === "coffee donation")
-    return donation ? {
-        value: donation.value,
-        trendValue: donation.trendValue
-    } : null
-})
+    const currentValue = currentSales.value
+        .filter((sale) => sale.isDonation && sale.name === "coffee donation")
+        .reduce((total, sale) => total + sale.grossSales, 0);
+
+    const previousValue = previousSales.value
+        .filter((sale) => sale.isDonation && sale.name === "coffee donation")
+        .reduce((total, sale) => total + sale.grossSales, 0);
+
+    if (currentValue === 0 && previousValue === 0) {
+        return null;
+    }
+
+    return {
+        value: currentValue,
+        trendValue: currentValue - previousValue,
+    };
+});
 </script>
 
 <template>
@@ -67,6 +65,11 @@ const coffeeDonations = computed(() => {
                 :prevIsLoading="prevIsLoading"
             />
         </template>
-        <UiAppCardList :source="coffees" type="coffee" :isLoading="isLoading" />
+        <UiAppCardList
+            :source="coffees"
+            type="coffee"
+            :isLoading="coffeeIsLoading"
+            :prevIsLoading="coffeePrevIsLoading"
+        />
     </UiAppCard>
 </template>

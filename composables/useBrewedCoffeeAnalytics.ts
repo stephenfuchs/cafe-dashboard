@@ -6,8 +6,13 @@ import { imagesCoffee } from "~/server/utils/mappings";
 export const useBrewedCoffeeAnalytics = (
     start: Ref<TZDate | null>,
     end: Ref<TZDate | null>,
+    previousStart: Ref<TZDate | null>,
+    previousEnd: Ref<TZDate | null>,
 ) => {
     const { brewedCoffee, isLoading } = useNormalizedOrders(start, end);
+
+    const { brewedCoffee: previousBrewedCoffee, isLoading: prevIsLoading } =
+        useNormalizedOrders(previousStart, previousEnd);
 
     const coffeeTotals = computed(() => {
         const totals = new Map<
@@ -15,6 +20,8 @@ export const useBrewedCoffeeAnalytics = (
             {
                 flavor: string;
                 quantity: number;
+                previousQuantity: number;
+                trendQuantity: number;
                 image: string;
             }
         >();
@@ -24,16 +31,37 @@ export const useBrewedCoffeeAnalytics = (
 
             if (existing) {
                 existing.quantity += event.quantity;
-                continue;
+            } else {
+                totals.set(event.flavor, {
+                    flavor: event.flavor,
+                    quantity: event.quantity,
+                    previousQuantity: 0,
+                    trendQuantity: 0,
+                    image:
+                        imagesCoffee[event.flavor] ?? "/img/item-default.png",
+                });
             }
+        }
 
-            totals.set(event.flavor, {
-                flavor: event.flavor,
+        for (const event of previousBrewedCoffee.value) {
+            const existing = totals.get(event.flavor);
 
-                quantity: event.quantity,
+            if (existing) {
+                existing.previousQuantity += event.quantity;
+            } else {
+                totals.set(event.flavor, {
+                    flavor: event.flavor,
+                    quantity: 0,
+                    previousQuantity: event.quantity,
+                    trendQuantity: -event.quantity,
+                    image:
+                        imagesCoffee[event.flavor] ?? "/img/item-default.png",
+                });
+            }
+        }
 
-                image: imagesCoffee[event.flavor] ?? "/img/item-default.png",
-            });
+        for (const coffee of totals.values()) {
+            coffee.trendQuantity = coffee.quantity - coffee.previousQuantity;
         }
 
         return Array.from(totals.values()).sort(
@@ -49,5 +77,6 @@ export const useBrewedCoffeeAnalytics = (
         coffeeTotals,
         totalPots,
         isLoading,
+        prevIsLoading,
     };
 };

@@ -99,7 +99,7 @@ export const normalizeModifier = (
 
         ordinal: 0,
 
-        count: 1,
+        count: Number(item.quantity ?? 0),
     };
 };
 
