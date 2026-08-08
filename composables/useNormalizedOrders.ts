@@ -9,9 +9,27 @@ export const useNormalizedOrders = (
 ) => {
     const { orders, isLoading } = useOrders(start, end);
 
-    const normalizedOrders = computed(() =>
-        orders.value.map((order) => normalizeOrder(order)),
-    );
+    const normalizedOrders = computed(() => {
+        const returnedLineItemUids = new Set<string>();
+
+        for (const order of orders.value) {
+            for (const returnOrder of order.returns ?? []) {
+                for (const lineItem of returnOrder?.lineItems ?? []) {
+                    const sourceLineItemUid = String(
+                        lineItem?.sourceLineItemUid ?? "",
+                    );
+
+                    if (sourceLineItemUid) {
+                        returnedLineItemUids.add(sourceLineItemUid);
+                    }
+                }
+            }
+        }
+
+        return orders.value.map((order) =>
+            normalizeOrder(order, returnedLineItemUids),
+        );
+    });
 
     const sales = computed(() =>
         normalizedOrders.value.flatMap((order) => order.sales),

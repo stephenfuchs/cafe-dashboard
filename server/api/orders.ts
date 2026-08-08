@@ -224,7 +224,9 @@ const getOrders = async (start: string, end: string) => {
                 (tender) => tender?.type === "CASH" || tender?.type === "CARD",
             );
 
-            if (!hasValidTender) continue;
+            const isReturnOrder = (order.returns ?? []).length > 0;
+
+            if (!hasValidTender && !isReturnOrder) continue;
 
             filteredOrders.push({
                 ...order,

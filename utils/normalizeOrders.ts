@@ -215,11 +215,18 @@ export const normalizeSale = (
     };
 };
 
-export const normalizeOrder = (order: Order): NormalizedOrder => {
+export const normalizeOrder = (
+    order: Order,
+    returnedLineItemUids: Set<string> = new Set(),
+): NormalizedOrder => {
     const sales =
         order.lineItems
             ?.map((item) => {
                 if (!item) return null;
+
+                if (returnedLineItemUids.has(String(item.uid ?? ""))) {
+                    return null;
+                }
 
                 const sale = normalizeSale(item, order);
 
