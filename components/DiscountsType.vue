@@ -1,13 +1,17 @@
 <script setup>
 const filters = useFilters();
 
-const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
+const { sales: currentSales, isLoading } = useNormalizedOrders(
+    filters.startDate,
+    filters.endDate,
+);
+
+const { sales: previousSales, isLoading: prevIsLoading } = useNormalizedOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
 
-const { discountTotals } = useDiscounts(orders, previousOrders);
+const { discountTotals } = useDiscounts(currentSales, previousSales);
 
 const sortOptions = ref([
     { optionLabel: "Claims", value: "!quantity" },

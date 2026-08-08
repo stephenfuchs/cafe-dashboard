@@ -2,13 +2,27 @@
 import { calcChange } from "~/server/utils/calcChange";
 
 const filters = useFilters();
-const { orders, isLoading } = useOrders(filters.startDate, filters.endDate);
-const { orders: previousOrders, isLoading: prevIsLoading } = useOrders(
+
+const {
+    sales: currentSales,
+    isLoading,
+} = useNormalizedOrders(
+    filters.startDate,
+    filters.endDate,
+);
+
+const {
+    sales: previousSales,
+    isLoading: prevIsLoading,
+} = useNormalizedOrders(
     filters.comparisonStartDate,
     filters.comparisonEndDate,
 );
 
-const { itemTotals } = useDiscounts(orders, previousOrders);
+const { itemTotals } = useDiscounts(
+    currentSales,
+    previousSales,
+);
 
 const topItems = computed(() => {
     return [...itemTotals.value].sort((a, b) => b.quantity - a.quantity)

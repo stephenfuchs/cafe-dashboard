@@ -150,6 +150,22 @@ export const normalizeSale = (
                     modifier !== null,
             ) ?? [];
 
+    const discounts =
+        item.appliedDiscounts?.map((appliedDiscount) => {
+            const uid = String(appliedDiscount?.discountUid ?? "");
+
+            const discount = order.discounts?.find(
+                (discount) => String(discount?.uid ?? "") === uid,
+            );
+
+            return {
+                uid,
+                name:
+                    discount?.name?.trim().toLowerCase() ?? "unknown discount",
+                amount: appliedDiscount?.appliedMoney?.amount ?? 0,
+            };
+        }) ?? [];
+
     const isCoffeePot = isCoffeePotItem(normalizedName);
 
     const isDonation = isDonationItem(normalizedName, normalizedCategory);
@@ -188,7 +204,7 @@ export const normalizeSale = (
 
         modifiers,
 
-        discounts: [],
+        discounts,
 
         image: {
             item: normalizedImage || imagesDefault,
