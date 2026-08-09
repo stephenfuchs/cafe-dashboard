@@ -90,7 +90,7 @@ export const useItemSalesAnalytics = (
                 (item) => item.selection === selection,
             );
 
-            const count = sale.quantity * modifier.count;
+            const count = modifier.count;
 
             if (existingModifier) {
                 existingModifier.count += count;
