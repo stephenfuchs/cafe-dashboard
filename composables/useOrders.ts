@@ -12,6 +12,7 @@ import {
     saveOrdersToCache,
     getOrdersFromCache,
 } from "~/composables/useIndexDB";
+import { calculateOrderMetrics } from "~/utils/orderMetrics";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -152,121 +153,17 @@ export const useOrders = useMemoize(
             { immediate: true },
         );
 
-        const calcTotal = <T>(
-            array: T[] | undefined,
-            callback: (item: T) => number,
-        ): number =>
-            (array ?? []).reduce((sum, item) => sum + callback(item), 0);
+        const metrics = computed(() => calculateOrderMetrics(orders.value));
 
-        const refunds = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                calcTotal(
-                    order.refunds ?? [],
-                    (refund) => refund?.amountMoney?.amount ?? 0,
-                ),
-            ),
-        );
-
-        const discounts = computed(() =>
-            calcTotal(
-                orders.value,
-                (order: Order) => order?.totalDiscountMoney?.amount || 0,
-            ),
-        );
-
-        const grossSales = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                calcTotal(
-                    order.lineItems ?? [],
-                    (item) => item?.grossSalesMoney?.amount ?? 0,
-                ),
-            ),
-        );
-
-        const netSales = computed(
-            () =>
-                calcTotal(
-                    orders.value,
-                    (order: Order) => order?.totalMoney?.amount ?? 0,
-                ) - refunds.value,
-        );
-
-        const fees = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                calcTotal(
-                    order.tenders ?? [],
-                    (tender) =>
-                        tender?.payment?.processingFees?.reduce(
-                            (feeTotal, fee) =>
-                                feeTotal + (fee.amountMoney?.amount || 0),
-                            0,
-                        ) || 0,
-                ),
-            ),
-        );
-
-        const netTotal = computed(() => netSales.value - fees.value);
-
-        const transactions = computed(() =>
-            calcTotal(orders.value, (order: Order) =>
-                order.refunds?.length ? 0 : 1,
-            ),
-        );
-
-        const avgTransaction = computed(() =>
-            transactions.value === 0
-                ? 0
-                : grossSales.value / transactions.value,
-        );
-
-        const tenderTotal = (tenderType: string) =>
-            computed(() => {
-                // Build a map of original order ID -> amount returned.
-                //
-                // A return order points back to the original sale through:
-                // return.source.id
-                const returnedAmountsByOrderId = new Map<string, number>();
-
-                for (const returnOrder of orders.value) {
-                    for (const orderReturn of returnOrder.returns ?? []) {
-                        const sourceOrderId = orderReturn?.source?.id;
-
-                        if (!sourceOrderId) continue;
-
-                        const returnedAmount =
-                            orderReturn?.amounts?.totalMoney?.amount ?? 0;
-
-                        returnedAmountsByOrderId.set(
-                            sourceOrderId,
-                            (returnedAmountsByOrderId.get(sourceOrderId) ?? 0) +
-                                returnedAmount,
-                        );
-                    }
-                }
-
-                return calcTotal(orders.value, (order: Order) => {
-                    // A return order itself is not a payment.
-                    if ((order.returns?.length ?? 0) > 0) {
-                        return 0;
-                    }
-
-                    const tenderAmount = calcTotal(
-                        order.tenders ?? [],
-                        (tender) =>
-                            tender?.type === tenderType
-                                ? tender?.amountMoney?.amount || 0
-                                : 0,
-                    );
-
-                    const returnedAmount =
-                        returnedAmountsByOrderId.get(order.id ?? "") ?? 0;
-
-                    return Math.max(0, tenderAmount - returnedAmount);
-                });
-            });
-
-        const cashPayments = tenderTotal("CASH");
-        const cardPayments = tenderTotal("CARD");
+        const discounts = computed(() => metrics.value.discounts);
+        const grossSales = computed(() => metrics.value.grossSales);
+        const netSales = computed(() => metrics.value.netSales);
+        const fees = computed(() => metrics.value.fees);
+        const netTotal = computed(() => metrics.value.netTotal);
+        const transactions = computed(() => metrics.value.transactions);
+        const avgTransaction = computed(() => metrics.value.avgTransaction);
+        const cashPayments = computed(() => metrics.value.cashPayments);
+        const cardPayments = computed(() => metrics.value.cardPayments);
 
         return {
             orders,
