@@ -47,7 +47,8 @@ const extractCoffeeFlavor = (modifiers: NormalizedModifier[]) => {
 
 export const normalizeSale = (
     item: LineItem,
-    order: Order,
+    orderId: string,
+    closedAt: string,
     discountsByUid: Map<string, NonNullable<Order["discounts"]>[number]>,
 ): NormalizedSale | null => {
     const originalName = item.name?.trim().toLowerCase() ?? "";
@@ -119,7 +120,7 @@ export const normalizeSale = (
     return {
         id: String(item.uid ?? ""),
 
-        orderId: order.id ?? "",
+        orderId,
 
         name: normalizedName,
         originalName,
@@ -147,7 +148,7 @@ export const normalizeSale = (
             category: categoryImage,
         },
 
-        timestamp: order.closedAt ?? "",
+        timestamp: closedAt,
     };
 };
 
@@ -170,7 +171,12 @@ export const normalizeOrder = (
             ?.map((item) => {
                 if (!item) return null;
 
-                return normalizeSale(item, order, discountsByUid);
+                return normalizeSale(
+                    item,
+                    order.id ?? "",
+                    order.closedAt ?? "",
+                    discountsByUid,
+                );
             })
             .filter(
                 (sale): sale is NonNullable<typeof sale> => sale !== null,
