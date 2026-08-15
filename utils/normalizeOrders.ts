@@ -152,13 +152,18 @@ export const normalizeSale = (
                     modifier !== null,
             ) ?? [];
 
+    const discountsByUid = new Map(
+        (order.discounts ?? []).map((discount) => [
+            String(discount?.uid ?? ""),
+            discount,
+        ]),
+    );
+
     const discounts =
         item.appliedDiscounts?.map((appliedDiscount) => {
             const uid = String(appliedDiscount?.discountUid ?? "");
 
-            const discount = order.discounts?.find(
-                (discount) => String(discount?.uid ?? "") === uid,
-            );
+            const discount = discountsByUid.get(uid);
 
             return {
                 uid,
