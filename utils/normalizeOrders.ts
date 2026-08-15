@@ -10,6 +10,7 @@ import {
     buildModifierCategoryMap,
     normalizeModifier,
 } from "~/utils/normalizeModifier";
+import { normalizeDiscounts } from "~/utils/normalizeDiscounts";
 import type { OrdersQuery } from "~/src/gql/graphql";
 import type {
     NormalizedModifier,
@@ -110,19 +111,7 @@ export const normalizeSale = (
                     modifier !== null,
             ) ?? [];
 
-    const discounts =
-        item.appliedDiscounts?.map((appliedDiscount) => {
-            const uid = String(appliedDiscount?.discountUid ?? "");
-
-            const discount = discountsByUid.get(uid);
-
-            return {
-                uid,
-                name:
-                    discount?.name?.trim().toLowerCase() ?? "unknown discount",
-                amount: appliedDiscount?.appliedMoney?.amount ?? 0,
-            };
-        }) ?? [];
+    const discounts = normalizeDiscounts(item, discountsByUid);
 
     const isCoffeePot = isCoffeePotItem(normalizedName);
 
