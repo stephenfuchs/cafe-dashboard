@@ -6,6 +6,10 @@ import {
     imagesCoffee,
     imagesDefault,
 } from "~/server/utils/mappings";
+import {
+    aggregateCategoryTotals,
+    type CategoryTotals,
+} from "~/utils/itemCategoryAnalytics";
 
 interface AggregatedModifier {
     selection: string;
@@ -42,14 +46,6 @@ interface AggregatedItem {
 
     modifiers: Record<string, AggregatedModifier[]>;
     modifierSets: AggregatedModifierSet[];
-}
-
-interface AggregatedCategory {
-    category: string;
-    grossSales: number;
-    previousGrossSales: number;
-    trendGrossSales: number;
-    image: string;
 }
 
 export const useItemSalesAnalytics = (
@@ -362,75 +358,15 @@ export const useItemSalesAnalytics = (
         });
     });
 
-    const currentCategoryTotals = computed(() => {
-        const totals = new Map<
-            string,
-            {
-                category: string;
-                grossSales: number;
-                previousGrossSales: number;
-                trendGrossSales: number;
-                image: string;
-            }
-        >();
+    const currentCategoryTotals = computed(() =>
+        aggregateCategoryTotals(currentSales.value),
+    );
 
-        for (const sale of currentSales.value) {
-            const category = sale.category ?? "unknown";
+    const previousCategoryTotals = computed(() =>
+        aggregateCategoryTotals(previousSales.value),
+    );
 
-            const existing = totals.get(category);
-
-            if (existing) {
-                existing.grossSales += sale.grossSales;
-                continue;
-            }
-
-            totals.set(category, {
-                category,
-                grossSales: sale.grossSales,
-                previousGrossSales: 0,
-                trendGrossSales: 0,
-                image: imagesCategory[category] ?? imagesDefault,
-            });
-        }
-
-        return totals;
-    });
-
-    const previousCategoryTotals = computed(() => {
-        const totals = new Map<
-            string,
-            {
-                category: string;
-                grossSales: number;
-                previousGrossSales: number;
-                trendGrossSales: number;
-                image: string;
-            }
-        >();
-
-        for (const sale of previousSales.value) {
-            const category = sale.category ?? "unknown";
-
-            const existing = totals.get(category);
-
-            if (existing) {
-                existing.grossSales += sale.grossSales;
-                continue;
-            }
-
-            totals.set(category, {
-                category,
-                grossSales: sale.grossSales,
-                previousGrossSales: 0,
-                trendGrossSales: 0,
-                image: imagesCategory[category] ?? imagesDefault,
-            });
-        }
-
-        return totals;
-    });
-
-    const categories = computed<AggregatedCategory[]>(() => {
+    const categories = computed<CategoryTotals[]>(() => {
         const allCategories = new Set([
             ...currentCategoryTotals.value.keys(),
             ...previousCategoryTotals.value.keys(),
