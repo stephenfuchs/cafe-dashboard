@@ -219,51 +219,37 @@ export const normalizeOrder = (
     order: Order,
     returnedLineItemUids: Set<string> = new Set(),
 ): NormalizedOrder => {
-    const sales =
+    // Normalize each line item once. The normalized sale is used by both
+    // ordinary item sales and coffee-pot analytics, which avoids repeating
+    // the same mapping work while preserving their different inclusion rules.
+    const normalizedLineItems =
         order.lineItems
             ?.map((item) => {
                 if (!item) return null;
 
-                if (returnedLineItemUids.has(String(item.uid ?? ""))) {
-                    return null;
-                }
-
-                const sale = normalizeSale(item, order);
-
-                if (!sale) return null;
-
-                if (sale.isCoffeePot || sale.refunded || sale.voided) {
-                    return null;
-                }
-
-                return sale;
+                return normalizeSale(item, order);
             })
             .filter(
                 (sale): sale is NonNullable<typeof sale> => sale !== null,
             ) ?? [];
 
-    const brewedCoffee =
-        order.lineItems
-            ?.map((item) => {
-                if (!item) return null;
+    const sales = normalizedLineItems.filter((sale) => {
+        if (returnedLineItemUids.has(sale.id)) {
+            return false;
+        }
 
-                const sale = normalizeSale(item, order);
+        return !sale.isCoffeePot && !sale.refunded && !sale.voided;
+    });
 
-                if (!sale?.isCoffeePot) {
-                    return null;
-                }
+    const brewedCoffee = normalizedLineItems
+        .filter((sale) => sale.isCoffeePot)
+        .map((sale) => ({
+            orderId: order.id ?? "",
 
-                return {
-                    orderId: order.id ?? "",
-
-                    flavor: extractCoffeeFlavor(sale.modifiers),
-                    quantity: sale.quantity,
-                    timestamp: order.closedAt ?? "",
-                };
-            })
-            .filter(
-                (event): event is NonNullable<typeof event> => event !== null,
-            ) ?? [];
+            flavor: extractCoffeeFlavor(sale.modifiers),
+            quantity: sale.quantity,
+            timestamp: order.closedAt ?? "",
+        }));
 
     const grossSales = sales.reduce((sum, sale) => sum + sale.grossSales, 0);
 
@@ -274,7 +260,6 @@ export const normalizeOrder = (
     const refunds =
         order.refunds?.reduce(
             (sum, refund) => sum + (refund?.amountMoney?.amount ?? 0),
-
             0,
         ) ?? 0;
 
@@ -295,18 +280,13 @@ export const normalizeOrder = (
 
     return {
         id: order.id ?? "",
-
         closedAt: order.closedAt ?? "",
-
         grossSales,
         netSales,
         discounts,
         refunds,
-
         tenders,
-
         sales,
-
         brewedCoffee,
     };
 };
