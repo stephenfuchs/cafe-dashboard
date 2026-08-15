@@ -84,17 +84,24 @@ const mergeModifiers = (
             target[category] = [];
         }
 
+        const existingBySelection = new Map(
+            target[category].map((modifier) => [modifier.selection, modifier]),
+        );
+
         categoryModifiers.forEach((modifier) => {
-            const existingModifier = target[category].find(
-                (item) => item.selection === modifier.selection,
+            const existingModifier = existingBySelection.get(
+                modifier.selection,
             );
 
             if (existingModifier) {
                 existingModifier.count += modifier.count;
             } else {
-                target[category].push({
+                const newModifier = {
                     ...modifier,
-                });
+                };
+
+                target[category].push(newModifier);
+                existingBySelection.set(newModifier.selection, newModifier);
             }
         });
     });
