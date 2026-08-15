@@ -110,6 +110,7 @@ export const normalizeModifier = (
 export const normalizeSale = (
     item: LineItem,
     order: Order,
+    discountsByUid: Map<string, NonNullable<Order["discounts"]>[number]>,
 ): NormalizedSale | null => {
     const originalName = item.name?.trim().toLowerCase() ?? "";
 
@@ -151,13 +152,6 @@ export const normalizeSale = (
                 (modifier): modifier is NonNullable<typeof modifier> =>
                     modifier !== null,
             ) ?? [];
-
-    const discountsByUid = new Map(
-        (order.discounts ?? []).map((discount) => [
-            String(discount?.uid ?? ""),
-            discount,
-        ]),
-    );
 
     const discounts =
         item.appliedDiscounts?.map((appliedDiscount) => {
@@ -226,6 +220,13 @@ export const normalizeOrder = (
     order: Order,
     returnedLineItemUids: Set<string> = new Set(),
 ): NormalizedOrder => {
+    const discountsByUid = new Map(
+        (order.discounts ?? []).map((discount) => [
+            String(discount?.uid ?? ""),
+            discount,
+        ]),
+    );
+
     // Normalize each line item once. The normalized sale is used by both
     // ordinary item sales and coffee-pot analytics, which avoids repeating
     // the same mapping work while preserving their different inclusion rules.
@@ -234,7 +235,7 @@ export const normalizeOrder = (
             ?.map((item) => {
                 if (!item) return null;
 
-                return normalizeSale(item, order);
+                return normalizeSale(item, order, discountsByUid);
             })
             .filter(
                 (sale): sale is NonNullable<typeof sale> => sale !== null,
