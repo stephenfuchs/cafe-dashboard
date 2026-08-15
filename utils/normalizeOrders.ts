@@ -83,11 +83,10 @@ const buildModifierCategoryMap = (item: LineItem) => {
 
 export const normalizeModifier = (
     modifier: NonNullable<LineItem["modifiers"]>[number],
-    item: LineItem,
+    itemName: string,
+    itemQuantity: number,
     modifierCategoryMapBySelection: Map<string, string>,
 ): NormalizedModifier | null => {
-    const itemName = item.name?.trim().toLowerCase() ?? "";
-
     const originalSelection = modifier?.name?.trim().toLowerCase() ?? "";
 
     if (!originalSelection || modifierSkipped.includes(originalSelection)) {
@@ -113,15 +112,11 @@ export const normalizeModifier = (
 
     return {
         id: String(modifier?.uid ?? ""),
-
         name: itemSpecificSelection,
-
         category: normalizedCategory,
         selection: itemSpecificSelection,
-
         ordinal: 0,
-
-        count: Number(item.quantity ?? 0),
+        count: itemQuantity,
     };
 };
 
@@ -170,7 +165,8 @@ export const normalizeSale = (
 
                 return normalizeModifier(
                     modifier,
-                    item,
+                    originalName,
+                    Number(item.quantity ?? 0),
                     modifierCategoryMapBySelection,
                 );
             })
