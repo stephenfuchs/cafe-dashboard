@@ -21,6 +21,10 @@ import type {
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 type LineItem = NonNullable<NonNullable<Order["lineItems"]>[number]>;
 
+// `imagesItem` is static for the lifetime of the application.
+// Build the entries array once rather than recreating it for every line item.
+const imageMappings = Object.entries(imagesItem);
+
 const isCoffeePotItem = (name: string) => {
     return name === "coffee pot";
 };
@@ -132,9 +136,7 @@ export const normalizeSale = (
     const rawImage = String(item.itemVariation?.item?.images?.[0]?.url ?? "");
 
     const normalizedImage =
-        Object.entries(imagesItem).find(([key]) =>
-            rawImage.includes(key),
-        )?.[1] ?? rawImage;
+        imageMappings.find(([key]) => rawImage.includes(key))?.[1] ?? rawImage;
 
     const categoryImage = imagesCategory[normalizedCategory] ?? imagesDefault;
 
