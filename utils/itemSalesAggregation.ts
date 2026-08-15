@@ -111,22 +111,26 @@ const mergeModifierSets = (
     target: AggregatedModifierSet[],
     source: AggregatedModifierSet[],
 ) => {
+    const existingByKey = new Map(
+        target.map((set) => [JSON.stringify(set.modifiers), set]),
+    );
+
     source.forEach((newSet) => {
-        const existingSet = target.find(
-            (set) =>
-                JSON.stringify(set.modifiers) ===
-                JSON.stringify(newSet.modifiers),
-        );
+        const key = JSON.stringify(newSet.modifiers);
+        const existingSet = existingByKey.get(key);
 
         if (existingSet) {
             existingSet.count += newSet.count;
         } else {
-            target.push({
+            const newModifierSet = {
                 modifiers: newSet.modifiers.map((modifier) => ({
                     ...modifier,
                 })),
                 count: newSet.count,
-            });
+            };
+
+            target.push(newModifierSet);
+            existingByKey.set(key, newModifierSet);
         }
     });
 };
