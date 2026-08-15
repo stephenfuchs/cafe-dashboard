@@ -1,7 +1,5 @@
 import {
-    imagesCategory,
     imagesDefault,
-    imagesItem,
     itemCategoryAssignment,
     itemCategoryMap,
     itemNameMap,
@@ -10,6 +8,10 @@ import {
     buildModifierCategoryMap,
     normalizeModifier,
 } from "~/utils/normalizeModifier";
+import {
+    normalizeCategoryImage,
+    normalizeItemImage,
+} from "~/utils/normalizeImages";
 import { isRefundedItem, isVoidedItem } from "~/utils/normalizeSaleStatus";
 import { normalizeDiscounts } from "~/utils/normalizeDiscounts";
 import type { OrdersQuery } from "~/src/gql/graphql";
@@ -21,10 +23,6 @@ import type {
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 type LineItem = NonNullable<NonNullable<Order["lineItems"]>[number]>;
-
-// `imagesItem` is static for the lifetime of the application.
-// Build the entries array once rather than recreating it for every line item.
-const imageMappings = Object.entries(imagesItem);
 
 const isCoffeePotItem = (name: string) => {
     return name === "coffee pot";
@@ -79,10 +77,9 @@ export const normalizeSale = (
 
     const rawImage = String(item.itemVariation?.item?.images?.[0]?.url ?? "");
 
-    const normalizedImage =
-        imageMappings.find(([key]) => rawImage.includes(key))?.[1] ?? rawImage;
+    const normalizedImage = normalizeItemImage(rawImage);
 
-    const categoryImage = imagesCategory[normalizedCategory] ?? imagesDefault;
+    const categoryImage = normalizeCategoryImage(normalizedCategory);
 
     const modifiers =
         item.modifiers
