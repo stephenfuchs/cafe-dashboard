@@ -12,6 +12,13 @@ const aggregateModifiers = (
     modifiers: Record<string, AggregatedModifier[]>;
     modifierSets: AggregatedModifierSet[];
 } => {
+    if (sale.modifiers.length === 0) {
+        return {
+            modifiers: {},
+            modifierSets: [],
+        };
+    }
+
     const modifiers: Record<string, AggregatedModifier[]> = {};
     const groupedModifiers = new Map<string, Set<string>>();
 
