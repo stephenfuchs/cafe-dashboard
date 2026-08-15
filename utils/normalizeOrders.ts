@@ -91,7 +91,7 @@ export const normalizeSale = (
                 return normalizeModifier(
                     modifier,
                     originalName,
-                    Number(item.quantity ?? 0),
+                    baseQuantity,
                     modifierCategoryMapBySelection,
                 );
             })
