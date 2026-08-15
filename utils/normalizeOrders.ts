@@ -132,7 +132,9 @@ export const normalizeSale = (
 ): NormalizedSale | null => {
     const originalName = item.name?.trim().toLowerCase() ?? "";
 
-    const modifierCategoryMapBySelection = buildModifierCategoryMap(item);
+    const modifierCategoryMapBySelection = item.modifiers?.length
+        ? buildModifierCategoryMap(item)
+        : new Map<string, string>();
 
     const normalizedName = itemNameMap[originalName] ?? originalName;
 
