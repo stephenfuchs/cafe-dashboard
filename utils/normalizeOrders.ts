@@ -56,9 +56,35 @@ const isVoidedItem = (item: LineItem) => {
     );
 };
 
+const buildModifierCategoryMap = (item: LineItem) => {
+    const modifierCategoryMapBySelection = new Map<string, string>();
+
+    const modifierListInfos = item.itemVariation?.item?.modifierListInfos ?? [];
+
+    for (const info of modifierListInfos) {
+        const rawCategory =
+            info?.modifierList?.name?.trim().toLowerCase() ?? "";
+
+        for (const modifier of info?.modifierList?.modifiers ?? []) {
+            const selection = modifier?.name?.trim().toLowerCase() ?? "";
+
+            if (!selection || modifierCategoryMapBySelection.has(selection)) {
+                continue;
+            }
+
+            // Preserve the existing `.find()` behavior: the first
+            // matching modifier list determines the category.
+            modifierCategoryMapBySelection.set(selection, rawCategory);
+        }
+    }
+
+    return modifierCategoryMapBySelection;
+};
+
 export const normalizeModifier = (
     modifier: NonNullable<LineItem["modifiers"]>[number],
     item: LineItem,
+    modifierCategoryMapBySelection: Map<string, string>,
 ): NormalizedModifier | null => {
     const itemName = item.name?.trim().toLowerCase() ?? "";
 
@@ -75,16 +101,8 @@ export const normalizeModifier = (
         modifierItemNameMap[itemName]?.[globalNormalizedSelection] ??
         globalNormalizedSelection;
 
-    const modifierListInfos = item.itemVariation?.item?.modifierListInfos ?? [];
-
-    const matchingModifierList = modifierListInfos.find((info) =>
-        info?.modifierList?.modifiers?.some(
-            (mod) => mod?.name?.trim().toLowerCase() === originalSelection,
-        ),
-    );
-
     const rawCategory =
-        matchingModifierList?.modifierList?.name?.trim().toLowerCase() ?? "";
+        modifierCategoryMapBySelection.get(originalSelection) ?? "";
 
     const mappedCategory = modifierCategoryMap[rawCategory] ?? rawCategory;
 
@@ -113,6 +131,8 @@ export const normalizeSale = (
     discountsByUid: Map<string, NonNullable<Order["discounts"]>[number]>,
 ): NormalizedSale | null => {
     const originalName = item.name?.trim().toLowerCase() ?? "";
+
+    const modifierCategoryMapBySelection = buildModifierCategoryMap(item);
 
     const normalizedName = itemNameMap[originalName] ?? originalName;
 
@@ -146,7 +166,11 @@ export const normalizeSale = (
             ?.map((modifier) => {
                 if (!modifier) return null;
 
-                return normalizeModifier(modifier, item);
+                return normalizeModifier(
+                    modifier,
+                    item,
+                    modifierCategoryMapBySelection,
+                );
             })
             .filter(
                 (modifier): modifier is NonNullable<typeof modifier> =>
