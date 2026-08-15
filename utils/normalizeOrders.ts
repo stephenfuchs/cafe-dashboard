@@ -10,6 +10,7 @@ import {
     buildModifierCategoryMap,
     normalizeModifier,
 } from "~/utils/normalizeModifier";
+import { isRefundedItem, isVoidedItem } from "~/utils/normalizeSaleStatus";
 import { normalizeDiscounts } from "~/utils/normalizeDiscounts";
 import type { OrdersQuery } from "~/src/gql/graphql";
 import type {
@@ -42,18 +43,6 @@ const extractCoffeeFlavor = (modifiers: NormalizedModifier[]) => {
     );
 
     return flavorModifier?.selection ?? "unknown";
-};
-
-// REFUND DETECTION
-const isRefundedItem = (item: LineItem) => {
-    return Boolean(item.totalMoney?.amount && item.totalMoney.amount < 0);
-};
-
-// VOIDED DETECTION
-const isVoidedItem = (item: LineItem) => {
-    return (
-        Number(item.quantity ?? 0) === 0 && (item.totalMoney?.amount ?? 0) === 0
-    );
 };
 
 export const normalizeSale = (
