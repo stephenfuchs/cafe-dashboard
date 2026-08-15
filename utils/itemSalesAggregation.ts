@@ -13,11 +13,13 @@ const aggregateModifiers = (
     modifierSets: AggregatedModifierSet[];
 } => {
     const modifiers: Record<string, AggregatedModifier[]> = {};
+    const groupedModifiers = new Map<string, Set<string>>();
 
-    sale.modifiers.forEach((modifier) => {
+    for (const modifier of sale.modifiers) {
         const category = modifier.category;
         const selection = modifier.selection;
 
+        // Aggregate the modifier count.
         if (!modifiers[category]) {
             modifiers[category] = [];
         }
@@ -26,37 +28,30 @@ const aggregateModifiers = (
             (item) => item.selection === selection,
         );
 
-        const count = modifier.count;
-
         if (existingModifier) {
-            existingModifier.count += count;
+            existingModifier.count += modifier.count;
         } else {
             modifiers[category].push({
                 selection,
-                count,
+                count: modifier.count,
                 previousCount: 0,
             });
         }
-    });
+
+        // Preserve the existing modifier-set grouping behavior.
+        if (!groupedModifiers.has(category)) {
+            groupedModifiers.set(category, new Set());
+        }
+
+        groupedModifiers.get(category)!.add(selection);
+    }
 
     /**
-     * Build the modifier combination for this individual sale.
-     *
      * Multiple selections belonging to the same modifier category
      * are combined into one comma-separated selection.
      *
      * This preserves the existing modifier-set behavior.
      */
-    const groupedModifiers = new Map<string, Set<string>>();
-
-    sale.modifiers.forEach((modifier) => {
-        if (!groupedModifiers.has(modifier.category)) {
-            groupedModifiers.set(modifier.category, new Set());
-        }
-
-        groupedModifiers.get(modifier.category)!.add(modifier.selection);
-    });
-
     const currentModifierSet = Array.from(groupedModifiers.entries()).map(
         ([category, selections]) => ({
             category,
