@@ -20,6 +20,7 @@ import {
 import { isRefundedItem, isVoidedItem } from "~/utils/normalizeSaleStatus";
 import { normalizeDiscounts } from "~/utils/normalizeDiscounts";
 import { normalizeTenders } from "~/utils/normalizeTenders";
+import { normalizeRefunds } from "~/utils/normalizeRefunds";
 import type { OrdersQuery } from "~/src/gql/graphql";
 import type { NormalizedOrder, NormalizedSale } from "~/types/analytics";
 
@@ -186,11 +187,7 @@ export const normalizeOrder = (
 
     const discounts = sales.reduce((sum, sale) => sum + sale.totalDiscounts, 0);
 
-    const refunds =
-        order.refunds?.reduce(
-            (sum, refund) => sum + (refund?.amountMoney?.amount ?? 0),
-            0,
-        ) ?? 0;
+    const refunds = normalizeRefunds(order);
 
     const tenders = normalizeTenders(order);
 
