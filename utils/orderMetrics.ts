@@ -1,4 +1,5 @@
 import type { OrdersQuery } from "~/src/gql/graphql";
+import { getReturnedAmountsByOrderId } from "~/utils/orderReturns";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -29,24 +30,7 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
     //
     // This must be calculated before tender totals because the returned
     // amount is deducted from the original order's tender amount.
-    const returnedAmountsByOrderId = new Map<string, number>();
-
-    for (const order of orders) {
-        for (const orderReturn of order.returns ?? []) {
-            const sourceOrderId = orderReturn?.source?.id;
-
-            if (!sourceOrderId) continue;
-
-            const returnedAmount =
-                orderReturn?.amounts?.totalMoney?.amount ?? 0;
-
-            returnedAmountsByOrderId.set(
-                sourceOrderId,
-                (returnedAmountsByOrderId.get(sourceOrderId) ?? 0) +
-                    returnedAmount,
-            );
-        }
-    }
+    const returnedAmountsByOrderId = getReturnedAmountsByOrderId(orders);
 
     let cashPayments = 0;
     let cardPayments = 0;
