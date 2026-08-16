@@ -6,6 +6,7 @@ import { getDiscountAmount } from "~/utils/orderDiscounts";
 import { getOrderTotal } from "~/utils/orderTotals";
 import { getProcessingFees } from "~/utils/orderFees";
 import { getOrderPaymentAmounts } from "~/utils/orderPayments";
+import { isTransaction } from "~/utils/orderTransactions";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -51,7 +52,7 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
 
         grossSales += getGrossSales(order);
 
-        if (!order.refunds?.length) {
+        if (isTransaction(order)) {
             transactions += 1;
         }
 
