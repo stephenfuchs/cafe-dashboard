@@ -8,42 +8,51 @@ interface DiscountItem {
     imgItem: string;
 }
 
+interface DiscountTotal {
+    totalValue: number;
+    count: number;
+    imgDiscount: string;
+    items: DiscountItem[];
+}
+
+interface DiscountItemTotal {
+    name: string;
+    imgItem: string;
+    totalValue: number;
+    count: number;
+}
+
+interface DiscountAggregates {
+    discounts: Record<string, DiscountTotal>;
+    items: Record<string, DiscountItemTotal>;
+}
+
 export function useDiscounts(
     sales: Ref<NormalizedSale[]>,
     previousSales: Ref<NormalizedSale[]>,
 ) {
-    const calcDiscountTotals = (salesArray: NormalizedSale[]) => {
-        return salesArray
-            .flatMap((sale) =>
-                sale.discounts.map((discount) => ({
-                    discountName: discount.name,
-                    discountValue: discount.amount,
-                    imgDiscount: imagesDiscount[discount.name] ?? imagesDefault,
-                    itemName: sale.name,
-                    imgItem: sale.image.item,
-                })),
-            )
-            .reduce<
-                Record<
-                    string,
-                    {
-                        totalValue: number;
-                        count: number;
-                        imgDiscount: string;
-                        items: DiscountItem[];
-                    }
-                >
-            >((acc, discount) => {
-                const {
-                    discountName,
-                    discountValue,
-                    imgDiscount,
-                    itemName,
-                    imgItem,
-                } = discount;
+    /**
+     * Aggregate discount totals and item totals in a single pass through
+     * the sales. Both views are derived from the same discount records, so
+     * traversing the sales separately would repeat the same work.
+     */
+    const aggregateDiscounts = (
+        salesArray: NormalizedSale[],
+    ): DiscountAggregates => {
+        const discounts: Record<string, DiscountTotal> = {};
+        const items: Record<string, DiscountItemTotal> = {};
 
-                if (!acc[discountName]) {
-                    acc[discountName] = {
+        for (const sale of salesArray) {
+            for (const discount of sale.discounts) {
+                const discountName = discount.name;
+                const discountValue = discount.amount;
+                const imgDiscount =
+                    imagesDiscount[discountName] ?? imagesDefault;
+                const itemName = sale.name;
+                const imgItem = sale.image.item;
+
+                if (!discounts[discountName]) {
+                    discounts[discountName] = {
                         totalValue: 0,
                         count: 0,
                         imgDiscount,
@@ -51,7 +60,9 @@ export function useDiscounts(
                     };
                 }
 
-                const existingItem = acc[discountName].items.find(
+                const discountTotal = discounts[discountName];
+
+                const existingItem = discountTotal.items.find(
                     (item) =>
                         item.name === itemName && item.imgItem === imgItem,
                 );
@@ -60,7 +71,7 @@ export function useDiscounts(
                     existingItem.count += 1;
                     existingItem.value += discountValue;
                 } else {
-                    acc[discountName].items.push({
+                    discountTotal.items.push({
                         name: itemName,
                         count: 1,
                         value: discountValue,
@@ -68,69 +79,47 @@ export function useDiscounts(
                     });
                 }
 
-                acc[discountName].totalValue += discountValue;
-                acc[discountName].count += 1;
+                discountTotal.totalValue += discountValue;
+                discountTotal.count += 1;
 
-                return acc;
-            }, {});
-    };
-
-    const calcDiscountItems = (salesArray: NormalizedSale[]) => {
-        return salesArray
-            .flatMap((sale) =>
-                sale.discounts.map((discount) => ({
-                    name: sale.name,
-                    imgItem: sale.image.item,
-                    discountValue: discount.amount,
-                })),
-            )
-            .reduce<
-                Record<
-                    string,
-                    {
-                        name: string;
-                        imgItem: string;
-                        totalValue: number;
-                        count: number;
-                    }
-                >
-            >((acc, discount) => {
-                const { name, imgItem, discountValue } = discount;
-
-                if (!acc[name]) {
-                    acc[name] = {
-                        name,
+                if (!items[itemName]) {
+                    items[itemName] = {
+                        name: itemName,
                         imgItem,
                         totalValue: 0,
                         count: 0,
                     };
                 }
 
-                acc[name].totalValue += discountValue;
-                acc[name].count += 1;
+                items[itemName].totalValue += discountValue;
+                items[itemName].count += 1;
+            }
+        }
 
-                return acc;
-            }, {});
+        return {
+            discounts,
+            items,
+        };
     };
 
     const discountTotals = computed(() => {
-        const currentTotals = calcDiscountTotals(sales.value || []);
-        const previousTotals = calcDiscountTotals(previousSales.value || []);
+        const current = aggregateDiscounts(sales.value || []);
+        const previous = aggregateDiscounts(previousSales.value || []);
 
         const discountNames = new Set([
-            ...Object.keys(currentTotals),
-            ...Object.keys(previousTotals),
+            ...Object.keys(current.discounts),
+            ...Object.keys(previous.discounts),
         ]);
 
         return Array.from(discountNames).map((discountName) => {
-            const current = currentTotals[discountName] || {
+            const currentDiscount = current.discounts[discountName] || {
                 totalValue: 0,
                 count: 0,
                 imgDiscount: imagesDefault,
                 items: [],
             };
 
-            const previous = previousTotals[discountName] || {
+            const previousDiscount = previous.discounts[discountName] || {
                 totalValue: 0,
                 count: 0,
                 imgDiscount: imagesDefault,
@@ -139,38 +128,38 @@ export function useDiscounts(
 
             return {
                 name: discountName,
-                imgDiscount: current.imgDiscount,
-                quantity: current.count,
-                countPrev: previous.count,
-                trendCount: current.count - previous.count,
-                trendQuantity: current.count - previous.count,
-                value: current.totalValue,
-                valuePrev: previous.totalValue,
-                trendValue: current.totalValue - previous.totalValue,
-                items: current.items,
+                imgDiscount: currentDiscount.imgDiscount,
+                quantity: currentDiscount.count,
+                countPrev: previousDiscount.count,
+                trendCount: currentDiscount.count - previousDiscount.count,
+                trendQuantity: currentDiscount.count - previousDiscount.count,
+                value: currentDiscount.totalValue,
+                valuePrev: previousDiscount.totalValue,
+                trendValue:
+                    currentDiscount.totalValue - previousDiscount.totalValue,
+                items: currentDiscount.items,
             };
         });
     });
 
     const itemTotals = computed(() => {
-        const currentItems = calcDiscountItems(sales.value || []);
-
-        const previousItems = calcDiscountItems(previousSales.value || []);
+        const current = aggregateDiscounts(sales.value || []);
+        const previous = aggregateDiscounts(previousSales.value || []);
 
         const itemNames = new Set([
-            ...Object.keys(currentItems),
-            ...Object.keys(previousItems),
+            ...Object.keys(current.items),
+            ...Object.keys(previous.items),
         ]);
 
         return Array.from(itemNames).map((name) => {
-            const current = currentItems[name] || {
+            const currentItem = current.items[name] || {
                 name,
                 imgItem: imagesDefault,
                 totalValue: 0,
                 count: 0,
             };
 
-            const previous = previousItems[name] || {
+            const previousItem = previous.items[name] || {
                 name,
                 imgItem: imagesDefault,
                 totalValue: 0,
@@ -178,18 +167,18 @@ export function useDiscounts(
             };
 
             const imgItem =
-                current.imgItem !== imagesDefault
-                    ? current.imgItem
-                    : previous.imgItem;
+                currentItem.imgItem !== imagesDefault
+                    ? currentItem.imgItem
+                    : previousItem.imgItem;
 
             return {
                 name,
                 imgItem,
-                quantity: current.count,
-                prevQuantity: previous.count,
-                value: current.totalValue,
-                trendQuantity: current.count - previous.count,
-                trendValue: current.totalValue - previous.totalValue,
+                quantity: currentItem.count,
+                prevQuantity: previousItem.count,
+                value: currentItem.totalValue,
+                trendQuantity: currentItem.count - previousItem.count,
+                trendValue: currentItem.totalValue - previousItem.totalValue,
             };
         });
     });
