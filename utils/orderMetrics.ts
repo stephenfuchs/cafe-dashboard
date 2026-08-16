@@ -5,6 +5,7 @@ import { getGrossSales } from "~/utils/orderSales";
 import { getDiscountAmount } from "~/utils/orderDiscounts";
 import { getOrderTotal } from "~/utils/orderTotals";
 import { getProcessingFees } from "~/utils/orderFees";
+import { getOrderPaymentAmounts } from "~/utils/orderPayments";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -64,20 +65,8 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
 
         fees += getProcessingFees(order);
 
-        let cashAmount = 0;
-        let cardAmount = 0;
-
-        for (const tender of order.tenders ?? []) {
-            const amount = tender?.amountMoney?.amount || 0;
-
-            if (tender?.type === "CASH") {
-                cashAmount += amount;
-            }
-
-            if (tender?.type === "CARD") {
-                cardAmount += amount;
-            }
-        }
+        const { cash: cashAmount, card: cardAmount } =
+            getOrderPaymentAmounts(order);
 
         cashPayments += Math.max(0, cashAmount - returnedAmount);
         cardPayments += Math.max(0, cardAmount - returnedAmount);
