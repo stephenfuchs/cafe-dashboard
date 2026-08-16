@@ -50,6 +50,7 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
 
     let cashPayments = 0;
     let cardPayments = 0;
+    let totalSales = 0;
 
     for (const order of orders) {
         refunds += (order.refunds ?? []).reduce(
@@ -59,21 +60,11 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
 
         discounts += order.totalDiscountMoney?.amount || 0;
 
-        grossSales += (order.lineItems ?? []).reduce(
-            (sum, item) => sum + (item?.grossSalesMoney?.amount ?? 0),
-            0,
-        );
+        totalSales += order.totalMoney?.amount ?? 0;
 
-        fees += (order.tenders ?? []).reduce(
-            (sum, tender) =>
-                sum +
-                ((tender?.payment?.processingFees ?? []).reduce(
-                    (feeTotal, fee) =>
-                        feeTotal + (fee.amountMoney?.amount || 0),
-                    0,
-                ) || 0),
-            0,
-        );
+        for (const item of order.lineItems ?? []) {
+            grossSales += item?.grossSalesMoney?.amount ?? 0;
+        }
 
         if (!order.refunds?.length) {
             transactions += 1;
@@ -87,33 +78,31 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
         const returnedAmount =
             returnedAmountsByOrderId.get(order.id ?? "") ?? 0;
 
-        const cashAmount = (order.tenders ?? []).reduce(
-            (sum, tender) =>
-                sum +
-                (tender?.type === "CASH"
-                    ? tender?.amountMoney?.amount || 0
-                    : 0),
-            0,
-        );
+        let cashAmount = 0;
+        let cardAmount = 0;
 
-        const cardAmount = (order.tenders ?? []).reduce(
-            (sum, tender) =>
-                sum +
-                (tender?.type === "CARD"
-                    ? tender?.amountMoney?.amount || 0
-                    : 0),
-            0,
-        );
+        for (const tender of order.tenders ?? []) {
+            const amount = tender?.amountMoney?.amount || 0;
+
+            if (tender?.type === "CASH") {
+                cashAmount += amount;
+            }
+
+            if (tender?.type === "CARD") {
+                cardAmount += amount;
+            }
+
+            fees += (tender?.payment?.processingFees ?? []).reduce(
+                (feeTotal, fee) => feeTotal + (fee.amountMoney?.amount || 0),
+                0,
+            );
+        }
 
         cashPayments += Math.max(0, cashAmount - returnedAmount);
         cardPayments += Math.max(0, cardAmount - returnedAmount);
     }
 
-    const netSales =
-        orders.reduce(
-            (sum, order) => sum + (order?.totalMoney?.amount ?? 0),
-            0,
-        ) - refunds;
+    const netSales = totalSales - refunds;
 
     const netTotal = netSales - fees;
 
