@@ -1,12 +1,15 @@
 import type { OrdersQuery } from "~/src/gql/graphql";
+import {
+    getDiscountAmount,
+    getGrossSales,
+    getOrderTotal,
+    getRefundAmount,
+} from "~/utils/orderAmounts";
 import { getReturnedAmountsByOrderId } from "~/utils/orderReturns";
-import { getRefundAmount } from "~/utils/orderRefunds";
-import { getGrossSales } from "~/utils/orderSales";
-import { getDiscountAmount } from "~/utils/orderDiscounts";
-import { getOrderTotal } from "~/utils/orderTotals";
-import { getProcessingFees } from "~/utils/orderFees";
-import { getOrderPaymentAmounts } from "~/utils/orderPayments";
-import { isTransaction } from "~/utils/orderTransactions";
+import {
+    getOrderPaymentAmounts,
+    getProcessingFees,
+} from "~/utils/orderPayments";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -21,6 +24,16 @@ export type OrderMetrics = {
     avgTransaction: number;
     cashPayments: number;
     cardPayments: number;
+};
+
+/**
+ * Determine whether an order counts as a transaction.
+ *
+ * The dashboard excludes any order with refund records from the
+ * transaction count, regardless of the refund amount.
+ */
+const isTransaction = (order: Order) => {
+    return !order.refunds?.length;
 };
 
 export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
