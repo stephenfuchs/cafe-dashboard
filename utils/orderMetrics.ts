@@ -56,7 +56,8 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
             transactions += 1;
         }
 
-        // A return order itself is not a payment.
+        // A return order is not an original payment and should not contribute
+        // to tender-based metrics such as processing fees or cash/card totals.
         if ((order.returns?.length ?? 0) > 0) {
             continue;
         }
