@@ -3,27 +3,14 @@ import { computed, type Ref } from "vue";
 import { useMemoize } from "@vueuse/core";
 import { useOrders } from "~/composables/useOrders";
 import { normalizeOrder } from "~/utils/normalizeOrders";
+import { getReturnedLineItemUids } from "~/utils/normalizeReturns";
 
 export const useNormalizedOrders = useMemoize(
     (start: Ref<TZDate | null>, end: Ref<TZDate | null>) => {
         const { orders, isLoading } = useOrders(start, end);
 
         const normalizedOrders = computed(() => {
-            const returnedLineItemUids = new Set<string>();
-
-            for (const order of orders.value) {
-                for (const returnOrder of order.returns ?? []) {
-                    for (const lineItem of returnOrder?.lineItems ?? []) {
-                        const sourceLineItemUid = String(
-                            lineItem?.sourceLineItemUid ?? "",
-                        );
-
-                        if (sourceLineItemUid) {
-                            returnedLineItemUids.add(sourceLineItemUid);
-                        }
-                    }
-                }
-            }
+            const returnedLineItemUids = getReturnedLineItemUids(orders.value);
 
             return orders.value.map((order) =>
                 normalizeOrder(order, returnedLineItemUids),
