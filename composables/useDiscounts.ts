@@ -102,9 +102,17 @@ export function useDiscounts(
         };
     };
 
+    const currentAggregates = computed(() =>
+        aggregateDiscounts(sales.value || []),
+    );
+
+    const previousAggregates = computed(() =>
+        aggregateDiscounts(previousSales.value || []),
+    );
+
     const discountTotals = computed(() => {
-        const current = aggregateDiscounts(sales.value || []);
-        const previous = aggregateDiscounts(previousSales.value || []);
+        const current = currentAggregates.value;
+        const previous = previousAggregates.value;
 
         const discountNames = new Set([
             ...Object.keys(current.discounts),
@@ -143,8 +151,8 @@ export function useDiscounts(
     });
 
     const itemTotals = computed(() => {
-        const current = aggregateDiscounts(sales.value || []);
-        const previous = aggregateDiscounts(previousSales.value || []);
+        const current = currentAggregates.value;
+        const previous = previousAggregates.value;
 
         const itemNames = new Set([
             ...Object.keys(current.items),
