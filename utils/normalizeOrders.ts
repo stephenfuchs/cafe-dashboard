@@ -19,6 +19,7 @@ import {
 } from "~/utils/normalizeSaleClassification";
 import { isRefundedItem, isVoidedItem } from "~/utils/normalizeSaleStatus";
 import { normalizeDiscounts } from "~/utils/normalizeDiscounts";
+import { normalizeTenders } from "~/utils/normalizeTenders";
 import type { OrdersQuery } from "~/src/gql/graphql";
 import type { NormalizedOrder, NormalizedSale } from "~/types/analytics";
 
@@ -191,20 +192,7 @@ export const normalizeOrder = (
             0,
         ) ?? 0;
 
-    const tenders =
-        order.tenders
-            ?.map((tender) => {
-                if (!tender) return null;
-
-                return {
-                    type: tender.type ?? "UNKNOWN",
-                    amount: tender.amountMoney?.amount ?? 0,
-                };
-            })
-            .filter(
-                (tender): tender is NonNullable<typeof tender> =>
-                    tender !== null,
-            ) ?? [];
+    const tenders = normalizeTenders(order);
 
     return {
         id: order.id ?? "",
