@@ -3,6 +3,7 @@ import { getReturnedAmountsByOrderId } from "~/utils/orderReturns";
 import { getRefundAmount } from "~/utils/orderRefunds";
 import { getGrossSales } from "~/utils/orderSales";
 import { getDiscountAmount } from "~/utils/orderDiscounts";
+import { getOrderTotal } from "~/utils/orderTotals";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -44,7 +45,7 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
 
         discounts += getDiscountAmount(order);
 
-        totalSales += order.totalMoney?.amount ?? 0;
+        totalSales += getOrderTotal(order);
 
         grossSales += getGrossSales(order);
 
