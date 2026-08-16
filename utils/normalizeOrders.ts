@@ -181,11 +181,22 @@ export const normalizeOrder = (
             timestamp: order.closedAt ?? "",
         }));
 
-    const grossSales = sales.reduce((sum, sale) => sum + sale.grossSales, 0);
+    const salesTotals = sales.reduce(
+        (totals, sale) => {
+            totals.grossSales += sale.grossSales;
+            totals.netSales += sale.totalSales;
+            totals.discounts += sale.totalDiscounts;
 
-    const netSales = sales.reduce((sum, sale) => sum + sale.totalSales, 0);
+            return totals;
+        },
+        {
+            grossSales: 0,
+            netSales: 0,
+            discounts: 0,
+        },
+    );
 
-    const discounts = sales.reduce((sum, sale) => sum + sale.totalDiscounts, 0);
+    const { grossSales, netSales, discounts } = salesTotals;
 
     const refunds = normalizeRefunds(order);
 
