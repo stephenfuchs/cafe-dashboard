@@ -12,36 +12,18 @@ import {
     normalizeCategoryImage,
     normalizeItemImage,
 } from "~/utils/normalizeImages";
+import {
+    isCoffeePotItem,
+    isDonationItem,
+    extractCoffeeFlavor,
+} from "~/utils/normalizeSaleClassification";
 import { isRefundedItem, isVoidedItem } from "~/utils/normalizeSaleStatus";
 import { normalizeDiscounts } from "~/utils/normalizeDiscounts";
 import type { OrdersQuery } from "~/src/gql/graphql";
-import type {
-    NormalizedModifier,
-    NormalizedOrder,
-    NormalizedSale,
-} from "~/types/analytics";
+import type { NormalizedOrder, NormalizedSale } from "~/types/analytics";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 type LineItem = NonNullable<NonNullable<Order["lineItems"]>[number]>;
-
-const isCoffeePotItem = (name: string) => {
-    return name === "coffee pot";
-};
-
-const isDonationItem = (normalizedName: string, normalizedCategory: string) => {
-    return (
-        normalizedCategory === "donations" ||
-        normalizedName.includes("donation")
-    );
-};
-
-const extractCoffeeFlavor = (modifiers: NormalizedModifier[]) => {
-    const flavorModifier = modifiers.find(
-        (modifier) => modifier.category === "flavor",
-    );
-
-    return flavorModifier?.selection ?? "unknown";
-};
 
 export const normalizeSale = (
     item: LineItem,
