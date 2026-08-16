@@ -4,6 +4,7 @@ import { getRefundAmount } from "~/utils/orderRefunds";
 import { getGrossSales } from "~/utils/orderSales";
 import { getDiscountAmount } from "~/utils/orderDiscounts";
 import { getOrderTotal } from "~/utils/orderTotals";
+import { getProcessingFees } from "~/utils/orderFees";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -61,6 +62,8 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
         const returnedAmount =
             returnedAmountsByOrderId.get(order.id ?? "") ?? 0;
 
+        fees += getProcessingFees(order);
+
         let cashAmount = 0;
         let cardAmount = 0;
 
@@ -74,11 +77,6 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
             if (tender?.type === "CARD") {
                 cardAmount += amount;
             }
-
-            fees += (tender?.payment?.processingFees ?? []).reduce(
-                (feeTotal, fee) => feeTotal + (fee.amountMoney?.amount || 0),
-                0,
-            );
         }
 
         cashPayments += Math.max(0, cashAmount - returnedAmount);
