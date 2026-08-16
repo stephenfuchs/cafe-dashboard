@@ -2,6 +2,7 @@ import type { OrdersQuery } from "~/src/gql/graphql";
 import { getReturnedAmountsByOrderId } from "~/utils/orderReturns";
 import { getRefundAmount } from "~/utils/orderRefunds";
 import { getGrossSales } from "~/utils/orderSales";
+import { getDiscountAmount } from "~/utils/orderDiscounts";
 
 type Order = NonNullable<OrdersQuery["orders"]>["nodes"][number];
 
@@ -41,7 +42,7 @@ export const calculateOrderMetrics = (orders: Order[]): OrderMetrics => {
     for (const order of orders) {
         refunds += getRefundAmount(order);
 
-        discounts += order.totalDiscountMoney?.amount || 0;
+        discounts += getDiscountAmount(order);
 
         totalSales += order.totalMoney?.amount ?? 0;
 
