@@ -21,10 +21,6 @@ export const useNormalizedOrders = useMemoize(
             normalizedOrders.value.flatMap((order) => order.sales),
         );
 
-        const modifiers = computed(() =>
-            sales.value.flatMap((sale) => sale.modifiers),
-        );
-
         const brewedCoffee = computed(() =>
             normalizedOrders.value.flatMap((order) => order.brewedCoffee),
         );
@@ -32,7 +28,6 @@ export const useNormalizedOrders = useMemoize(
         return {
             normalizedOrders,
             sales,
-            modifiers,
             brewedCoffee,
             isLoading,
         };

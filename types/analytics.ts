@@ -65,20 +65,7 @@ export interface BrewedCoffeeEvent {
 
 export interface NormalizedOrder {
     id: string;
-
     closedAt: string;
-
-    grossSales: number;
-    netSales: number;
-    discounts: number;
-    refunds: number;
-
-    tenders: {
-        type: string;
-        amount: number;
-    }[];
-
     sales: NormalizedSale[];
-
     brewedCoffee: BrewedCoffeeEvent[];
 }

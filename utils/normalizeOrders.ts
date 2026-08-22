@@ -19,8 +19,6 @@ import {
 } from "~/utils/normalizeSaleClassification";
 import { isRefundedItem, isVoidedItem } from "~/utils/normalizeSaleStatus";
 import { normalizeDiscounts } from "~/utils/normalizeDiscounts";
-import { normalizeTenders } from "~/utils/normalizeTenders";
-import { normalizeRefunds } from "~/utils/normalizeRefunds";
 import type { OrdersQuery } from "~/src/gql/graphql";
 import type { NormalizedOrder, NormalizedSale } from "~/types/analytics";
 
@@ -181,35 +179,9 @@ export const normalizeOrder = (
             timestamp: order.closedAt ?? "",
         }));
 
-    const salesTotals = sales.reduce(
-        (totals, sale) => {
-            totals.grossSales += sale.grossSales;
-            totals.netSales += sale.totalSales;
-            totals.discounts += sale.totalDiscounts;
-
-            return totals;
-        },
-        {
-            grossSales: 0,
-            netSales: 0,
-            discounts: 0,
-        },
-    );
-
-    const { grossSales, netSales, discounts } = salesTotals;
-
-    const refunds = normalizeRefunds(order);
-
-    const tenders = normalizeTenders(order);
-
     return {
         id: order.id ?? "",
         closedAt: order.closedAt ?? "",
-        grossSales,
-        netSales,
-        discounts,
-        refunds,
-        tenders,
         sales,
         brewedCoffee,
     };
